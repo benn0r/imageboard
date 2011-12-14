@@ -1,4 +1,5 @@
-uploads/**/*
-thumbs/**/*
-cache/**/*
-avatars/**/*
+
+/avatars
+/cache
+/uploads
+/thumbs
