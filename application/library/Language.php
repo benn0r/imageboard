@@ -3,50 +3,52 @@
 /**
  * Language
  * 
- * Verwaltet alle Übersetzungen
+ * Manages all translations
  * 
  * @author benn0r <benjamin@benn0r.ch>
- * @since 29102011
- * @version 29102011
+ * @since 2011/10/29
+ * @version 2011/12/14
  */
 class Language
 {
 	
 	/**
-	 * Schlüssel der Sprache (de, en, ..)
+	 * Language key (de, en, ..). Used for the
+	 * languagefiles
 	 * 
 	 * @var string
 	 */
 	protected $_key;
 	
 	/**
-	 * Name der Sprache
+	 * Languagename
 	 * 
 	 * @var string
 	 */
 	protected $_name;
 	
 	/**
-	 * Dateiname der Translationdatei
+	 * Filename of the translationfile. Must be
+	 * relative or absolute path
 	 * 
 	 * @var string
 	 */
 	protected $_filename;
 	
 	/**
-	 * Hier sind alle Übersetzungen gespeichert
+	 * Array with all Translations
 	 * 
 	 * @var array
 	 */
 	protected $_contents = array();
 	
 	/**
-	 * Wenn eine Sprachdatei übergeben wurde wird diese
-	 * mit _read() eingelesen
+	 * If $file parameter is a file, we try to read
+	 * the file
 	 * 
-	 * @param string $key Key der Sprache
-	 * @param string $name Name der Sprache
-	 * @param string $file Dateiname der Übersetzungsdatei
+	 * @param string $key Languagekey (de, en...)
+	 * @param string $name Languagename
+	 * @param string $file Translationfilename
 	 */
 	public function __construct($key, $name, $file = null) {
 		$this->_key = $key;
@@ -59,32 +61,34 @@ class Language
 	}
 
 	/**
-	 * Liest eine Übersetzungsdatei ein
+	 * Reads an translationfile with parse_ini_file.
+	 * Learn more about this at
+	 * http://php.net/manual/de/function.parse-ini-file.php
 	 * 
-	 * @param string $filename
-	 * @return true
+	 * @param string $filename relative or absolute path
+	 * @return true it always works, maybe
 	 */
 	protected function _read($filename) {
 		$this->_contents = parse_ini_file($filename, true);
 		
-		// Alles okay nehm ich mal an hihi
+		// yes, everything is okay
 		return true;
 	}
 
 	/**
-	 * Akzeptiert Strings in der Form foo/bar. Weitere Möglichkeiten
-	 * sind foo.bar oder foo_bar.
-	 * In der Übersetzungsdatei sind die Übersetzungen in Kategorien
-	 * eingeteilt:
-	 * [foo]
-	 * bar = bla
+	 * Samples for calling this method:
+	 * foo/bar
+	 * foo.bar
+	 * foo_bar
 	 * 
-	 * In $name werden auch Grossbuchstaben akzeptiert, Keys in den
-	 * Übersetzungsfiles sollten aber alle klein geschrieben werden.
+	 * First string is the group. Learn more about this at
+	 * http://php.net/manual/de/function.parse-ini-file.php
+	 * 
+	 * This method is case insensitivity. Keys and groupnames
+	 * in the language better be lower case, thanks.
 	 * 
 	 * @param string $name
-	 * @return string Übersetzung oder $name wenn keine Übersetzung
-	 * 				  gefunden wurde
+	 * @return string Translation, returns $name if no translation found
 	 */
 	public function translate($name) {
 		$name = preg_split('/(\.|\/|_)/', $name);
@@ -126,7 +130,7 @@ class Language
 	}
 	
 	/**
-	 * Wrapper für translate()
+	 * Cool wrapper for translate()
 	 * 
 	 * @param string $name
 	 * @return string
@@ -136,7 +140,7 @@ class Language
 	}
 	
 	/**
-	 * Wrapper für translate()
+	 * Cool wrapper for translate()
 	 * 
 	 * @param string $name
 	 * @return string
