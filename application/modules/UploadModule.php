@@ -4,8 +4,8 @@
  * UploadModule
  * 
  * @author benn0r <benjamin@benn0r.ch>
- * @since 02112011
- * @version 02112011
+ * @since 2011/11/02
+ * @version 2011/12/14
  */
 class UploadModule extends Module
 {
