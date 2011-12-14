@@ -117,6 +117,15 @@ class Language
 	}
 	
 	/**
+	 * Returns all translations
+	 * 
+	 * @return array array with translations
+	 */
+	public function getContents() {
+		return $this->_contents;
+	}
+	
+	/**
 	 * Wrapper für translate()
 	 * 
 	 * @param string $name

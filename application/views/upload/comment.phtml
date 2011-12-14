@@ -1,15 +1,14 @@
 <?php 
 
-$formid = 'upload-form';
+if ($this->comment == true) {
+	$formid = 'comment-form';
+} else {
+	$formid = 'upload-form';
+}
+
 $buttondid = md5(microtime(true));
 
 ?>
-
-<!-- required scripts -->
-<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/fileinput.js"></script>
-
-<!-- required stylehsheets -->
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/jquery/fileinput.css" />
 
 <script type="text/javascript">
 	function submituploadform(form, target) {
@@ -25,6 +24,14 @@ $buttondid = md5(microtime(true));
 <h1 class="media-title">Upload</h1>
 <!-- <p class="message">Bitte beachte die <a href="">Regeln</a> bevor du einen neuen Thread erstellst.</p> -->
 <form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload" onsubmit="return submituploadform(this, $('#layer-upload'))">
+	<?php
+	$funcs = '';
+	if ($this->comment) {
+		$funcs = 'onmousedown="$(\'.comment-form-disabled\').removeClass(\'comment-form-disabled\');"
+		onfocus="$(\'.comment-form-disabled\').removeClass(\'comment-form-disabled\');"';
+		echo '<textarea name="comment" ' . $funcs . ' class="media-comment input-default">Einen Kommentar schreiben...</textarea>';
+	}
+	?>
 	<div class="upload-media" id="upload-media">
 		<ul class="media-navi">
 			<li class="media-upload" id="media-upload"><a href="" class="icon icon-upload media-active">Hochladen</a></li>
@@ -44,8 +51,9 @@ $buttondid = md5(microtime(true));
 	<div class="media-shared" id="media-shared">
 		
 	</div>
-	<input type="file" name="file" id="file" />
-	<textarea name="comment" class="media-comment input-default">Einen Kommentar schreiben...</textarea>
+	<?php if(!$this->comment): ?>
+	<textarea name="comment" <?php echo $funcs ?> class="media-comment input-default">Einen Kommentar schreiben...</textarea>
+	<?php endif; ?>
 	<input type="hidden" name="ppid" value="<?php echo $this->ppid ? $this->ppid : '' ?>" />
 	<input type="hidden" name="replyto" value="<?php echo $this->replyto ? $this->replyto : '0' ?>" />
 	<!-- <h2>Optionen</h2>
@@ -60,8 +68,6 @@ $buttondid = md5(microtime(true));
 
 <script type="text/javascript">
 	var formid = '<?php echo $formid ?>';
-
-	$('#file').customFileInput();
 
 	$('.media-navi li a').click(function() {
 		var elem1 = $('.media-navi li a.media-active');
@@ -127,4 +133,82 @@ $buttondid = md5(microtime(true));
 
 	$('.input-default').mousedown(mouseevent);
 	$('.input-default').focus(mouseevent);
+
+	function uploadSuccess<?php echo $buttondid ?>(file, serverData) {
+		try {
+			var progress = new FileProgress(file,  this.customSettings.upload_target);
+
+			if (serverData.substring(0, 7) === "FILEID:") {
+				$.get(baseUrl + 'upload/?image=1&fileid=' + serverData.substring(7), function(result) {
+					$('#'+formid+' .upload-media').hide();
+					$('#'+formid+' .media-shared').html(result);
+					$('#'+formid+' .media-shared').fadeIn();
+
+					$('#'+formid+' .media-loading').hide();
+					$('#'+formid+' .media-shared').show();
+
+					if ($('#'+formid+' .media-comment').hasClass('input-default')) {
+						$('#'+formid+' .media-comment').focus();
+					}
+					
+				});
+				
+				progress.setStatus("Thumbnail Created.");
+				progress.toggleCancel(false);
+			} else {
+				addImage("images/error.gif");
+				progress.setStatus("Error.");
+				progress.toggleCancel(false);
+				alert(serverData);
+
+			}
+
+
+		} catch (ex) {
+			this.debug(ex);
+		}
+	}
+
+	var swfu<?php echo $buttondid ?> = new SWFUpload({
+		// Backend Settings
+		upload_url: "<?php echo $this->baseUrl() . 'upload/?swf=1' ?>",
+		post_params: {"PHPSESSID": "<?php echo session_id(); ?>"},
+
+		// File Upload Settings
+		file_size_limit : "5 MB",	// 2MB
+		file_types : "*.jpg",
+		file_types_description : "JPG Images",
+		file_upload_limit : "0",
+
+		// Event Handler Settings - these functions as defined in Handlers.js
+		//  The handlers are not part of SWFUpload but are part of my website and control how
+		//  my website reacts to the SWFUpload events.
+		file_queue_error_handler : fileQueueError,
+		file_dialog_complete_handler : fileDialogComplete,
+		upload_progress_handler : uploadProgress,
+		upload_error_handler : uploadError,
+		upload_success_handler : uploadSuccess<?php echo $buttondid ?>,
+		upload_complete_handler : uploadComplete,
+
+		// Button Settings
+		button_placeholder_id : "localmedia-button-<?php echo $buttondid ?>",
+		button_width: 134,
+		button_height: 30,
+		button_text : '<span class="button"><?php echo $this->t->t('upload/button') ?></span>',
+		button_text_style : '.button { font-family: Verdana; color: #333333; font-weight: bold; font-size: 10px; text-align: center; }',
+		button_text_top_padding: 7,
+		button_text_left_padding: 0,
+		button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+		button_cursor: SWFUpload.CURSOR.HAND,
+		
+		// Flash Settings
+		flash_url : "<?php echo $this->baseUrl() ?>swfupload/swfupload.swf",
+
+		custom_settings : {
+			upload_target : "media-info-<?php echo $buttondid ?>"
+		},
+		
+		// Debug Settings
+		debug: false
+	});
 </script>
