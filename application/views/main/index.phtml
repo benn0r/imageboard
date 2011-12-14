@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/main.css" />
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
+	
+</head>
+<body>
+	<div class="header">
+		<div id="logo"><a href=""></a></div>
+		
+		<div class="header-buttons">
+			<a href="" class="icon icon-upload" onclick="return showUpload()"><span>Upload</span></a>
+		</div>
+		<form class="header-search" method="post">
+			<input type="text" autocomplete="off" class="search-input input-default" onclick="$(this).select()" name="search" value="Search" />
+			<div class="search-quickresult">
+				<div class="quickresult-share" id="quickresult-share"><a href="" class="icon icon-upload">Share this url</a></div>
+			</div>
+		</form>
+	</div>
+	
+	<div class="layer layer-upload" style="display: block; height: auto;">
+		<div class="resize-content layer-content">
+			<h1>Shoutbox</h1>
+			<iframe name="" src="<?php echo $this->baseUrl() ?>shoutbox" class="shoutbox"></iframe>
+		</div>
+	</div>
+	
+	<div class="column column-content">
+		
+	</div>
+	
+	<div class="column column-mainpage">
+		<?php if (!$this->user): ?>
+		<div class="mainpage-login">
+			<form method="post" action="">
+				<input type="text" class="login-text" name="username" />
+				<input type="password" class="login-text" name="password" />
+				<input type="submit" class="login-button" name="login" value="Login" />
+			</form>
+		</div>
+		<?php else: ?>
+		<div class="mainpage-user">
+			<img src="<?php echo $this->baseUrl() ?>avatars/benn0r.png" />
+			<span><a href="">benn0r</a></span>
+		</div>
+		<h2>Links</h2>
+		<ul class="mainpage-links">
+			<li><a href="" class="icon-upload links-active">Upload</a></li>
+			<li><a href="" class="icon-profile">Profil</a></li>
+			<li><a href="" class="icon-notifications">Benachrichtigungen</a></li>
+			<li><a href="" class="icon-settings">Einstellungen</a></li>
+			<li><a href="" class="icon-logout">Abmelden</a></li>
+		</ul>
+		<?php endif; ?>
+		<h2>News</h2>
+		<ul class="mainpage-news">
+			<li><h3>24. Dezember 2011</h3>4fag wurde erfolgreich auf die neue Version des Imageboard aktualisiert. Eine Übersicht gibts hier.</li>
+			<li><h3>13. Oktober 2011</h3>Lorem Ipsum dolor sit amet tadamet schlamsut. Lorem Ipsum dolor sit amet.</li>
+			<li><h3>13. Oktober 2011</h3>Tshirt Verkauf gibets dann doch net wa.</li>
+		</ul>
+	</div>
+
+</body>
+</html>

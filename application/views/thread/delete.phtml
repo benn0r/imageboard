@@ -1,0 +1,19 @@
+<div class="warning-box">
+	<h2><?php echo $this->t->t('delete/title') ?></h2>
+	<div><a href="<?php echo $this->baseUrl() . $this->post->media->image ?>" class="comment-image" target="_blank">
+		<img src="<?php echo $this->baseUrl() . $this->post->media->thumbnail ?>" alt="Thumbnail" />
+	</a>
+	<div class="comment-media-info">
+		<p class="thread-data"><?php echo $this->t->t('delete/username') ?><span class="thread-value"><?php echo $this->post->username ?></span></p>
+		<p class="thread-data"><?php echo $this->t->t('delete/message') ?><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->post->content) > 17 ? substr($this->post->content, 0, 20) . '...' : $this->post->content)) ?></span></p>
+		<p class="thread-data"><?php echo $this->t->t('delete/dependencies') ?><span class="thread-value danger"><?php echo $this->comments->num_rows ?></span></p>
+	</div>
+	</div>
+	<p style="clear: both"><?php echo $this->t->t('delete/msg') ?></p>
+	<form action="<?php echo $this->baseUrl() . 'delete/?pid=' . $_GET['pid'] ?>" method="post">
+		<p style="padding: 10px 0px 0px 0px">
+			<a class="button" href="<?php echo $this->baseUrl() . 'delete/?pid=' . $_GET['pid'] . '&delete=1' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('delete/doit') ?></a>
+			<a class="button" href="<?php echo $this->baseUrl() . 'delete/?pid=' . $_GET['pid'] . '&cancel=1' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('delete/cancel') ?></a>
+		</p>
+	</form>
+</div>

@@ -1,0 +1,58 @@
+<form action="" id="commentform" method="post" onsubmit="return sendcomment()">
+	<textarea name="text" class="input-default"><?php echo $this->t->t('profile/writecomment') ?></textarea>
+	<?php /*if($this->u->uid != $this->user['uid']): ?>
+	<label class="private"><input type="checkbox" name="private" value="1" /> <?php echo $this->t->t('profile/checkprivate') ?></label>
+	<?php endif;*/ ?>
+	<input type="submit" class="send button" name="save" value="<?php echo $this->t->t('profile/sendcomment') ?>" />
+	
+	<script type="text/javascript">
+	$('textarea[name=text]').autoResize({
+	    // On resize:
+	    onResize : function() {
+	        $(this).css({opacity:0.8});
+	    },
+	    // After resize:
+	    animateCallback : function() {
+	        $(this).css({opacity:1});
+	    },
+	    // Quite slow animation:
+	    animateDuration : 300,
+	    // More extra space:
+	    extraSpace : 18,
+	    limit : 400,
+	});
+
+	$('.input-default').mousedown(mouseevent);
+	$('.input-default').focus(mouseevent);
+
+	var USERNAME = '<?php echo $this->user->username ?>';
+
+	function sendcomment() {
+		$.post(BASE_URL + 'user/<?php echo $this->u->uid ?>/', $("#commentform").serialize(), function(result) {
+			$('#user-posts-form').html(result);
+		});
+
+		return false;
+	}
+
+	/*function delusercmt(elem) {
+		$.post($(elem).attr('href'), function(result) {
+			$(elem).parent().parent().fadeOut('slow', function() {
+				$(elem).parent().parent().before('<div class="usercomment"><a href="">Undo</a></div>');
+			});
+		});
+
+		return false;
+	}*/
+	</script>
+</form>
+<?php while(($c = $this->comments->fetch_object()) != null): ?>
+<div class="usercomment<?php echo $c->astatus == 0 ? ' usercomment-deleted' : '' ?>" <?php if ($this->newcid == $c->cid) { echo 'style="display: none" id="newcid"'; } ?>>
+	<div class="usercomment-username"><a href="<?php echo $this->baseUrl() . 'user/' . $c->uid . '/' ?>"><?php echo $c->username ?></a> <?php echo $c->private == 1 ? '<img src="' . $this->baseUrl() . 'images/lock.png" title="' . $this->t->t('profile/private') . '" />' : '' ?></div>
+	<div class="usercomment-time"><?php echo Printdate::get(strtotime($c->inserttime), $this->t) ?>
+	<?php if($c->astatus == 1 && ($c->uid == $this->user['uid'] || $c->ownerid == $this->user['uid'])) echo '<a onclick="if(confirm(\'' . $this->t->t('profile/delcommentconfirm') . '\')) { return loadpage(this); } else { return false; }" href="' . $this->baseUrl() . 'user/' . $this->u->uid . '/?delcomment=' . $c->cid . '" class="icon icon-cancel" title="' . $this->t->t('profile/delcomment') . '"></a>'; ?>
+	<?php if($c->astatus == 0 && $this->user['grade'] >= 8) echo '<a onclick="return loadpage(this);" href="' . $this->baseUrl() . 'user/' . $this->u->uid . '/?restorecomment=' . $c->cid . '" class="icon icon-restore" title="' . $this->t->t('profile/restorecomment') . '"></a>'; ?></div>
+	<div class="usercomment-text"><?php echo nl2br(htmlentities($c->text, ENT_QUOTES)) ?></div>
+</div>
+<?php endwhile; ?>
+<script type="text/javascript">$('#newcid').fadeIn('slow');</script>
