@@ -1,0 +1,129 @@
+<?php
+
+$image = $this->getConfig()->paths->uploads  . '/' . 
+	date('Ymd', strtotime($this->thread->updatetime)) . '/' . 
+	$this->thread->mid . '.' . $this->thread->image;
+	
+$size = getimagesize($image);
+$user = $this->user;
+
+?>
+<script type="text/javascript">
+function loadCommentForm() {
+	$.get('<?php echo $this->baseUrl() ?>upload/?form=1', function(html) {
+		$('#comment-form').html(html);
+	});
+}
+
+var page = 0;
+
+function loadComments() {
+	page = page + 1;
+	
+	$.get(BASE_URL + 'thread/<?php echo $this->thread->pid ?>/?load=' + page, function(result) {
+		$('.comment-loader').hide();
+		$('.thread-content').append(result);
+	});
+}
+
+/*$(window).scroll(function(){
+	if ($(window).scrollTop() == $(document).height() - $(window).height()){
+		loadComments();
+	}
+});*/
+</script>
+<div class="thread">
+	<div class="thread-image<?php echo $this->thread->astatus == 0 ? ' thread-image-deleted' : '' ?>"><a href="<?php echo $this->baseUrl() . $image ?>" title="<?php echo $this->t->t('thread/original') ?>">
+		<img src="<?php echo $this->baseUrl() . $image ?>" <?php if ($size[0] > 800) { echo 'style="width: 800px"'; } ?> />
+	</a></div>
+	<div class="thread-content">
+		<div class="thread-info">
+			<!-- <div class="thread-buttons">
+				<div class="rate-up">
+					<a href=""><?php echo $this->t->t('thread/rateup') ?></a>
+				</div>
+				<div class="rate-down">
+					<a href=""></a>
+				</div>
+				<div style="clear: both"></div>
+			</div> -->
+			<div class="info-linkblock">
+				<?php if ($this->thread->astatus != 0): ?>
+				<a href="" class="icon icon-favorite"><?php echo $this->t->t('thread/favorite') ?></a><br />
+				<?php endif; ?>
+				<?php if($user['uid'] == $this->thread->uid || $user['grade'] >= 8): ?>
+					<?php if($user['grade'] >= 8 && $this->thread->astatus == 0): ?>
+					<a href="<?php echo $this->baseUrl() ?>delete/?pid=<?php echo $this->thread->pid ?>&restore=1" onclick="return loadpage(this)" class="icon icon-restore"><?php echo $this->t->t('thread/restore') ?></a>
+					<?php else: ?>
+					<a href="<?php echo $this->baseUrl() ?>delete/?pid=<?php echo $this->thread->pid ?>" onclick="return loadpage(this)" class="icon icon-delete"><?php echo $this->t->t('thread/delete') ?></a>
+					<?php endif; ?>
+				<?php else: ?>
+				<a href="" class="icon icon-report"><?php echo $this->t->t('thread/report') ?></a>
+				<?php endif; ?>
+			</div>
+			<p><span class="thread-data"><?php echo $this->t->t('thread/visits') ?></span><span class="thread-value"><?php echo $this->visits ?></span></p>
+			<p><span class="thread-data"><?php echo $this->t->t('thread/size') ?></span><span class="thread-value"><?php echo $size[0] . 'x' . $size[1] ?></span></p>
+			<p><span class="thread-data"><?php echo $this->t->t('thread/filesize') ?></span><span class="thread-value"><?php echo Printsize::filesize($image) ?></span></p>
+			<p><span class="thread-data"><?php echo $this->t->t('thread/filename') ?></span><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->thread->filename) > 15 ? substr($this->thread->filename, 0, 12) . '...' . $this->thread->image : $this->thread->filename)) ?></span></p>
+			<?php if ($this->thread->astatus != 0): ?>
+			<div class="thread-share">
+				<img src="<?php echo $this->baseUrl() ?>images/facebook.png" />
+				<img src="<?php echo $this->baseUrl() ?>images/twitter.png" />
+				<img src="<?php echo $this->baseUrl() ?>images/reddit.png" />
+				<img src="<?php echo $this->baseUrl() ?>images/furl.png" />
+				<img src="<?php echo $this->baseUrl() ?>images/delicious.png" />
+			</div>
+			<?php endif; ?>
+		</div>
+		<div class="comment comment-first<?php echo $this->thread->astatus == 0 ? ' comment-deleted' : '' ?>">
+			<!-- <div class="thread-title">
+				<?php echo Printdate::get(strtotime($this->thread->updatetime), $this->t) ?>
+				<span class="thread-data"><?php echo $this->t->t('thread/size') ?><span class="thread-value"><?php echo $size[0] . 'x' . $size[1] ?></span></span>
+				<span class="thread-data"><?php echo $this->t->t('thread/filename') ?><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->thread->filename) > 20 ? substr($this->thread->filename, 0, 18) . '...' . $this->thread->image : $this->thread->filename)) ?></span></span>
+				<span class="thread-data"><?php echo $this->t->t('thread/visits') ?><span class="thread-value"><?php echo $this->visits ?></span></span>
+			</div> -->
+			<div class="thread-user">
+				<img src="<?php echo $this->baseUrl() . 'avatars/' . $this->thread->uid . '.' . $this->thread->avatar ?>" class="thread-avatar" />
+				<div class="user-descr">
+					<a href="<?php echo $this->baseUrl() ?>user/<?php echo $this->thread->uid ?>/" onclick="return loadpage(this)" class="thread-username"><?php echo $this->thread->username ?></a>
+					<div class="thread-online"><img src="<?php echo $this->baseUrl() . '/images/' . ($this->thread->online == 1 ? 'online' : 'offline') . '.png' ?>" title="<?php echo $this->thread->online == 1 ? sprintf($this->t->t('thread/online'), $this->thread->username) : sprintf($this->t->t('thread/offline'), $this->thread->username) ?>" /></div>
+					<div class="thread-usertitle"><?php echo $this->thread->stylename ?></div>
+				</div>
+			</div>
+			<div class="thread-text">
+				<p><?php echo nl2br(htmlentities($this->thread->content, ENT_QUOTES)) ?></p>
+				<p class="thread-date"><?php echo Printdate::get(strtotime($this->thread->updatetime), $this->t) ?></p>
+				<!-- <div class="thread-tags">
+					<?php echo $this->t->t('thread/tags') ?>
+					<?php $i = 0; while(($tag = $this->tags->fetch_object()) != null): ?><?php echo ($i++ == 0 ? '' : ', ') . $tag->value; ?><?php endwhile; ?>
+				</div> -->
+			</div>
+			<div style="clear: both"></div>
+		</div>
+		<?php if ($this->thread->astatus != 0): ?>
+		<div class="comment">
+			<div class="thread-user">
+			</div>
+			<div class="thread-text comment-form-disabled" id="comment-form">
+				<?php
+				
+				$this->comment = true;
+				$this->ppid = $this->thread->pid;
+				
+				echo $this->render('upload', 'form');
+
+				?>
+			</div>
+			<div style="clear: both"></div>
+		</div>
+		<?php endif; ?>
+		<?php echo $this->render('thread', 'comments') ?>
+	</div>
+</div>
+<?php if (isset($_GET['goto'])): ?>
+<script type="text/javascript">
+$('html, body').animate({
+    scrollTop: $('#post<?php echo $_GET['goto'] ?>').offset().top
+}, 500);
+</script>
+<?php endif; ?>

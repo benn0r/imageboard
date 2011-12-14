@@ -1,0 +1,59 @@
+<div class="user">
+	<div class="user-header" style="background-image: url(<?php echo $this->baseUrl() . $this->getConfig()->paths->headers . '/' . $this->u->uid . '.' . $this->u->header ?>);">
+		<div class="header-avatar">
+			<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $this->u->uid . '.' . $this->u->avatar ?>" />
+		</div>
+		<div class="header-username" style="<?php echo $this->u->namestyle ?>">
+			<?php echo $this->u->username ?>
+			<div class="header-online"><img src="<?php echo $this->baseUrl() . '/images/' . ($this->u->online == 1 ? 'online' : 'offline') . '.png' ?>" title="<?php echo $this->u->online == 1 ? sprintf($this->t->t('thread/online'), $this->u->username) : sprintf($this->t->t('thread/offline'), $this->u->username) ?>" /></div>
+		</div>
+		<div class="user-lastactivity icon icon-time">
+			<?php
+			$time = round((time() - strtotime($this->u->last_activity)) / 60);
+			
+			if ($time <= 60) {
+				$act = Users::printactivity($this->u->activity_text, $this->t);
+				echo '<a href="' . $this->baseUrl() . $act->link . '" onclick="return loadpage(this)">' . $act->msg . '</a>';
+				
+				echo '<span>, ';
+				echo $time == 0 || $time == 1 ? $this->t->t('useraction/timenow') : sprintf($this->t->t('useraction/time'), $time);
+				echo '</span>';
+			} else {
+				echo '<span>' . $this->t->t('useraction/noaction') . '</span>';
+			}
+			?>
+		</div>
+	</div>
+	<div class="user-infotop">
+		<?php foreach ($this->activity as $i): ?>
+			<div class="activitybar" style="height: <?php echo $i['percent'] * 0.5 ?>px; margin-top: <?php echo 98 - ($i['percent'] * 0.5) ?>px;">
+				<div class="infotext">
+					<?php echo Printdate::get($i['datetime'], $this->t) ?><br />
+					<?php echo sprintf($this->t->t('user/activitythreads')) . ' ' . $i['threads'] ?><br />
+					<?php echo sprintf($this->t->t('user/activitycomments')) . ' ' . $i['comments'] ?><br />
+					<?php echo sprintf($this->t->t('user/activityguestbook')) . ' ' . $i['guestbook'] ?><br />
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+	<div class="user-posts">
+		<div id="user-posts-form">
+			<?php echo $this->render('user', 'form') ?>
+		</div>
+	</div>
+	<div class="user-info">
+		<div class="info-box">
+			<div class="thread-data"><?php echo $this->t->t('profile/birthday') ?><div class="thread-value"><?php echo floor((time() - strtotime($this->u->birthday)) / (3600 * 24 * 365)) ?></div></div>
+			<div class="thread-data"><?php echo $this->t->t('profile/registered') ?><div class="thread-value"><?php echo Printdate::get(strtotime($this->u->regtime), $this->t) ?></div></div>
+			<div class="thread-data"><?php echo $this->t->t('profile/grade') ?><div class="thread-value"><?php echo $this->u->stylename ?></div></div>
+			<div class="thread-data"><?php echo $this->t->t('profile/threads') ?><div class="thread-value"><?php echo $this->cthreads ?></div></div>
+			<div class="thread-data"><?php echo $this->t->t('profile/comments') ?><div class="thread-value"><?php echo $this->ccomments ?></div></div>
+		</div>
+		<?php foreach ($this->threads as $t): ?><a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a><?php endforeach; ?>
+		<div style="clear: both"></div>
+		<div class="topvisits-box">
+			<?php foreach ($this->threads as $t): ?><a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a><?php endforeach; ?>
+		</div>
+	</div>
+	<div style="clear: both"></div>
+</div>

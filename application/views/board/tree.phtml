@@ -1,0 +1,26 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/main.css" />
+
+<?php foreach ($this->threads as $thread): ?>
+<div class="tthread <?php echo Printspecial::postclass($thread) ?>">
+	<div class="tthread-title">
+		<a href="<?php echo $this->baseUrl() . $thread->media->image ?>" target="_blank"><?php echo basename($thread->media->image) ?></a>
+		- (<?php echo sprintf($this->t->t('main/filesize'), filesize($thread->media->image) / 1024) ?>,
+		<?php
+		$size = getimagesize($thread->media->image);
+		echo sprintf($this->t->t('main/imagesize'), $size[0], $size[1]);
+		?>, <?php echo $thread->filename ?>)
+	</div>
+	<div class="tthread-thumb"><a href="<?php echo $this->baseUrl() . $thread->media->image ?>" target="_blank">
+		<img src="<?php echo $this->baseUrl() . $thread->media->thumbnail ?>" />
+	</a></div>
+	<div class="tthread-text">
+		<div class="tthread-subject">
+			<span class="tthread-username"><a href="<?php echo $this->baseUrl() . 'user/' . $thread->uid ?>"><?php echo $thread->username ?></a></span> -
+			<?php echo Printdate::get(strtotime($thread->updatetime), $this->t) ?> -
+			<?php echo sprintf($this->t->t('main/postnumber'), $thread->pid) ?>
+			[<a href=""><?php echo $this->t->t('main/postreply') ?></a>]
+		</div>
+		<div class="tthread-content"><?php $thread->content = htmlspecialchars($thread->content); echo nl2br(Printspecial::post($thread)); ?></div>
+	</div>
+</div>
+<?php endforeach; ?>

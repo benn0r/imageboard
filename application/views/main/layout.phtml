@@ -1,0 +1,446 @@
+<?php
+
+/**
+ * Das hier ist das Haupttemplate, dieses wird aufgerufen wenn der Benutzer
+ * die Seite direkt aufruft. Bei einem Aufruf via Ajax wird dieses Template
+ * nicht aufgerufen, nur der Teil für "column-board-content".
+ * 
+ * Hier werden Javascripts und CSS-Definitionen geladen die allgemein Gültigkeit
+ * haben. Spezifische Scripts sollten direkt in den Templates der Module
+ * eingefügt werden.
+ * 
+ * @author benn0r <benjamin@benn0r.ch>
+ * @since 10122011
+ * @version 10122011
+ */
+
+?>
+<!DOCTYPE html>
+<html>
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"> -->
+<head>
+	<title></title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/main.css" />
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
+	
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>swfupload/swfupload.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/swfupload.queue.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/fileprogress.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/handlers.js"></script>
+	
+	<link rel="icon" href="<?php echo $this->baseUrl() ?>images/favicon.ico" type="image/x-icon" />
+
+	<script type="text/javascript">
+
+		var BASE_URL = '<?php echo $this->baseUrl() ?>';
+		var NTIME = '<?php echo time() - 10 ?>';
+		var TIME = '<?php echo time() ?>';
+
+		if(document.location.href.replace('#!', '') != document.location.href) {
+			redirect = document.location.href.substring(
+					document.location.href.search('#!') + 2,
+					document.location.href.length
+			);
+			document.location.href = BASE_URL + redirect;
+		}
+
+		if (typeof history.pushState != 'undefined') {
+			window.onpopstate = function(e) {
+				if (location.href.replace.('#!').search('#') <= 0) {
+					var link = document.location.href.replace(BASE_URL, '');
+					loadlink(BASE_URL + link);
+				}
+			};
+		} else {
+			var lastlink = null;
+			
+			function observeLink() {
+				if (lastlink != null) {
+					if(document.location.href.replace('#!', '') != document.location.href) {
+						redirect = document.location.href.substring(
+								document.location.href.search('#!') + 2,
+								document.location.href.length
+						);
+					} else {
+						redirect = document.location.href.replace(BASE_URL, '');
+					}
+					
+					if (redirect != lastlink) {
+						loadLink(redirect, false);
+					}
+				}
+				setTimeout('observeLink()', 300);
+			}
+			observeLink();
+		}
+
+		var activetime = NTIME;
+		var notificationsTimer = setInterval(notifications = function notifications() {
+			$.getJSON(BASE_URL + 'notifications/?time=' + activetime, function(data) {
+
+				$('.mainpage-users').html('');
+				for (var i = 0; i < data.users.length; i++) {
+					var u = data.users[i];
+					
+					$('.mainpage-users').append('<a onclick="return loadpage(this)" title="' + u.username + '" href="' + BASE_URL + 'user/' + u.uid + '/"><img src="' + u.avatar + '"</a>');
+				}
+
+				for (var i = 0; i < data.news.length; i++) {
+					var n = data.news[i];
+
+					var elem = $('<li><h3>' + n.inserttime + '</h3>' + n.text + '</li>');
+					elem.hide();
+					$('.mainpage-news').prepend(elem);
+					elem.fadeIn('slow');
+				}
+
+				activetime = data.next;
+			});
+		}, 10000);
+
+		// Das erste mal aufrufen
+		notifications();
+
+		function loadpage(link) {
+			var elem = $(link);
+
+			return loadlink(elem.attr('href'));
+		}
+		function loadlink(uri) {
+			var link = uri.replace(BASE_URL, '');
+
+			lastlink = link;
+
+			if (typeof history.pushState != 'undefined') {
+				history.pushState({foo: 'bar'}, uri, uri);
+			} else {
+				document.location.href = '#!' + link;
+			}
+
+			if (uri.indexOf('?') > 0) {
+				uri = uri + '&ajax=1';
+			} else {
+				uri = uri + '/?ajax=1';
+			}
+
+			$.get(uri, function(result) {
+				$('.column-board-content').html(result);
+			});
+
+			return false;
+		}
+		function submitform(form, target) {
+			var form = $(form);
+
+			if (form.attr('method') == 'post') {
+				$.post(form.attr('action'), form.serialize(), function(result) {
+					target.html(result);
+				});
+			}
+
+			// onsubmit cancel
+			return false;
+		}
+		function submitlogin(form) {
+			var form = $(form);
+
+			if (form.find('.input-default').size() > 0) {
+				form.find('.input-default').first().select();
+				return false;
+			}
+
+			var ok = true;
+			form.find('input').each(function() {
+				if (!$(this).val() || $(this).hasClass('input-default')) {
+					ok = false;
+				}
+			});
+
+			if (ok == false) {
+				form.find('input').first().select();
+			}
+
+			return ok;
+		}
+
+		var timeout = null;
+		function timer(img) {
+			if (timeout) {
+				clearTimeout(timeout);
+			}
+			timeout = setTimeout(function() {
+				if ($(img).find('.image-small').width() < $(img).find('.image-large').width()) {
+					$(img).addClass('active');
+					$(img).css('margin-left', '-' + ((154 - $(img).find('.image-small').width()) / 2) + 'px');
+					$(img).css('margin-top', '-' + ((218 - $(img).find('.image-small').height()) / 2) + 'px');
+	
+					$(img).mouseleave(function() {
+						$(img).removeClass('active');
+	
+						$(img).css('margin-left', '2px');
+						$(img).css('margin-top', '2px');
+					});
+				} else {
+					$(img).addClass('activelarge');
+
+					$(img).mouseleave(function() {
+						$(img).removeClass('activelarge');
+					});
+				}
+			}, 300);
+		}
+		function stoptimer(img) {
+			clearTimeout(timeout);
+		}
+		function board() {
+			if(document.getElementById('imageboard')) {
+				var board = new Imageboard('imageboard', 'spacer');
+				var rightheight = null;
+
+				board.bufferright = 0;
+				board.dispatchAfterImage = function(image, startcoord, endcoord) {
+					/*ipanel = document.getElementById('p' + image.id);
+					ipanel.style.top = parseInt(image.style.top) + parseInt(image.style.height) + 'px';
+					ipanel.style.left = parseInt(image.style.left) + 'px';
+					if(this.grid[startcoord[0]] && startcoord[1] + 2 == this.grid[startcoord[0]].length) {
+						ipanel.style.left = parseInt(image.style.left) - 63 + 'px';
+					}
+					if(this.grid[startcoord[0]] && startcoord[1] + 1 == this.grid[startcoord[0]].length) {
+						ipanel.style.left = parseInt(image.style.left) - 126 + 'px';
+					}*/
+				}
+				board.isImageValid = function(image) {
+					if(parseInt(image.id) == image.id) {
+						return true;
+					}
+					return false;
+				}
+				board.dispatchAfterImages = function() {
+					document.getElementById(this.spacerid).style.height = this.rheight + this.unit;
+				}
+				resize = function() {
+					board.resize();
+				}
+				resize();
+				
+				document.getElementById('imageboard').style.visibility = '';
+				window.onresize = resize;
+			}
+		}
+	</script>
+	
+	<script type="text/javascript">
+	var baseUrl = '<?php echo $this->baseUrl() ?>';
+	
+	function headerShow() {
+		$('#header-opener').css('visibility', 'hidden');
+		
+		$('.header').animate({height:'200px'}, 400, function() {
+
+			$('#header-closer').css('visibility', 'visible');
+		});
+		return false;
+	}
+	function headerHide() {
+		$('#header-closer').css('visibility', 'hidden');
+		
+		$('.header').animate({height:'40px'}, 400, function() {
+
+			$('#header-opener').css('visibility', 'visible');
+		});
+		return false;
+	}
+	function scrollbar(element) {
+		element.jScrollPane();
+	}
+
+	var mouseevent = function() {
+		$(this).removeClass('input-default');
+		$(this).val('');
+
+		$(this).unbind('mousedown');
+		$(this).unbind('focus');
+
+		var e = $(this);
+
+		if ($(this).hasClass('input-default-password')) {
+			
+			var n = $('<input type="password" name="'+e.attr('name')+'" class="'+e.attr('class')+'" />');
+			
+			e.after(n);
+			e.remove();
+
+			setTimeout(function () {
+				n.focus();
+			}, 10);
+		}
+
+		setTimeout(function () {
+			e.focus();
+		}, 10);
+	};
+
+	$(document).ready(function() {
+		$('.input-default').mousedown(mouseevent);
+		$('.input-default').focus(mouseevent);
+
+		$('.search-input').bind('paste', function() {
+			var elem = $(this);
+			setTimeout(function() {
+				var regexp = /^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/;
+				if (regexp.test(elem.val())) {
+					$('#quickresult-share').fadeIn();
+				} else {
+					$('#quickresult-share').hide();
+				}
+			}, 100);
+		});
+		$('.search-input').keydown(function() {
+			$('.search-quickresult').show();
+		});
+
+	});
+
+	function showUpload() {
+		$('.layer-upload').show();
+		$('.layer-upload').animate({height: $('.layer-upload .resize-content').height() + 40 + 'px' }, 400, function() {
+			$('.layer-upload').height('auto');
+		});
+
+		return false;
+	}
+
+	function hideUpload() {		
+		$('.layer-upload').animate({height: '0px' }, 400, function() {
+			$('.layer-upload').hide();
+		});
+	}
+
+	function cancel() {
+		$('#media-shared').hide();
+		$('#upload-media').fadeIn();
+
+		if (!$('.media-share-content').is(':hidden')) {
+			$('#share-url').val('');
+			$('#share-url').focus();
+		}
+
+		return false;
+	}
+
+	function uploadSuccess(file, serverData) {
+		try {
+			var progress = new FileProgress(file,  this.customSettings.upload_target);
+
+			if (serverData.substring(0, 7) === "FILEID:") {
+				$.get(baseUrl + 'upload/?image=1&fileid=' + serverData.substring(7), function(result) {
+					$('#upload-media').hide();
+					$('#media-shared').html(result);
+					$('#media-shared').fadeIn();
+
+					$('#media-loading').hide();
+					$('#media-shared').show();
+					
+				});
+				
+				progress.setStatus("Thumbnail Created.");
+				progress.toggleCancel(false);
+			} else {
+				addImage("images/error.gif");
+				progress.setStatus("Error.");
+				progress.toggleCancel(false);
+				alert(serverData);
+
+			}
+
+
+		} catch (ex) {
+			this.debug(ex);
+		}
+	}
+	</script>
+</head>
+<body>
+	<div class="header">
+		<div id="logo"><a href="<?php echo $this->baseUrl() ?>" title="<?php echo $this->t->t('header/homepage') ?>" onclick="return loadpage(this)"></a></div>
+		
+		<div class="header-buttons">
+			<a href="" class="icon icon-upload" onclick="return showUpload()"><span>Upload</span></a>
+		</div>
+		<form class="header-search" method="post">
+			<input type="text" autocomplete="off" class="search-input input-default" onclick="$(this).select()" name="search" value="Search" />
+			<div class="search-quickresult">
+				<div class="quickresult-share" id="quickresult-share"><a href="" class="icon icon-upload">Share this url</a></div>
+			</div>
+		</form>
+	</div>
+	
+	<div class="layer layer-upload">
+		<div class="resize-content layer-content" id="layer-upload">
+			<?php echo $this->render('upload', 'form') ?>
+		</div>
+	</div>
+	
+	<div class="column column-board">
+		<div class="column-hide" id="column-hide"></div>
+		<div class="column-board-content">
+			<?php $this->render($this->module, $this->action) ?>
+		</div>
+		<div class="column-footer">
+			Powered by <a href="">Imageboard 4.0</a>
+		</div>
+	</div>
+	
+	<div class="column column-mainpage">
+		<?php if (!$this->user): ?>
+		<h2><?php echo $this->t->t('login/title') ?></h2>
+		<div class="mainpage-login">
+			<form method="post" action="<?php echo $this->baseUrl() ?>login" onsubmit="return submitlogin(this)">
+				<input type="text" class="login-text input-default" name="username" value="<?php echo $this->t->t('login/username') ?>" />
+				<input type="text" class="login-text input-default input-default-password" name="password" value="<?php echo $this->t->t('login/password') ?>" />
+				<input type="submit" class="login-button" name="login" value="<?php echo $this->t->t('login/send') ?>" />
+			</form>
+		</div>
+		<?php else: ?>
+		<div class="mainpage-user">
+			<a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)">
+				<img src="<?php echo $this->baseUrl() ?>avatars/<?php echo $this->user['uid'] . '.' . $this->user['avatar'] ?>" />
+			</a>
+			<span><a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)"><?php echo $this->user['username'] ?></a></span>
+		</div>
+		<h2>Links</h2>
+		<ul class="mainpage-links">
+			<li><a href="" onclick="return showUpload()" class="icon-upload">Upload</a></li>
+			<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" class="icon-profile">Profil</a></li>
+			<li><a href="<?php echo $this->baseUrl() . 'notifications' ?>" class="icon-notifications">Benachrichtigungen</a></li>
+			<li><a href="<?php echo $this->baseUrl() . 'settings' ?>" class="icon-settings">Einstellungen</a></li>
+			<li><a href="<?php echo $this->baseUrl() . 'logout' ?>" class="icon-logout">Abmelden</a></li>
+		</ul>
+		<h2><?php echo $this->t->t('user/active') ?></h2>
+		<div class="mainpage-users">
+			
+		</div>
+		
+		<?php endif; ?>
+		<h2>News</h2>
+		<ul class="mainpage-news">
+			<?php 
+			$news = new News();
+			
+			$news = $news->fetch();
+			while (($n = $news->fetch_object()) != null):
+			?>
+			<li><h3><?php echo Printdate::get(strtotime($n->inserttime), $this->t) ?></h3><?php echo $n->text ?></li>
+			<?php endwhile; ?>
+		</ul>
+	</div>
+
+</body>
+</html>

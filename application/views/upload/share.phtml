@@ -1,0 +1,11 @@
+<?php header("Content-Type: text/html; charset=UTF-8") ?>
+
+<!-- <h2><?php echo $this->media->getPlugin()->name() ?></h2> -->
+<div class="share-thumb"><img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" /></div>
+<div class="share-data">
+	<div class="share-name"><?php echo $this->media->name ?></div>
+	<div class="share-source">Uploaded by <a href="<?php echo $this->media->author->uri ?>" target="_blank"><?php echo $this->media->author->name ?></a> on <?php echo $this->media->source->name ?></div>
+	<!-- <div class="share-descr"><?php echo nl2br(substr(utf8_encode($this->media->description), 0, 120)) . (strlen($this->media->description) > 117 ? '...' : '') ?></div> -->
+	<div class="share-tags">Tags: <?php echo implode(', ', $this->media->tags) ?></div>
+	<!-- <a href="" onclick="return cancel()" class="button button-icon icon icon-cancel"><span>Abbrechen</span></a> -->
+</div>

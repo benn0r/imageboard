@@ -1,0 +1,40 @@
+<div class="imageboard-navigation">
+	<?php echo $this->navigation->normaloutput() ?>
+</div>
+<!--<div class="imageboard-filter">
+	<div class="filter-selected"><?php echo $this->t->t('board/filter') ?> Hot Chicks</div>
+	<ul class="filter-list filter-show">
+		<?php foreach ($this->boards as $board): ?>
+		<li class="filter-title"><?php echo $board->name ?></li>
+			<?php foreach ($board->data as $board): ?>
+				<li><a href=""><?php echo $board->name ?></a></li>
+			<?php endforeach; ?>
+		<?php endforeach; ?>
+	</ul>
+</div>-->
+<div id="imageboard">
+	<?php foreach ($this->posts as $post): ?>
+	<div class="board-image<?php echo $post->status == 0 ? ' board-image-deleted' : '' ?>" id="<?php echo $post->mid ?>" style="width: <?php echo $post->width ?>px; height: <?php echo $post->height ?>px;">
+		<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $post->ppid ? $post->ppid . '/?goto=' . $post->pid : $post->pid . '/' ?>" onclick="return loadpage(this)" onmouseover="timer(this)" onmouseout="stoptimer(this)">
+			<div class="image-small"
+				style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;
+					background: url(<?php echo $post->thumbnail ?>)"></div>
+			<div class="image-large"
+				style="width: 142px; height: 206px; background: url(<?php echo $post->lthumbnail ?>)"></div>
+			<!-- <div class="image-play"></div> -->
+			<div class="panel">
+				<img src="<?php echo $this->baseUrl() . 'avatars/' . $post->uid . '.' . $post->avatar ?>" class="panel-avatar" />
+				<span class="panel-username"><?php echo $post->username ?><br />
+				<span class="panel-datetime"><?php echo Printdate::get(strtotime($post->updatetime), $this->t) ?></span></span>
+				<div style="clear: both"></div>
+			</div>
+		</a>
+	</div>
+	<?php endforeach; ?>
+</div>
+<div id="spacer"></div>
+<div class="imageboard-navigation">
+	<?php echo $this->navigation->normaloutput() ?>
+</div>
+<script type="text/javascript">board();</script>
+<!-- gentime:<?php echo $this->time ?> -->
