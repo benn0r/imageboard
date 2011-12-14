@@ -154,7 +154,7 @@ class UploadModule extends Module
 			$posts->insert(array(
 				'content' => $r->comment,
 				'uid' => $this->view()->user['uid'],
-				'ppid' => $r->ppid ? (int)$r->ppid : NULL,
+				'ppid' => $r->ppid >= 0 ? (int)$r->ppid : NULL,
 				'replyto' => (int)$r->replyto,
 			));
 			$pid = $this->_db->lastInsertId();

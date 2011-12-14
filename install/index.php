@@ -9,6 +9,11 @@ if (!is_dir('../uploads')) {
 	mkdir('../uploads');
 }
 
+// Folder for cache (upload needs that)
+if (!is_dir('../cache')) {
+	mkdir('../cache');
+}
+
 // Folder for Avatars
 if (!is_dir('../uploads/avatars')) {
 	mkdir('../uploads/avatars');
@@ -20,6 +25,6 @@ if (!is_dir('../uploads/headers')) {
 }
 
 // Folder for thumbnails
-if (!is_dir('../thumbs')) {
-	mkdir('../thumbs');
+if (!is_dir('../uploads/thumbs')) {
+	mkdir('../uploads/thumbs');
 }
