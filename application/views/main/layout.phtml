@@ -25,15 +25,26 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
+	<script type="text/javascript">
+	<?php
+		// json_encode from php does not work in internet explorer? (tested in ie9)
+		$o = 'var t = {';
+		foreach ($this->t->getContents() as $key => $arr) {
+			$o .= '"' . $key . '":{';
+			foreach ($arr as $key => $txt) {
+				$o .= '"' . $key . '":"' . str_replace('\\', '\\\\', $txt) . '",';
+			}
+			$o = substr($o, 0, -1) . '},';
+		}
+		
+		echo substr($o, 0, -1) . '};';
+	?>
+	</script>
+	
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/main.css" />
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
-	
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>swfupload/swfupload.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/swfupload.queue.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/fileprogress.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/handlers.js"></script>
 	
 	<link rel="icon" href="<?php echo $this->baseUrl() ?>images/favicon.ico" type="image/x-icon" />
 
@@ -42,8 +53,6 @@
 		var BASE_URL = '<?php echo $this->baseUrl() ?>';
 		var NTIME = '<?php echo time() - 10 ?>';
 		var TIME = '<?php echo time() ?>';
-
-		var t = <?php echo $this->t->json() ?>;
 
 		if(document.location.href.replace('#!', '') != document.location.href) {
 			redirect = document.location.href.substring(
@@ -307,7 +316,6 @@
 		$('.search-input').keydown(function() {
 			$('.search-quickresult').show();
 		});
-
 	});
 
 	function showUpload() {
