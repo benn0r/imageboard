@@ -94,16 +94,26 @@ class Language
 			$key = strtolower($key);
 			
 			if (isset($arr[$key]) && is_array($arr[$key])) {
-				// Ist der Key ein Array dann gehen wir eine Ebene tiefer
+				// lets do recursion
 				$arr = $arr[$key];
 			} else {
-				// Fertig, die Übersetzung wurde gefunden
+				// translation found
 				return $arr[$key];
 			}
 		}
 		
-		// Leider nix gefunden, sorry man
+		// no translation found, sorry
 		return $name;
+	}
+	
+	/**
+	 * Returns the JSON representation of the
+	 * translations
+	 * 
+	 * @return string a json encoded string on success
+	 */
+	public function json() {
+		return json_encode($this->_contents);
 	}
 	
 	/**
