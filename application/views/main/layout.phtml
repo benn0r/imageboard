@@ -43,6 +43,8 @@
 		var NTIME = '<?php echo time() - 10 ?>';
 		var TIME = '<?php echo time() ?>';
 
+		var t = <?php echo $this->t->json() ?>;
+
 		if(document.location.href.replace('#!', '') != document.location.href) {
 			redirect = document.location.href.substring(
 					document.location.href.search('#!') + 2,
@@ -411,7 +413,7 @@
 		<?php else: ?>
 		<div class="mainpage-user">
 			<a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)">
-				<img src="<?php echo $this->baseUrl() ?>avatars/<?php echo $this->user['uid'] . '.' . $this->user['avatar'] ?>" />
+				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars ?>/<?php echo $this->user['uid'] . '.' . $this->user['avatar'] ?>" />
 			</a>
 			<span><a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)"><?php echo $this->user['username'] ?></a></span>
 		</div>
