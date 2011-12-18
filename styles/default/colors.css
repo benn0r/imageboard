@@ -35,7 +35,7 @@ h1,
 
 /* Layout */
 .column-mainpage { 										border-right: 1px solid #ffffff; }
-.layer {												border-bottom: 1px solid #c2c2c2; border-left: 1px solid #c2c2c2; border-top: 1px solid #c2c2c2; }
+.layer {												border-bottom: 1px solid #ffffff; border-left: 1px solid #ffffff; border-top: 1px solid #d0d0d0; }
 
 /* Login */
 .mainpage-login .login-text { 							color: #747474; border: 1px solid #c2c2c2; }
