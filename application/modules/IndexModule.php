@@ -4,8 +4,8 @@
  * IndexModule
  * 
  * @author benn0r <benjamin@benn0r.ch>
- * @since 29102011
- * @version 29102011
+ * @since 2011/10/29
+ * @version 2011/12/18
  */
 class IndexModule extends Module
 {
@@ -40,15 +40,35 @@ class IndexModule extends Module
 		
 		$thumb = Module::init('Thumb', $this);
 		
+		$dwidth = 63;
+		$dheight = 95;
+		
+		$sizearr = $this->getSizeConfig($dwidth, $dheight);
+		
 		while (($post = $posts->fetch_object()) != null) {
-			$width = 63;
-			$height = 95;
+			$width = $dwidth;
+			$height = $dheight;
 			
 			$media = new Media();
 			$media->mid = $post->mid;
 			$media->image = $this->_config->paths->uploads . '/' . date('Ymd', strtotime($post->inserttime)) . '/' . $post->mid . '.' . $post->image;
 			
-			switch(true) {
+			foreach ($sizearr as $size) {
+				switch ($size['coord']) {
+					case 'x':
+						if (in_array($count, $size['images'])) {
+							$width = $size['val'];
+						}
+						break;
+					case 'y':
+						if (in_array($count, $size['images'])) {
+							$height = $size['val'];
+						}
+						break;
+				}
+			}
+			
+			/*switch(true) {
 				case ($posts->num_rows < $perpage):
 					$width = 2 * $width;
 					break;
@@ -65,7 +85,7 @@ class IndexModule extends Module
 					$width = 2 * $width;
 					$height = 2 * $height;
 					break;
-			}
+			}*/
 			
 			$media->width = $width;
 			$media->height = $height;
@@ -107,6 +127,80 @@ class IndexModule extends Module
 		} else {
 			$this->layout('board', 'board');
 		}
+	}
+	
+	/**
+	 * I really like this part!
+	 *
+	 * This method alters the config in section "board" into an for the
+	 * script readable array.
+	 *
+	 * Before i made this the sizes of the images in the board were hardcoded
+	 * in the script. I checked the performance before and after that change
+	 * and its not a problem if i use a tmp-file to store the generated array.
+	 *
+	 * Sample for the config:
+	 * size[x*3] = 0-3,5	->	x stands for width (y for height), this example
+	 * will match to the images 0,1,2,3 and 5 and will  triple its width.
+	 *
+	 * Its only multiplication allowed because addition and substraction makes
+	 * not very much sense, i guess.
+	 *
+	 * @param int $dwidth default width
+	 * @param int $dheight default height
+	 * @return array
+	 */
+	public function getSizeConfig($dwidth, $dheight) {
+		if (file_exists($file = $this->getConfig()->paths->boardtmp)) {
+			// Array is already saved, lets take this!
+			return unserialize(file_get_contents($file));
+		}
+	
+		$size = $this->getConfig()->board->toArray();
+		$sizearr = array();
+		foreach ($size['size'] as $key => $images) {
+			$splitted = preg_split('/(\*|\+|\-|\/)/', $key);
+			if (strpos($key, '*')) {
+				// generates the new width resp. height
+				$val = str_replace(array('x', 'y'), $splitted[0] == 'x' ? $dwidth : $dheight, $splitted[0]) * $splitted[1];
+			}
+	
+			$data = array();
+			$data['coord'] = $splitted[0]; // save 'x' or 'y'
+			$data['images'] = $this->splitIntegers($images); // all appropriate numbers
+			$data['val'] = $val; // new width (x) or height (y)
+			$sizearr[] = $data;
+		}
+	
+		// Save array for later use
+		file_put_contents($file, serialize($sizearr));
+	
+		return $sizearr;
+	}
+	
+	/**
+	 * Converts a string with integers, into an array.
+	 *
+	 * Example string:
+	 * 0-3,5-8,10,12-15,17 this example will return
+	 * an array with the content 0, 1, 2, 3, 5, 6, 7,
+	 * 8, 10, 12, 13, 14, 15 and 17
+	 *
+	 * @param string $str
+	 * @param string $splitter Splitter for explode
+	 * @return array Array with all integers
+	 */
+	public function splitIntegers($str, $splitter = ',', $hyphen = '-') {
+		$arr = explode($splitter, $str);
+		$return = array();
+		foreach ($arr as $str) {
+			$ints = explode($hyphen, $str);
+	
+			// Add new values with phpfunction "range"
+			$return = array_merge($return, range($ints[0], count($ints) > 1 ? $ints[1] : $ints[0]));
+		}
+	
+		return $return;
 	}
 	
 }
