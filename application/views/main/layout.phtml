@@ -25,15 +25,30 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
+	<script type="text/javascript">
+	<?php
+		// print all translations for javascript
+		// json_encode from php does not work in internet explorer? (tested in ie9)
+		$o = 'var t = {';
+		foreach ($this->t->getContents() as $key => $arr) {
+			$o .= '"' . $key . '":{';
+			foreach ($arr as $key => $txt) {
+				$o .= '"' . $key . '":"' . str_replace('\\', '\\\\', $txt) . '",';
+			}
+			$o = substr($o, 0, -1) . '},';
+		}
+		
+		echo substr($o, 0, -1) . '};';
+	?>
+	</script>
+	
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/reset.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/colors.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/main.css" />
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
-	
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>swfupload/swfupload.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/swfupload.queue.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/fileprogress.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/handlers.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/davis.js"></script>
 	
 	<link rel="icon" href="<?php echo $this->baseUrl() ?>images/favicon.ico" type="image/x-icon" />
 
@@ -85,11 +100,17 @@
 		var notificationsTimer = setInterval(notifications = function notifications() {
 			$.getJSON(BASE_URL + 'notifications/?time=' + activetime, function(data) {
 
-				$('.mainpage-users').html('');
-				for (var i = 0; i < data.users.length; i++) {
-					var u = data.users[i];
+				if (data.users.length == 0) {
+					$('.mainpage-users-container').hide();
+				} else {
+					$('.mainpage-users-container').show();
+					$('.mainpage-users').html('');
 					
-					$('.mainpage-users').append('<a onclick="return loadpage(this)" title="' + u.username + '" href="' + BASE_URL + 'user/' + u.uid + '/"><img src="' + u.avatar + '"</a>');
+					for (var i = 0; i < data.users.length; i++) {
+						var u = data.users[i];
+						
+						$('.mainpage-users').append('<a onclick="return loadpage(this)" title="' + u.username + '" href="' + BASE_URL + 'user/' + u.uid + '/"><img src="' + u.avatar + '"</a>');
+					}
 				}
 
 				for (var i = 0; i < data.news.length; i++) {
@@ -105,7 +126,7 @@
 			});
 		}, 10000);
 
-		// Das erste mal aufrufen
+		// update notifications
 		notifications();
 
 		function loadpage(link) {
@@ -305,7 +326,6 @@
 		$('.search-input').keydown(function() {
 			$('.search-quickresult').show();
 		});
-
 	});
 
 	function showUpload() {
@@ -321,18 +341,6 @@
 		$('.layer-upload').animate({height: '0px' }, 400, function() {
 			$('.layer-upload').hide();
 		});
-	}
-
-	function cancel() {
-		$('#media-shared').hide();
-		$('#upload-media').fadeIn();
-
-		if (!$('.media-share-content').is(':hidden')) {
-			$('#share-url').val('');
-			$('#share-url').focus();
-		}
-
-		return false;
 	}
 
 	function uploadSuccess(file, serverData) {
@@ -411,25 +419,27 @@
 		<?php else: ?>
 		<div class="mainpage-user">
 			<a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)">
-				<img src="<?php echo $this->baseUrl() ?>avatars/<?php echo $this->user['uid'] . '.' . $this->user['avatar'] ?>" />
+				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars ?>/<?php echo $this->user['uid'] . '.' . $this->user['avatar'] ?>" />
 			</a>
 			<span><a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)"><?php echo $this->user['username'] ?></a></span>
 		</div>
-		<h2>Links</h2>
+		<h2><?php echo $this->t->t('navi/title') ?></h2>
 		<ul class="mainpage-links">
-			<li><a href="" onclick="return showUpload()" class="icon-upload">Upload</a></li>
-			<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" class="icon-profile">Profil</a></li>
-			<li><a href="<?php echo $this->baseUrl() . 'notifications' ?>" class="icon-notifications">Benachrichtigungen</a></li>
-			<li><a href="<?php echo $this->baseUrl() . 'settings' ?>" class="icon-settings">Einstellungen</a></li>
-			<li><a href="<?php echo $this->baseUrl() . 'logout' ?>" class="icon-logout">Abmelden</a></li>
+			<li><a href="" onclick="return showUpload()" class="icon-upload"><?php echo $this->t->t('navi/upload') ?></a></li>
+			<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" class="icon-profile"><?php echo $this->t->t('navi/profile') ?></a></li>
+			<li><a href="<?php echo $this->baseUrl() . 'notifications' ?>" class="icon-notifications"><?php echo $this->t->t('navi/notifications') ?></a></li>
+			<li><a href="<?php echo $this->baseUrl() . 'settings' ?>" class="icon-settings"><?php echo $this->t->t('navi/settings') ?></a></li>
+			<li><a href="<?php echo $this->baseUrl() . 'logout' ?>" class="icon-logout"><?php echo $this->t->t('navi/logout') ?></a></li>
 		</ul>
-		<h2><?php echo $this->t->t('user/active') ?></h2>
-		<div class="mainpage-users">
-			
+		<div class="mainpage-users-container">
+			<h2><?php echo $this->t->t('user/active') ?></h2>
+			<div class="mainpage-users">
+				
+			</div>
 		</div>
 		
 		<?php endif; ?>
-		<h2>News</h2>
+		<h2><?php echo $this->t->t('news/title') ?></h2>
 		<ul class="mainpage-news">
 			<?php 
 			$news = new News();
