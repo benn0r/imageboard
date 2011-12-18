@@ -91,16 +91,16 @@ class Language
 	 * @return string Translation, returns $name if no translation found
 	 */
 	public function translate($name) {
-		$name = preg_split('/(\.|\/|_)/', $name);
+		$splitted = preg_split('/(\.|\/|_)/', $name);
 		
 		$arr = $this->_contents;
-		foreach ($name as $key) {
+		foreach ($splitted as $key) {
 			$key = strtolower($key);
 			
 			if (isset($arr[$key]) && is_array($arr[$key])) {
 				// lets do recursion
 				$arr = $arr[$key];
-			} else {
+			} elseif (isset($arr[$key])) {
 				// translation found
 				return $arr[$key];
 			}
