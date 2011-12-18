@@ -53,7 +53,7 @@ class UploadModule extends Module
 			$media->temp = true;
 			
 			if (!is_dir($this->_config->paths->cache . '/' . session_id())) {
-				// Existiert noch kein Ordner für dieses Bild legen wir den mal an
+				// Existiert noch kein Ordner fï¿½r dieses Bild legen wir den mal an
 				mkdir($this->_config->paths->cache . '/' . session_id());
 			}
 			
@@ -154,7 +154,9 @@ class UploadModule extends Module
 			$posts->insert(array(
 				'content' => $r->comment,
 				'uid' => $this->view()->user['uid'],
-				'ppid' => $r->ppid >= 0 ? (int)$r->ppid : NULL,
+				
+				// NULL for thread and integer for comment
+				'ppid' => $r->ppid > 0 ? (int)$r->ppid : new Database_Expression('NULL'),
 				'replyto' => (int)$r->replyto,
 			));
 			$pid = $this->_db->lastInsertId();
