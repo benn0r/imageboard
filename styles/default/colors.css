@@ -78,7 +78,7 @@ textarea { 												color: #000000; border: 1px solid #c2c2c2; }
 .media-info,
 .media-share-content .share-link { 						color: #333333; }
 .share-source, 
-.share-tags { 											color: #747474; border-top: 1px solid #ffffff; }
+.share-tags { 											color: #747474; }
 .share-tags-add input {									background: #ffffff; color: #333; border: 1px solid #c2c2c2; }
 .media-navi a,
 #comment-form .media-navi a { 							color: #333333; }

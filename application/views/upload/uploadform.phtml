@@ -33,16 +33,9 @@ $('.share-link').click(function() {
 	
 	var url = $('.share-url');
 	if (url.val()) {
-		url.addClass('media-loading');
-		$.get(baseUrl + 'upload/?share=1&' + url.serialize(), function(result) {
-			$('.upload-media').hide();
-			$('.media-shared').html(result);
-			$('.media-shared').fadeIn();
-
-			$('.media-loading').hide();
-			$('.media-shared').show();
-			url.removeClass('media-loading');
-			
+		$.get(baseUrl + 'upload/remotefile/?share=1&' + url.serialize(), function(result) {
+			$('#media-shared').html(result);
+			$('#media-shared').fadeIn();
 		});
 	} else {
 		url.select();
