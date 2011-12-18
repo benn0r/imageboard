@@ -35,6 +35,54 @@ class UploadModule extends Module
 		return true;
 	}
 	
+	public function share($url) {
+		$services = array(
+				new Media_Share_Plugin_Youtube(),
+				new Media_Share_Plugin_Image(),
+				new Media_Share_Plugin_Vimeo(),
+				new Media_Share_Plugin_Link(),
+		);
+	
+		foreach ($services as $service) {
+			$media = $service->load($url);
+			if ($media instanceof Media) {
+				break;
+			}
+		}
+	
+		if ($media instanceof Media) {
+			// Das Bild soll in den Cache Ordner
+			$media->temp = true;
+	
+			if (!is_dir($this->_config->paths->cache . '/' . session_id())) {
+				// Existiert noch kein Ordner für dieses Bild legen wir den mal an
+				mkdir($this->_config->paths->cache . '/' . session_id());
+			}
+	
+			$newimage = $this->_config->paths->cache . '/' . session_id() . '/' . md5('image') . '.' . $media->getFiletype();
+			file_put_contents($newimage,
+					file_get_contents($media->image));
+	
+			$media->image = $newimage;
+	
+			$view = $this->view();
+			$view->media = $media;
+	
+			// Laden des Thumb Module
+			$thumb = Module::init('Thumb', $this);
+			$media->thumbnail = $thumb->getThumbnail($media, 124, 93);
+	
+			$_SESSION['media'] = serialize($media);
+	
+			$this->render('upload', 'share');
+	
+			return true;
+		}
+	
+		// Schade
+		return false;
+	}
+	
 	public function run(array $args) {
 		$view = $this->view();
 		
@@ -42,6 +90,8 @@ class UploadModule extends Module
 			case 'form':
 				$this->render('upload', 'uploadform');
 				return;
+			case 'remotefile':
+				return $this->share($this->getRequest()->url);
 			case 'localfile':
 				// Check the upload
 				if (!isset($_FILES['file']) || !is_uploaded_file($_FILES['file']['tmp_name']) || $_FILES['file']['error'] != 0) {

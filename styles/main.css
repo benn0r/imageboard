@@ -695,7 +695,14 @@ textarea {
 .share-data {
 	float: left;
 	font-size: 12px;
-	margin: 6px 0px 10px 0px;
+	margin: 6px 0px 10px 10px;
+}
+.share-data .thread-data {
+	margin: 0px;
+	padding: 0px;
+}
+.share-data .button {
+	margin: 0px;
 }
 .share-thumb {
 	float: left;
@@ -712,7 +719,7 @@ textarea {
 	width: 302px;
 	line-height: 16px;
 	font-weight: bold;
-	margin: 0px 0px 0px 0px;
+	margin: 0px 0px 10px 0px;
 }
 .share-source {
 	width: 302px;
@@ -1363,7 +1370,7 @@ textarea {
 .icon-notifications:hover {	background: url(../images/commenthover.png) no-repeat 10px center; }
 .icon-world {			background: url(../images/world.png) no-repeat 10px center; }
 .icon-world:hover {		background: url(../images/worldhover.png) no-repeat 10px center; }
-.icon-cancel {			background: url(../images/cancel.png) no-repeat 0px center; padding-left: 16px; margin-left: 10px; }
-.icon-cancel:hover {	background-image: url(../images/cancelhover.png); padding-left: 16px; }
+.icon-cancel {			background: url(../images/cancel.png) no-repeat 6px center; padding-left: 26px; margin-left: 10px; }
+.icon-cancel:hover {	background-image: url(../images/cancelhover.png); padding-left: 26px; }
 .icon-restore {			background: url(../images/eye.png) no-repeat 0px center; padding-left: 16px; margin-left: 10px; }
 .icon-load {			background: url(../images/loading-f7f7f7.gif) no-repeat 10px center; display: block; }
