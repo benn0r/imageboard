@@ -27,6 +27,7 @@
 	
 	<script type="text/javascript">
 	<?php
+		// print all translations for javascript
 		// json_encode from php does not work in internet explorer? (tested in ie9)
 		$o = 'var t = {';
 		foreach ($this->t->getContents() as $key => $arr) {
@@ -41,10 +42,13 @@
 	?>
 	</script>
 	
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/reset.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/colors.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/main.css" />
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/davis.js"></script>
 	
 	<link rel="icon" href="<?php echo $this->baseUrl() ?>images/favicon.ico" type="image/x-icon" />
 
@@ -96,11 +100,17 @@
 		var notificationsTimer = setInterval(notifications = function notifications() {
 			$.getJSON(BASE_URL + 'notifications/?time=' + activetime, function(data) {
 
-				$('.mainpage-users').html('');
-				for (var i = 0; i < data.users.length; i++) {
-					var u = data.users[i];
+				if (data.users.length == 0) {
+					$('.mainpage-users-container').hide();
+				} else {
+					$('.mainpage-users-container').show();
+					$('.mainpage-users').html('');
 					
-					$('.mainpage-users').append('<a onclick="return loadpage(this)" title="' + u.username + '" href="' + BASE_URL + 'user/' + u.uid + '/"><img src="' + u.avatar + '"</a>');
+					for (var i = 0; i < data.users.length; i++) {
+						var u = data.users[i];
+						
+						$('.mainpage-users').append('<a onclick="return loadpage(this)" title="' + u.username + '" href="' + BASE_URL + 'user/' + u.uid + '/"><img src="' + u.avatar + '"</a>');
+					}
 				}
 
 				for (var i = 0; i < data.news.length; i++) {
@@ -116,7 +126,7 @@
 			});
 		}, 10000);
 
-		// Das erste mal aufrufen
+		// update notifications
 		notifications();
 
 		function loadpage(link) {
@@ -316,6 +326,8 @@
 		$('.search-input').keydown(function() {
 			$('.search-quickresult').show();
 		});
+
+		showUpload();
 	});
 
 	function showUpload() {
@@ -433,9 +445,11 @@
 			<li><a href="<?php echo $this->baseUrl() . 'settings' ?>" class="icon-settings">Einstellungen</a></li>
 			<li><a href="<?php echo $this->baseUrl() . 'logout' ?>" class="icon-logout">Abmelden</a></li>
 		</ul>
-		<h2><?php echo $this->t->t('user/active') ?></h2>
-		<div class="mainpage-users">
-			
+		<div class="mainpage-users-container">
+			<h2><?php echo $this->t->t('user/active') ?></h2>
+			<div class="mainpage-users">
+				
+			</div>
 		</div>
 		
 		<?php endif; ?>
