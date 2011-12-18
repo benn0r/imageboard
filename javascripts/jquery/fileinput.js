@@ -40,13 +40,13 @@ $.fn.customFileInput = function(){
 			var fileExt = 'customfile-ext-' + fileName.split('.').pop().toLowerCase();
 			//update the feedback
 			uploadFeedback
-				.text(fileName) //set feedback text to filename
+				.text(t.upload.wait) //set feedback text to filename
 				.removeClass(uploadFeedback.data('fileExt') || '') //remove any existing file extension class
 				.addClass(fileExt) //add file extension class
 				.data('fileExt', fileExt) //store file extension for class removal on next change
-				.addClass('customfile-feedback-populated'); //add class to show populated state
-			//change text of button	
-			uploadButton.text('Change');	
+				.addClass('customfile-feedback-populated'); //add class to show populated state	
+		
+			uploadFeedback.parent().parent().submit();
 		})
 		.click(function(){ //for IE and Opera, make sure change fires after choosing a file, using an async callback
 			fileInput.data('val', fileInput.val());

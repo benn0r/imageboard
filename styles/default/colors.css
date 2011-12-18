@@ -94,7 +94,7 @@ textarea { 												color: #000000; border: 1px solid #c2c2c2; }
 .media-info {											border: 1px solid #c2c2c2; }
 .media-share-content input {							border: 1px solid #c2c2c2; }
 .media-share-content .share-link {						border: 1px solid #c2c2c2; }
-.media-share-content .share-link:hover {				border: 1px solid #a9a9a9; }
+.media-share-content .share-link:hover {				color: #000000; /*border: 1px solid #a9a9a9;*/ }
 
 /* Board */
 .board-image a.active .panel, 
