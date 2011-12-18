@@ -1,7 +1,7 @@
 <div class="upload-media" id="upload-media">
 	<ul class="media-navi">
-		<li class="media-upload" id="media-upload"><a href="" class="icon icon-upload media-active">Hochladen</a></li>
-		<li class="media-share" id="media-share"><a href="" class="icon icon-world">Remote</a></li>
+		<li class="media-upload" id="media-upload"><a href="" class="icon icon-upload media-active"><?php echo $this->t->t('upload/localfile') ?></a></li>
+		<li class="media-share" id="media-share"><a href="" class="icon icon-world"><?php echo $this->t->t('upload/remotefile') ?></a></li>
 	</ul>
 	<div class="media-content media-upload-content">
 		<form action="<?php echo $this->baseUrl() ?>upload/localfile" method="post" enctype="multipart/form-data" target="upload-iframe">
