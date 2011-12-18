@@ -543,6 +543,15 @@ textarea {
 	margin: 10px 10px 10px 0px;
 	float: left;
 }
+.error-box-upload {
+	width: 488px;
+	padding: 10px;
+	margin: 0px 0px 0px 10px;
+}
+.error-box-upload p {
+	line-height: 16px;
+	font-size: 10px;
+}
 
 
 #comment-form .upload-media {
@@ -782,6 +791,9 @@ textarea {
 }
 .layer-upload {
 	/*height: 300px;*/
+}
+.upload-iframe {
+	display: none;
 }
 
 .shoutbox {

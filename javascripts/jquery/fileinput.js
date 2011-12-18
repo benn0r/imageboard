@@ -29,8 +29,11 @@ $.fn.customFileInput = function(){
 			upload.removeClass('customfile-disabled');
 		})
 		.bind('checkChange', function(){
-			if(fileInput.val() && fileInput.val() != fileInput.data('val')){
-				fileInput.trigger('change');
+			if(fileInput.val() && fileInput.val() != fileInput.data('val')) {
+				if (fileInput.val() && !fileInput.data('val')) {
+					
+				}
+				//fileInput.trigger('change');
 			}
 		})
 		.bind('change',function(){
@@ -44,8 +47,8 @@ $.fn.customFileInput = function(){
 				.removeClass(uploadFeedback.data('fileExt') || '') //remove any existing file extension class
 				.addClass(fileExt) //add file extension class
 				.data('fileExt', fileExt) //store file extension for class removal on next change
-				.addClass('customfile-feedback-populated'); //add class to show populated state	
-		
+				.addClass('customfile-feedback-populated'); //add class to show populated state
+			
 			uploadFeedback.parent().parent().submit();
 		})
 		.click(function(){ //for IE and Opera, make sure change fires after choosing a file, using an async callback

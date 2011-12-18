@@ -5,14 +5,20 @@ $size = getimagesize($this->media->image);
 
 ?>
 
-<!-- <h2><?php echo $this->media->getPlugin()->name() ?></h2> -->
-<div class="share-thumb"><img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" /></div>
-<div class="share-data">
-	<div class="share-name"><?php echo $this->media->name ?></div>
-	<div class="share-source">
-		<p><span class="thread-data"><?php echo $this->t->t('thread/size') ?></span><span class="thread-value"><?php echo $size[0] . 'x' . $size[1] ?></span></p>
-		<p><span class="thread-data"><?php echo $this->t->t('thread/filename') ?></span><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->media->filename) > 15 ? substr($this->media->filename, 0, 12) . '...' . $this->media->image : $this->media->filename)) ?></span></p>
+<div id="content">
+	<!-- <h2><?php echo $this->media->getPlugin()->name() ?></h2> -->
+	<div class="share-thumb"><img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" /></div>
+	<div class="share-data">
+		<div class="share-name"><?php echo $this->media->name ?></div>
+		<div class="share-source">
+			<p><span class="thread-data"><?php echo $this->t->t('thread/size') ?></span><span class="thread-value"><?php echo $size[0] . 'x' . $size[1] ?></span></p>
+			<p><span class="thread-data"><?php echo $this->t->t('thread/filename') ?></span><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->media->filename) > 15 ? substr($this->media->filename, 0, 12) . '...' . $this->media->image : $this->media->filename)) ?></span></p>
+		</div>
+		<br />
+		<a href="" onclick="return cancel()" class="button button-icon icon icon-cancel"><span>Abbrechen</span></a>
 	</div>
-	<br />
-	<a href="" onclick="return cancel()" class="button button-icon icon icon-cancel"><span>Abbrechen</span></a>
 </div>
+
+<script type="text/javascript">
+parent.uploadedmedia(document.getElementById('content').innerHTML);
+</script>
