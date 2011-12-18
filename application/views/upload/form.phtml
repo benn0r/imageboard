@@ -54,7 +54,7 @@ $buttondid = md5(microtime(true));
 
 <h1 class="media-title">Upload</h1>
 <div id="upload-error">
-	Test
+	<!-- empty div for uploaderrors -->
 </div>
 <div id="media-shared">
 	<?php echo $this->render('upload', 'uploadform') ?>
@@ -75,44 +75,6 @@ $buttondid = md5(microtime(true));
 
 <script type="text/javascript">
 	var formid = '<?php echo $formid ?>';
-
-	$('.media-navi li a').click(function() {
-		var elem1 = $('.media-navi li a.media-active');
-		elem1.removeClass('media-active');
-		$('.' + elem1.parent().attr('id') + '-content').hide();
-	
-		// Aktives element verstecken
-		$('.' . cssClass + '-content').hide();
-		
-		$(this).addClass('media-active');
-		$('.' + $(this).parent().attr('id') + '-content').show();
-		return false;
-	});
-	
-	$('#'+formid+' .share-link').click(function() {
-		$('#'+formid+' .media-shared').hide();
-		$('#'+formid+' .media-loading').show();
-		
-		var url = $('#'+formid+' .share-url');
-		if (url.val()) {
-			url.addClass('media-loading');
-			$.get(baseUrl + 'upload/?share=1&' + url.serialize(), function(result) {
-				$('#'+formid+' .upload-media').hide();
-				$('#'+formid+' .media-shared').html(result);
-				$('#'+formid+' .media-shared').fadeIn();
-	
-				$('#'+formid+' .media-loading').hide();
-				$('#'+formid+' .media-shared').show();
-				url.removeClass('media-loading');
-				
-			});
-		} else {
-			url.select();
-		}
-	
-		// href abbrechen
-		return false;
-	});
 	
 	$('#'+formid+' .share-url').bind('paste', function() {
 		var elem = $(this);
