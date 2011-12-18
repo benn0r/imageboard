@@ -13,3 +13,42 @@
 		<input type="text" name="url" class="share-url" id="share-url" class="input-default" value="http://www.youtube.com/watch?v=pWo5WqRVzdQ" /> <a href="" id="share-link" class="share-link">Share</a>
 	</div>
 </div>
+<script type="text/javascript">
+$('.media-navi li a').click(medianaviclick = function() {
+	var elem1 = $('.media-navi li a.media-active');
+	elem1.removeClass('media-active');
+	$('.' + elem1.parent().attr('id') + '-content').hide();
+
+	// Aktives element verstecken
+	$('.' . cssClass + '-content').hide();
+	
+	$(this).addClass('media-active');
+	$('.' + $(this).parent().attr('id') + '-content').show();
+	return false;
+});
+
+$('.share-link').click(function() {
+	$('#'+formid+' .media-shared').hide();
+	$('#'+formid+' .media-loading').show();
+	
+	var url = $('.share-url');
+	if (url.val()) {
+		url.addClass('media-loading');
+		$.get(baseUrl + 'upload/?share=1&' + url.serialize(), function(result) {
+			$('.upload-media').hide();
+			$('.media-shared').html(result);
+			$('.media-shared').fadeIn();
+
+			$('.media-loading').hide();
+			$('.media-shared').show();
+			url.removeClass('media-loading');
+			
+		});
+	} else {
+		url.select();
+	}
+
+	// href abbrechen
+	return false;
+});
+</script>
