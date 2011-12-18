@@ -1,0 +1,160 @@
+/* Links */
+a {														color: #0083cc; }
+.mainpage-user a {										color: #333333; }
+.mainpage-links a:hover, 
+.mainpage-links .links-active { 						background-color: #ffffff; }
+.rate-up a, 
+.rate-down a { 											color: #333333; border: 1px solid #c2c2c2; }
+.rate-up a:hover, 
+.rate-down a:hover {									border: 1px solid #a9a9a9; }
+#header-opener a { 										border-left: 1px solid #a9a9a9; }
+
+/* Titles */
+h1, 
+h2, 
+.column-content h2, 
+.layer h2 {												color: #333333; }
+.mainpage-news h3 {										color: #777777; }
+.error-box h2 {											color: #871414; }
+.warning-box h2 { 										color: #878314; }
+.success-box h2 { 										color: #258815; }
+h1, 
+.column-content h2, 
+.layer h2 { 											border-bottom: 1px solid #ffffff; }
+
+/* Scrollbar */
+.scrollbar-container .thumb { 							background-color: #747474; }
+
+/* Header */
+.headericons { 											border-left: 1px solid #a9a9a9; }
+.header-buttons a { 									border: 1px solid #c2c2c2; }
+.header-buttons a:hover {								border: 1px solid #a9a9a9; }
+
+/* Footer */
+.column-footer {										color: #777777; border-top: 1px solid #ffffff; }
+
+/* Layout */
+.column-mainpage { 										border-right: 1px solid #ffffff; }
+.layer {												border-bottom: 1px solid #c2c2c2; border-left: 1px solid #c2c2c2; border-top: 1px solid #c2c2c2; }
+
+/* Login */
+.mainpage-login .login-text { 							color: #747474; border: 1px solid #c2c2c2; }
+.mainpage-login .login-text:focus, 
+.mainpage-login .login-text:hover,
+.mainpage-login .login-button { 						color: #333333; border: 1px solid #c2c2c2; }
+.mainpage-login .login-text:focus, 
+.mainpage-login .login-text:hover {						border: 1px solid #a9a9a9; }
+.mainpage-login .login-button:hover {					border: 1px solid #a9a9a9; }
+
+/* Notifcations */
+.notifications .notifications-date {					color: #777777; }
+#header-notifications { 								border-left: 1px solid #a9a9a9; border-right: 1px solid #a9a9a9; }
+.column-notifications {									border-left: 1px solid #ffffff; }
+
+/* Search */
+.search-input,
+.search-quickresult .quickresult-share {				color: #333333; }
+.search-input {											border: 1px solid #c2c2c2; }
+.header-search .search-input:focus, 
+.header-search .search-input:hover {					border: 1px solid #a9a9a9; }
+.header-search .search-quickresult {					border: 1px solid #a9a9a9; }
+.search-quickresult .quickresult-share {				border-top: 1px solid #a9a9a9; }
+
+/* Forms */
+textarea { 												color: #000000; border: 1px solid #c2c2c2; }
+.input-default {										color: #747474; }
+.button { 												color: #333333; background-color: #ffffff; border: 1px solid #c2c2c2; }
+.button:hover { 										background-color: #ffffff; border: 1px solid #a9a9a9; }
+.button-no {											color: #777777; }
+.button-yes {											color: darkgreen; }
+.danger { 												color: #f00; }
+.message {												border: 1px solid #a9a9a9; }
+.error-box {											border: 1px solid #df8f90; }
+.warning-box { 											border: 1px solid #e5db55; }
+.success-box { 											border: 1px solid #9adf8f; }
+
+/* Upload */
+.media-info,
+.media-share-content .share-link { 						color: #333333; }
+.share-source, 
+.share-tags { 											color: #747474; border-top: 1px solid #ffffff; }
+.share-tags-add input {									background: #ffffff; color: #333; border: 1px solid #c2c2c2; }
+.media-navi a,
+#comment-form .media-navi a { 							color: #333333; }
+.media-navi .media-active,
+#comment-form .media-navi .media-active {				background-color: #ffffff; }
+.media-navi a { 										border: 1px solid #f7f7f7; }
+.media-navi .media-active {								border: 1px solid #c2c2c2; border-right: 1px solid #ffffff; }
+.media-content { 										border: 1px solid #c2c2c2; }
+.media-button {											border: 1px solid #c2c2c2; }
+.media-button:hover { 									border: 1px solid #a9a9a9; }
+#comment-form .media-navi .media-active {				border: 1px solid #c2c2c2; border-bottom: 1px solid #ffffff; }
+#comment-form .media-content {							border: 1px solid #c2c2c2; }
+#comment-form .media-button {							border: 1px solid #c2c2c2; }
+.media-info {											border: 1px solid #c2c2c2; }
+.media-share-content input {							border: 1px solid #c2c2c2; }
+.media-share-content .share-link {						border: 1px solid #c2c2c2; }
+.media-share-content .share-link:hover {				border: 1px solid #a9a9a9; }
+
+/* Board */
+.board-image a.active .panel, 
+.board-image a.activelarge .panel { 					color: #333333; }
+.imageboard-navigation ul li a, 
+.imageboard-navigation ul li span { 					color: #333333; }
+.imageboard-filter ul.filter-show .filter-title,
+.imageboard-filter ul.filter-show li a { 				color: #333333; }
+.imageboard-navigation ul li a, 
+.imageboard-navigation ul li span {						border: 1px solid #ffffff; }
+.imageboard-navigation ul li a:hover {					border: 1px solid #c2c2c2; }
+.imageboard-navigation ul li span {						border: 1px solid #ffffff; }
+.imageboard-filter ul.filter-show,
+.imageboard-filter ul.filter-show .filter-title,
+.imageboard-filter .filter-selected {					border: 1px solid #c2c2c2; }
+
+/* Profile */
+.user-lastactivity span,
+.activitybar .infotext {								color: #777777; }
+.user-posts { 											border-right: 1px solid #ffffff; }
+.info-box { 											border-bottom: 1px solid #ffffff; }
+.topvisits-box { 										border-top: 1px solid #ffffff; }
+.user { 												border: 1px solid #a9a9a9; }
+.user-info img {										border: 1px solid #ffffff; }
+
+/* Thread */
+.thread-date,
+.thread-data,
+.thread-tags { 											color: #777777; }
+.thread-usertitle,
+.thread-title,
+.thread-value {  										color: #333333; }
+.tthread { 												border-top: 1px solid #a9a9a9; }
+.thread-info .info-linkblock,
+.thread-info .thread-share,
+.thread-title,
+.thread-buttons {										border-bottom: 1px solid #c2c2c2; }
+.thread-tags {											border-top: 1px solid #c2c2c2; }
+
+/* Thread/Comments */
+.usercomment-deleted, 
+.usercomment-deleted .usercomment-time, 
+.usercomment-deleted .usercomment-username a { 			color: #b9b9b9; }
+.comment-media-info-video .videoname,
+.comment-media-info-video .videosrc {					color: #333333; }
+.usercomment-time { 									color: #777777; }
+.comment-loader {										border-bottom: 1px solid #c2c2c2; }
+.comment { 												border-bottom: 1px solid #c2c2c2; }
+.comment-image {  										border: 1px solid #ffffff; }
+.comment-first {										border: 1px solid #c2c2c2; }
+.usercomment { 											border-top: 1px solid #ffffff; }
+
+/* Icons */
+.icon-logout,
+.icon-settings,
+.icon-profile,
+.icon-upload,
+.icon-notifications,
+.icon-world,
+.icon-cancel,
+.icon-restore {											color: #333; }
+.icon-register,
+.icon-register:hover { 									color: #0083cc; }

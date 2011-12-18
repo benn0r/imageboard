@@ -7,7 +7,7 @@
  * 
  * @author benn0r <benjamin@benn0r.ch>
  * @since 2011/10/29
- * @version 2011/12/14
+ * @version 2011/12/16
  */
 class Language
 {
@@ -122,7 +122,7 @@ class Language
 	
 	/**
 	 * Returns all translations
-	 * 
+	 *
 	 * @return array array with translations
 	 */
 	public function getContents() {
@@ -140,7 +140,8 @@ class Language
 	}
 	
 	/**
-	 * Cool wrapper for translate()
+	 * Cool wrapper for translate(), i usually work 
+	 * with this method
 	 * 
 	 * @param string $name
 	 * @return string
