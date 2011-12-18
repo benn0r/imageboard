@@ -3,6 +3,8 @@
 /**
  * IndexModule
  * 
+ * Generates the imageboard.
+ * 
  * @author benn0r <benjamin@benn0r.ch>
  * @since 2011/10/29
  * @version 2011/12/18
@@ -13,6 +15,7 @@ class IndexModule extends Module
 	public function run(array $args) {
 		$starttime = microtime(true);
 		
+		// init needed modules
 		$postsTable = new Posts();
 		$boardsTable = new Boards();
 		$user = $this->getUser();
@@ -20,14 +23,16 @@ class IndexModule extends Module
 		if (intval($args[0]) > 0) {
 			$page = intval($args[0]);
 		} else {
+			// lets go to page 1
 			$page = 1;
 		}
 		$perpage = 100;
-				
+		
+		// lets load all posts for this page (if user is admin lets load the deleted posts too)
 		$posts = $postsTable->fetch(($page - 1) * $perpage, $perpage, $user['grade'] >= 8 ? true : false);
 		
+		// update useractivity if user is loggedin
 		if (is_array($user = $this->getUser()) && $user['grade'] > 0) {
-			// Aktivität des eingeloggten Benutzer aktualisieren
 			if ($page == 1) {
 				Users::setactive($user, array('homepage'));
 			} else {
@@ -35,23 +40,28 @@ class IndexModule extends Module
 			}
 		}
 		
-		$count = 0;
-		$threads = array();
+		$count = 0; // Counter for images
+		$threads = array(); // Empty array for all images
 		
 		$thumb = Module::init('Thumb', $this);
 		
+		// default width and height
 		$dwidth = 63;
 		$dheight = 95;
 		
+		// load size array from configfile
 		$sizearr = $this->getSizeConfig($dwidth, $dheight);
 		
 		while (($post = $posts->fetch_object()) != null) {
-			$width = $dwidth;
-			$height = $dheight;
+			$width = $dwidth; // reset default with
+			$height = $dheight; // reset default height
 			
 			$media = new Media();
 			$media->mid = $post->mid;
-			$media->image = $this->_config->paths->uploads . '/' . date('Ymd', strtotime($post->inserttime)) . '/' . $post->mid . '.' . $post->image;
+			
+			// @todo make this somewhere else global useable
+			$media->image = $this->_config->paths->uploads . '/' . 
+				date('Ymd', strtotime($post->inserttime)) . '/' . $post->mid . '.' . $post->image;
 			
 			foreach ($sizearr as $size) {
 				switch ($size['coord']) {
@@ -68,27 +78,10 @@ class IndexModule extends Module
 				}
 			}
 			
-			/*switch(true) {
-				case ($posts->num_rows < $perpage):
-					$width = 2 * $width;
-					break;
-				case (($count == 0) || ($count == 1) || ($count == 2) || ($count == 21)):
-					$width = 3 * $width;
-					$height = 3 * $height;
-					break;
-				case (($count >= 1 && $count <= 13) || ($count >= 19 && $count <= 20) || ($count == 23)
-				 || ($count >= 35 && $count <= 39) || ($count == 42) || ($count == 45) || ($count == 47)
-				|| ($count == 50) || ($count == 52)|| ($count == 54) || ($count == 55) || ($count == 57)):
-					$width = 2 * $width;
-					break;
-				case (($count >= 26 && $count <= 32) || ($count == 17) || ($count == 34)):
-					$width = 2 * $width;
-					$height = 2 * $height;
-					break;
-			}*/
-			
 			$media->width = $width;
 			$media->height = $height;
+			
+			// copy relevant informations from database into the media object
 			$media->uid = $post->uid;
 			$media->avatar = $post->avatar;
 			$media->username = $post->username;
@@ -96,8 +89,11 @@ class IndexModule extends Module
 			$media->pid = $post->pid;
 			$media->ppid = $post->ppid;
 			$media->status = $post->astatus;
-						
+			
+			// load thumbnail
 			$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
+			
+			// load second thumbnail which appears when the mouse hovers the first thumbnail
 			$media->lthumbnail = $thumb->getThumbnail($media, 142, 206);
 			
 			$threads[] = $media;
