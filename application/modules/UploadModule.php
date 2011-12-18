@@ -13,7 +13,12 @@ class UploadModule extends Module
 {
 	
 	public function run(array $args) {
-		
+		if (isset($args[1])) switch ($args[1]) {
+			case 'localfile':
+				
+				print_r($_FILES);
+				break;
+		}
 	}
 	
 }

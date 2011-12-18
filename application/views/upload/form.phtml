@@ -23,19 +23,17 @@ $buttondid = md5(microtime(true));
 </script>
 
 <h1 class="media-title">Upload</h1>
+<iframe name="upload-iframe"></iframe> 
 <!-- <p class="message">Bitte beachte die <a href="">Regeln</a> bevor du einen neuen Thread erstellst.</p> -->
-<form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload" onsubmit="return submituploadform(this, $('#layer-upload'))">
 	<div class="upload-media" id="upload-media">
 		<ul class="media-navi">
 			<li class="media-upload" id="media-upload"><a href="" class="icon icon-upload media-active">Hochladen</a></li>
 			<li class="media-share" id="media-share"><a href="" class="icon icon-world">Remote</a></li>
 		</ul>
 		<div class="media-content media-upload-content">
-			<div class="media-info" id="media-info-<?php echo $buttondid ?>"></div>
-			<div class="media-button">
-				<span id="localmedia-button-<?php echo $buttondid ?>"></span>
-			</div>
-			<div id="thumbnails"></div>
+			<form action="<?php echo $this->baseUrl() ?>upload/localfile" method="post" enctype="multipart/form-data" target="upload-iframe">
+				<input type="file" name="file" id="file" />
+			</form>
 		</div>
 		<div class="media-content media-share-content">
 			<input type="text" name="url" class="share-url" id="share-url" class="input-default" value="http://www.youtube.com/watch?v=pWo5WqRVzdQ" /> <a href="" id="share-link" class="share-link">Share</a>
@@ -44,7 +42,7 @@ $buttondid = md5(microtime(true));
 	<div class="media-shared" id="media-shared">
 		
 	</div>
-	<input type="file" name="file" id="file" />
+<form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload" onsubmit="return submituploadform(this, $('#layer-upload'))">
 	<textarea name="comment" class="media-comment input-default">Einen Kommentar schreiben...</textarea>
 	<input type="hidden" name="ppid" value="<?php echo $this->ppid ? $this->ppid : '' ?>" />
 	<input type="hidden" name="replyto" value="<?php echo $this->replyto ? $this->replyto : '0' ?>" />
