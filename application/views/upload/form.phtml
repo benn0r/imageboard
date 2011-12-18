@@ -52,7 +52,7 @@ $buttondid = md5(microtime(true));
 	}
 </script>
 
-<h1 class="media-title">Upload</h1>
+<h1 class="media-title"><?php echo $this->t->t('upload/title') ?></h1>
 <div id="upload-error">
 	<!-- empty div for uploaderrors -->
 </div>
@@ -60,7 +60,7 @@ $buttondid = md5(microtime(true));
 	<?php echo $this->render('upload', 'uploadform') ?>
 </div>
 <form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload" onsubmit="return submituploadform(this, $('#layer-upload'))">
-	<textarea name="comment" class="media-comment input-default">Einen Kommentar schreiben...</textarea>
+	<textarea name="comment" class="media-comment input-default"><?php echo $this->t->t('upload/writecomment') ?></textarea>
 	<input type="hidden" name="ppid" value="<?php echo $this->ppid ? $this->ppid : '' ?>" />
 	<input type="hidden" name="replyto" value="<?php echo $this->replyto ? $this->replyto : '0' ?>" />
 	<!-- <h2>Optionen</h2>
@@ -68,7 +68,7 @@ $buttondid = md5(microtime(true));
 	<label><input type="checkbox" name="forwardthread" checked="checked" class="checkbox" />Thread nach dem Erstellen anzeigen</label> -->
 	<div class="media-buttons">
 		<!-- <div class="buttons-text">Vor dem posten bitte die Regeln lesen!</div> -->
-		<input type="button" name="" value="Cancel" onclick="hideUpload()" class="button button-no" />
+		<input type="button" name="" value="<?php echo $this->t->t('upload/cancel') ?>" onclick="hideUpload()" class="button button-no" />
 		<input type="submit" name="" value="<?php echo $this->comment ? $this->t->t('thread/publish') : $this->t->t('upload/publish') ?>" class="button button-yes" />
 	</div>
 </form>
