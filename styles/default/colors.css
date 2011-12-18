@@ -72,6 +72,7 @@ textarea { 												color: #000000; border: 1px solid #c2c2c2; }
 .error-box {											border: 1px solid #df8f90; }
 .warning-box { 											border: 1px solid #e5db55; }
 .success-box { 											border: 1px solid #9adf8f; }
+.error-box-upload {										border: 1px solid #df8f90; background: #ffd2d3; color: #871414; font-weight: bold; }
 
 /* Upload */
 .media-info,
@@ -84,6 +85,7 @@ textarea { 												color: #000000; border: 1px solid #c2c2c2; }
 .media-navi .media-active,
 #comment-form .media-navi .media-active {				background-color: #ffffff; }
 .media-navi a { 										border: 1px solid #f7f7f7; }
+.media-navi a:hover {									background-color: #ffffff; }
 .media-navi .media-active {								border: 1px solid #c2c2c2; border-right: 1px solid #ffffff; }
 .media-content { 										border: 1px solid #c2c2c2; }
 .media-button {											border: 1px solid #c2c2c2; }

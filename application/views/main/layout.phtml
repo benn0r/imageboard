@@ -345,18 +345,6 @@
 		});
 	}
 
-	function cancel() {
-		$('#media-shared').hide();
-		$('#upload-media').fadeIn();
-
-		if (!$('.media-share-content').is(':hidden')) {
-			$('#share-url').val('');
-			$('#share-url').focus();
-		}
-
-		return false;
-	}
-
 	function uploadSuccess(file, serverData) {
 		try {
 			var progress = new FileProgress(file,  this.customSettings.upload_target);

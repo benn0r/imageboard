@@ -11,6 +11,8 @@ $buttondid = md5(microtime(true));
 <!-- required stylehsheets -->
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/jquery/fileinput.css" />
 
+<iframe name="upload-iframe" class="upload-iframe"></iframe> 
+
 <script type="text/javascript">
 	function submituploadform(form, target) {
 		var form = $(form);
@@ -20,28 +22,43 @@ $buttondid = md5(microtime(true));
 
 		return submitform(form, target);
 	}
+
+	/**
+	 * Called form uploadiframe and share button
+	 */
+	function uploadedmedia(html) {
+		/* clear error */
+		$('#upload-error').html('');
+		$('#media-shared').hide();
+		$('#media-shared').html(html);
+		$('#media-shared').fadeIn();
+	}
+
+	function uploaderror(html) {
+		$('#upload-error').hide();
+		$('#upload-error').html(html);
+		$('#upload-error').fadeIn();
+
+		$('.customfile-feedback').removeClass('customfile-feedback-populated');
+		$('.customfile-feedback').html(t.upload.nofile);
+	}
+
+	function cancel() {
+		$.get(BASE_URL + 'upload/form', function(html) {
+			uploadedmedia(html);
+		});
+
+		return false;
+	}
 </script>
 
 <h1 class="media-title">Upload</h1>
-<iframe name="upload-iframe"></iframe> 
-<!-- <p class="message">Bitte beachte die <a href="">Regeln</a> bevor du einen neuen Thread erstellst.</p> -->
-	<div class="upload-media" id="upload-media">
-		<ul class="media-navi">
-			<li class="media-upload" id="media-upload"><a href="" class="icon icon-upload media-active">Hochladen</a></li>
-			<li class="media-share" id="media-share"><a href="" class="icon icon-world">Remote</a></li>
-		</ul>
-		<div class="media-content media-upload-content">
-			<form action="<?php echo $this->baseUrl() ?>upload/localfile" method="post" enctype="multipart/form-data" target="upload-iframe">
-				<input type="file" name="file" id="file" />
-			</form>
-		</div>
-		<div class="media-content media-share-content">
-			<input type="text" name="url" class="share-url" id="share-url" class="input-default" value="http://www.youtube.com/watch?v=pWo5WqRVzdQ" /> <a href="" id="share-link" class="share-link">Share</a>
-		</div>
-	</div>
-	<div class="media-shared" id="media-shared">
-		
-	</div>
+<div id="upload-error">
+	Test
+</div>
+<div id="media-shared">
+	<?php echo $this->render('upload', 'uploadform') ?>
+</div>
 <form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload" onsubmit="return submituploadform(this, $('#layer-upload'))">
 	<textarea name="comment" class="media-comment input-default">Einen Kommentar schreiben...</textarea>
 	<input type="hidden" name="ppid" value="<?php echo $this->ppid ? $this->ppid : '' ?>" />
@@ -58,8 +75,6 @@ $buttondid = md5(microtime(true));
 
 <script type="text/javascript">
 	var formid = '<?php echo $formid ?>';
-
-	$('#file').customFileInput();
 
 	$('.media-navi li a').click(function() {
 		var elem1 = $('.media-navi li a.media-active');
