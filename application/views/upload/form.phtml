@@ -59,7 +59,7 @@ $buttondid = md5(microtime(true));
 <div id="media-shared">
 	<?php echo $this->render('upload', 'uploadform') ?>
 </div>
-<form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload" onsubmit="return submituploadform(this, $('#layer-upload'))">
+<form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload/create" onsubmit="return submituploadform(this, $('#layer-upload'))">
 	<textarea name="comment" class="media-comment input-default"><?php echo $this->t->t('upload/writecomment') ?></textarea>
 	<input type="hidden" name="ppid" value="<?php echo $this->ppid ? $this->ppid : '' ?>" />
 	<input type="hidden" name="replyto" value="<?php echo $this->replyto ? $this->replyto : '0' ?>" />

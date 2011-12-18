@@ -83,12 +83,114 @@ class UploadModule extends Module
 		return false;
 	}
 	
+	/**
+	 * Moves media from cachefolder to uploadsfolder
+	 * 
+	 * @param Media $media Media to move
+	 */
+	public function movePerm(Media $media) {
+		$cfg = $this->getConfig();
+		$dir = $cfg->paths->uploads . '/' . date('Ymd');
+	
+		if (!is_dir($dir)) {
+			mkdir($dir);
+		}
+	
+		rename($media->image, $dir . '/' . $media->mid . '.' . $media->getFiletype());
+	}
+	
+	/**
+	 * If everthing is okay this method will be called
+	 * and insert post and media into database
+	 * 
+	 * @return true
+	 */
+	public function createThread() {
+		$r = $this->getRequest();
+		$posts = new Posts();
+		$pmedia = new PostsMedia();
+	
+		if (isset($_SESSION['media'])) {
+			// take media from session
+			$media = unserialize($_SESSION['media']);
+		}
+		
+		// insert entity in poststable
+		$posts->insert(array(
+				'content' => $r->comment,
+				
+				// NULL if anonymous
+				'uid' => $this->view()->user['uid'],
+				
+				// NULL for thread and integer for comment
+				'ppid' => $r->ppid > 0 ? (int)$r->ppid : new Database_Expression('NULL'),
+				'replyto' => (int)$r->replyto,
+		));
+		$pid = $this->_db->lastInsertId();
+	
+		if (isset($media)) {
+			// insert entity in mediatable
+			$pmedia->insert(array(
+					'pid' => $pid,
+					'image' => $media->getFiletype(),
+					'extid' => $media->extid,
+					'name' => $media->name,
+					'description' => $media->description,
+					'published' => date('Y-m-d H:i:s', $media->published),
+					'author_name' => $media->author ? $media->author->name : '',
+					'author_uri' => $media->author ? $media->author->uri : '',
+					'source_name' => $media->source ? $media->source->name : '',
+					'source_uri' => $media->source ? $media->source->uri : '',
+					'type' => $media->getPlugin()->id(),
+					'filename' => $media->filename,
+			));
+	
+			$media->mid = $this->_db->lastInsertId();
+			$this->movePerm($media);
+	
+			$thumb = Module::init('Thumb', $this);
+	
+			$cfg = $this->getConfig();
+			$dir = $cfg->paths->uploads . '/' . date('Ymd');
+	
+			$media->image = $dir . '/' . $media->mid . '.' . $media->getFiletype();
+			$media->temp = false;
+	
+			$thumb->getThumbnail($media, 63 - 4, 95 - 4);
+			$thumb->getThumbnail($media, 63 * 3 - 4, 95 * 3 - 4);
+			$thumb->getThumbnail($media, 63 * 2 - 4, 95 - 4);
+			$thumb->getThumbnail($media, 63 * 2 - 4, 95 * 2 - 4);
+	
+			$thumb->getThumbnail($media, 142, 206);
+		}
+	
+		unset($_SESSION['media']);
+	
+		if ($r->ppid > 0 && $r->replyto >= 0) {
+			// its a comment, load the thread
+			echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . 'thread/' . $r->ppid . '/\'); hideUpload();</script>';
+		} else {
+			$this->render('upload', 'form');
+			echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . '1\'); hideUpload();</script>';
+		}
+		
+		// i'm sure it worked well
+		return true;
+	}
+	
 	public function run(array $args) {
 		$view = $this->view();
 		
 		if (isset($args[1])) switch ($args[1]) {
 			case 'form':
 				$this->render('upload', 'uploadform');
+				return;
+			case 'create':
+				$r = $this->getRequest();
+				if (($this->getRequest()->comment !== null && isset($_SESSION['media'])) ||
+						($r->ppid >= 0 && $r->replyto >= 0)) {
+					$this->createThread();
+				}
 				return;
 			case 'remotefile':
 				return $this->share($this->getRequest()->url);
