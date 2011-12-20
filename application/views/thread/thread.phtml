@@ -64,7 +64,7 @@ function loadComments() {
 			<p><span class="thread-data"><?php echo $this->t->t('thread/visits') ?></span><span class="thread-value"><?php echo $this->visits ?></span></p>
 			<p><span class="thread-data"><?php echo $this->t->t('thread/size') ?></span><span class="thread-value"><?php echo $size[0] . 'x' . $size[1] ?></span></p>
 			<p><span class="thread-data"><?php echo $this->t->t('thread/filesize') ?></span><span class="thread-value"><?php echo Printsize::filesize($image) ?></span></p>
-			<p><span class="thread-data"><?php echo $this->t->t('thread/filename') ?></span><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->thread->filename) > 15 ? substr($this->thread->filename, 0, 12) . '...' . $this->thread->image : $this->thread->filename)) ?></span></p>
+			<p><span class="thread-data"><?php echo $this->t->t('thread/filename') ?></span><span title="<?php echo htmlspecialchars(strip_tags($this->thread->filename)) ?>" class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->thread->filename) > 15 ? substr($this->thread->filename, 0, 12) . '...' . $this->thread->image : $this->thread->filename)) ?></span></p>
 			<?php if ($this->thread->astatus != 0): ?>
 			<div class="thread-share">
 				<img src="<?php echo $this->baseUrl() ?>images/facebook.png" />

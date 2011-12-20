@@ -51,11 +51,11 @@ class UploadModule extends Module
 		}
 	
 		if ($media instanceof Media) {
-			// Das Bild soll in den Cache Ordner
+			// image is only temp. saved
 			$media->temp = true;
 	
 			if (!is_dir($this->_config->paths->cache . '/' . session_id())) {
-				// Existiert noch kein Ordner f�r dieses Bild legen wir den mal an
+				// create folder with this session_id
 				mkdir($this->_config->paths->cache . '/' . session_id());
 			}
 	
@@ -83,6 +83,33 @@ class UploadModule extends Module
 		return false;
 	}
 	
+
+	/**
+	 * ggarciaa at gmail dot com (04-July-2007 01:57)
+	 * 
+	 * I needed to empty a directory, but keeping it so I slightly modified 
+	 * the contribution from stefano at takys dot it (28-Dec-2005 11:57).
+	 * A short but powerfull recursive function that works also if the dirs 
+	 * contain hidden files.
+	 * 
+	 * http://www.php.net/manual/de/function.unlink.php#76186
+	 * 
+	 * @param string $dir the target directory
+	 * @param boolean $DeleteMe if true delete also $dir, if false leave it alone
+	 */
+	function removeDir($dir, $DeleteMe) {
+		if(!$dh = @opendir($dir)) return;
+		while (($obj = readdir($dh))) {
+			if($obj=='.' || $obj=='..') continue;
+			if (!@unlink($dir.'/'.$obj)) $this->removeDir($dir.'/'.$obj, true);
+		}
+		if ($DeleteMe){
+			closedir($dh);
+			@rmdir($dir);
+		}
+	}
+	
+	
 	/**
 	 * Moves media from cachefolder to uploadsfolder
 	 * 
@@ -97,6 +124,7 @@ class UploadModule extends Module
 		}
 	
 		rename($media->image, $dir . '/' . $media->mid . '.' . $media->getFiletype());
+		$this->removeDir($this->_config->paths->cache . '/' . session_id(), true);
 	}
 	
 	/**
@@ -115,12 +143,15 @@ class UploadModule extends Module
 			$media = unserialize($_SESSION['media']);
 		}
 		
+		$user = $this->getUser();
+		$view = $this->view();
+		
 		// insert entity in poststable
 		$posts->insert(array(
 				'content' => $r->comment,
 				
 				// NULL if anonymous
-				'uid' => isset($this->view()->user) ? $this->view()->user['uid'] : new Database_Expression('NULL'),
+				'uid' => $user ? $user['uid'] : new Database_Expression('NULL'),
 				
 				// NULL for thread and integer for comment
 				'ppid' => $r->ppid > 0 ? (int)$r->ppid : new Database_Expression('NULL'),
