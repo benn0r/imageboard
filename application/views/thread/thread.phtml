@@ -83,11 +83,17 @@ function loadComments() {
 				<span class="thread-data"><?php echo $this->t->t('thread/visits') ?><span class="thread-value"><?php echo $this->visits ?></span></span>
 			</div> -->
 			<div class="thread-user">
-				<img src="<?php echo $this->baseUrl() . 'avatars/' . $this->thread->uid . '.' . $this->thread->avatar ?>" class="thread-avatar" />
+				<?php if ($this->thread->username): ?>
+				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $this->thread->uid . '.' . $this->thread->avatar ?>" class="thread-avatar" />
 				<div class="user-descr">
-					<a href="<?php echo $this->baseUrl() ?>user/<?php echo $this->thread->uid ?>/" onclick="return loadpage(this)" class="thread-username"><?php echo $this->thread->username ?></a>
-					<div class="thread-online"><img src="<?php echo $this->baseUrl() . '/images/' . ($this->thread->online == 1 ? 'online' : 'offline') . '.png' ?>" title="<?php echo $this->thread->online == 1 ? sprintf($this->t->t('thread/online'), $this->thread->username) : sprintf($this->t->t('thread/offline'), $this->thread->username) ?>" /></div>
-					<div class="thread-usertitle"><?php echo $this->thread->stylename ?></div>
+						<a href="<?php echo $this->baseUrl() . 'user/' . $this->thread->uid ?>/" onclick="return loadpage(this)" class="thread-username"><?php echo $this->thread->username ?></a>
+						<div class="thread-online"><img src="<?php echo $this->baseUrl() . '/images/' . ($this->thread->online == 1 ? 'online' : 'offline') . '.png' ?>" title="<?php echo $this->thread->online == 1 ? sprintf($this->t->t('thread/online'), $this->thread->username) : sprintf($this->t->t('thread/offline'), $this->thread->username) ?>" /></div>
+						<div class="thread-usertitle"><?php echo $this->thread->stylename ?></div>
+				<?php else: ?>
+				<img src="<?php echo $this->baseUrl() . 'images/avatar.png' ?>" class="thread-avatar" />
+				<div class="user-descr">
+					<?php echo $this->t->t('thread/anonymous') ?>
+				<?php endif; ?>
 				</div>
 			</div>
 			<div class="thread-text">

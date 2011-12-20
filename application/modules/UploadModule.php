@@ -120,7 +120,7 @@ class UploadModule extends Module
 				'content' => $r->comment,
 				
 				// NULL if anonymous
-				'uid' => $this->view()->user['uid'],
+				'uid' => isset($this->view()->user) ? $this->view()->user['uid'] : new Database_Expression('NULL'),
 				
 				// NULL for thread and integer for comment
 				'ppid' => $r->ppid > 0 ? (int)$r->ppid : new Database_Expression('NULL'),
