@@ -19,12 +19,20 @@
 			<div class="image-small"
 				style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;
 					background: url(<?php echo $post->thumbnail ?>)"></div>
+			<!-- width: 142px; height: 206px;  -->
 			<div class="image-large"
-				style="width: 142px; height: 206px; background: url(<?php echo $post->lthumbnail ?>)"></div>
+				style="width: 142px; height: 206px;
+					background: url(<?php echo $post->lthumbnail ?>)"></div>
 			<!-- <div class="image-play"></div> -->
 			<div class="panel">
-				<img src="<?php echo $this->baseUrl() . 'avatars/' . $post->uid . '.' . $post->avatar ?>" class="panel-avatar" />
+				<?php if ($post->username): ?>
+				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $post->uid . '.' . $post->avatar ?>" class="panel-avatar" />
 				<span class="panel-username"><?php echo $post->username ?><br />
+				<?php else: ?>
+				<img src="<?php echo $this->baseUrl() . 'images/avatar.png' ?>" class="panel-avatar" />
+				<span class="panel-username"><?php echo $this->t->t('thread/anonymous') ?><br />
+				<?php endif; ?>
+				
 				<span class="panel-datetime"><?php echo Printdate::get(strtotime($post->updatetime), $this->t) ?></span></span>
 				<div style="clear: both"></div>
 			</div>
