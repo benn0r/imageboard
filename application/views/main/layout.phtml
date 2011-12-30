@@ -21,7 +21,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"> -->
 <head>
-	<title></title>
+	<title><?php echo time() ?></title>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
@@ -198,7 +198,24 @@
 			}
 			timeout = setTimeout(function() {
 				if ($(img).find('.image-small').width() < $(img).find('.image-large').width()) {
+										
+					//$(img).find('.image-large').animate({width: 142, height: 206}, 500);
+					
 					$(img).addClass('active');
+
+					/*$(img).animate({
+						'margin-left': '-' + ((154 - $(img).find('.image-small').width()) / 2) + 'px',
+						'margin-top': '-' + ((218 - $(img).find('.image-small').height()) / 2) + 'px',
+						'margin-bottom': '0px',
+						'margin-right': '0px',
+						'width': '142px'
+					}, 100);*/
+
+					/*$(img).find('.image-large').animate({
+						 'width': '142px',
+						 'height': '206px'
+					}, 200);*/
+					
 					$(img).css('margin-left', '-' + ((154 - $(img).find('.image-small').width()) / 2) + 'px');
 					$(img).css('margin-top', '-' + ((218 - $(img).find('.image-small').height()) / 2) + 'px');
 	
