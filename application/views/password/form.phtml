@@ -1,0 +1,6 @@
+<form action="<?php echo $this->baseUrl() . 'password' ?>" method="post" class="forgotpassword">
+	<h1><?php echo $this->t->t('password/title') ?></h1>
+	<p><?php echo $this->t->t('password/help') ?></p>
+	<label><?php echo $this->t->t('password/emailusername') ?><input type="text" name="email" /></label>
+	<p><input type="submit" class="button" name="forgot" value="<?php echo $this->t->t('password/button') ?>" /></p> 
+</form>

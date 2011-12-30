@@ -481,6 +481,29 @@ textarea {
 	margin-right: 10px;
 }
 
+.forgotpassword {
+	margin: 0px;
+	
+	width: 820px;
+	padding: 20px;
+	margin: 0px 0px 20px 0px;
+}
+.forgotpassword label {
+	padding: 0px 10px 20px 10px;
+}
+.forgotpassword p {
+	padding: 0px 10px 40px 10px;
+	line-height: 20px;
+}
+.forgotpassword label input {
+	display: block;
+	width: 300px;
+	padding: 4px;
+	font-size: 14px;
+	margin: 5px 0px 0px 0px;
+	border: 1px solid #c2c2c2;
+}
+
 
 .upload-media {
 	padding: 10px;
