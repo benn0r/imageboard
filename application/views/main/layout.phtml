@@ -155,6 +155,11 @@
 				$('.column-board-content').html(result);
 			});
 
+			<?php if (!$this->user): ?>
+			// update login-forward
+			$('#login-forward').val(document.location.href);
+			<?php endif; ?>
+
 			return false;
 		}
 		function submitform(form, target) {
@@ -329,6 +334,11 @@
 		$('.input-default').mousedown(mouseevent);
 		$('.input-default').focus(mouseevent);
 
+		<?php if (!$this->user): ?>
+		// update login-forward
+		$('#login-forward').val(document.location.href);
+		<?php endif; ?>
+
 		$('.search-input').bind('paste', function() {
 			var elem = $(this);
 			setTimeout(function() {
@@ -430,6 +440,7 @@
 			<form method="post" action="<?php echo $this->baseUrl() ?>login" onsubmit="return submitlogin(this)">
 				<input type="text" class="login-text input-default" name="username" value="<?php echo $this->t->t('login/username') ?>" />
 				<input type="text" class="login-text input-default input-default-password" name="password" value="<?php echo $this->t->t('login/password') ?>" />
+				<input type="hidden" name="forward" id="login-forward" />
 				<input type="submit" class="login-button" name="login" value="<?php echo $this->t->t('login/send') ?>" />
 			</form>
 		</div>

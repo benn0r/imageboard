@@ -17,7 +17,7 @@ class LoginModule extends Module
 	 */
 	public function run(array $args) {
 		$r = $this->getRequest();
-		
+
 		if ($r->username && $r->password) {
 			$users = new Users();
 			$user = $users->findUser($r->username, $r->password);
@@ -25,15 +25,26 @@ class LoginModule extends Module
 			if ($user->num_rows > 0) {
 				$_SESSION['user'] = $user->fetch_array();
 				
-				// forwarding to homepage
-				// @todo forwarding to last page
-				header('Location: ' + BASE_URL);
+				// forward to last page
+				if (isset($_SESSION['login_forward'])) {
+					header('Location: ' . $_SESSION['login_forward']);
+					exit;
+				} else {
+					header('Location: ' . $r->forward);
+					exit;
+				}
 			}
 			
-			// @todo errorpage if login is invalid
+			// store last page for later use
+			$_SESSION['login_forward'] = $r->forward;
+			
+			// show errorbox
+			$this->layout('login', 'error');
 		}
 		
 		// @todo errorpage or loginbox if no logindata received
+		header('Location: ' . $this->view()->baseUrl());
+		exit;
 	}
 	
 }
