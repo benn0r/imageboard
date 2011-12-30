@@ -25,6 +25,8 @@ class Helper extends Application_Helper
 				return 'Login';
 			case 'logout':
 				return 'Logout';
+			case 'password':
+				return 'Password';
 			case 'import':
 				return 'Import';
 			case 'upload':

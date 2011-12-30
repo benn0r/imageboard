@@ -13,6 +13,18 @@ class Users extends Model {
 		');
 	}
 	
+	public function findUserbyEmail($email) {
+		return $this->_db->select('
+			SELECT *
+			FROM board_users
+			WHERE email = "' . $this->_db->escape($email) . '"
+		');
+	}
+	
+	public function updatePassword($uid, $password) {
+		$this->update(array('password' => md5($password)), 'uid = ' . (int)$uid);
+	}
+	
 	public function find($uid) {
 		return $this->_db->select('
 			SELECT *
