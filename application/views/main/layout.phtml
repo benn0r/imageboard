@@ -444,6 +444,10 @@
 				<input type="submit" class="login-button" name="login" value="<?php echo $this->t->t('login/send') ?>" />
 			</form>
 		</div>
+		<h2><?php echo $this->t->t('navi/title') ?></h2>
+		<ul class="mainpage-links">
+			<li><a href="<?php echo $this->baseUrl() ?>password" class="icon-register"><?php echo $this->t->t('login/passwordforgot') ?></a></li>
+		</ul>
 		<?php else: ?>
 		<div class="mainpage-user">
 			<a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)">
