@@ -1,3 +1,6 @@
 [submodule "library/BennorPHP"]
 	path = library/BennorPHP
 	url = git@github.com:benn0r/Bennor-PHP.git
+[submodule "application/library/BennorPHP"]
+	path = application/library/BennorPHP
+	url = git@github.com:benn0r/Bennor-PHP.git
