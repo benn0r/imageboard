@@ -1,0 +1,7 @@
+<div class="error-box">
+	<h2><?php echo $this->t->t('register/disabledtitle') ?></h2>
+	<p><?php echo $this->t->t('register/disabled') ?></p>
+	<?php if ($this->getConfig()->register->disabledmessage): ?>
+	<p><?php echo $this->t->t($this->getConfig()->register->disabledmessage) ?></p>
+	<?php endif; ?>
+</div>
