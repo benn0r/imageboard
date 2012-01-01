@@ -45,6 +45,11 @@ class RegisterModule extends Module
 			exit;
 		}
 		
+		if ($this->getConfig()->register->disabled) {
+			$this->layout('register', 'error');
+			return;
+		}
+		
 		if ($r->checkusername) {
 			$table = new Users();
 			
