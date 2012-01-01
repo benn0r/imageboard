@@ -21,6 +21,14 @@ class Users extends Model {
 		');
 	}
 	
+	public function findUserByName($name) {
+		return $this->_db->select('
+			SELECT *
+			FROM board_users
+			WHERE username = "' . $this->_db->escape($name) . '"
+		');
+	}
+	
 	public function updatePassword($uid, $password) {
 		$this->update(array('password' => md5($password)), 'uid = ' . (int)$uid);
 	}
