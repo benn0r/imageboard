@@ -1,0 +1,9 @@
+Domain Name: 	www.benn0r.ch
+
+This is a global key. It will work across all domains.
+Public Key: 	6Ldq0MsSAAAAAIap25MNl6BctRIFFuapbPtjbqF-
+
+Use this in the JavaScript code that is served to your users
+Private Key: 	6Ldq0MsSAAAAACcHwNLg7buzfFDBSAM-BTn452ze
+
+Use this when communicating between your server and our server. Be sure to keep it a secret.
