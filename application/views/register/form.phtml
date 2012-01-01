@@ -1,0 +1,34 @@
+<form action="<?php echo $this->baseUrl() . 'register' ?>" method="post" class="forgotpassword">
+	<h1><?php echo $this->t->t('register/title') ?></h1>
+	
+	<?php if ($this->error): ?>
+	<p class="form-error"><?php echo $this->error ?></p>
+	<?php endif; ?>
+	
+	<p><?php echo $this->t->t('register/help') ?></p>
+	
+	<label><?php echo $this->t->t('register/username') ?><input type="text" id="registerusername" name="username" value="<?php echo $this->r->username ?>" /></label>
+	<span id="registerusernamemsg"></span>
+	<label><?php echo $this->t->t('register/password') ?><input type="password" name="password" /></label>
+	<label><?php echo $this->t->t('register/passwordrepeat') ?><input type="password" name="passwordrepeat" /></label>
+	<label><?php echo $this->t->t('register/email') ?><input type="text" name="email" value="<?php echo $this->r->email ?>" /></label>
+	<?php if ($this->getConfig()->register->captcha): ?>
+	<label><?php echo recaptcha_get_html($this->getConfig()->captcha->publickey) ?></label>
+	<?php endif; ?>
+	<p><input type="submit" class="button" name="forgot" value="<?php echo $this->t->t('register/button') ?>" /></p> 
+</form>
+<script type="text/javascript">
+$('#registerusername').change(function() {
+	$.get(BASE_URL + 'register/?checkusername=' + $('#registerusername').val(), function(result) {
+		if (result == 1) {
+			$('#registerusernamemsg').addClass('register-username-exists');
+			$('#registerusernamemsg').removeClass('register-username-okay');
+			$('#registerusernamemsg').html(t.register.exists);
+		} else {
+			$('#registerusernamemsg').addClass('register-username-okay');
+			$('#registerusernamemsg').removeClass('register-username-exists');
+			$('#registerusernamemsg').html(t.register.okay);
+		}
+	});
+});
+</script>
