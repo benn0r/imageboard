@@ -1,6 +1,15 @@
 <form action="<?php echo $this->baseUrl() . 'password' ?>" method="post" class="forgotpassword">
-	<h1><?php echo $this->t->t('password/title') ?></h1>
+	<div class="page-header">
+		<h1><?php echo $this->t->t('password/title') ?></h1>
+	</div>
 	<p><?php echo $this->t->t('password/help') ?></p>
-	<label><?php echo $this->t->t('password/emailusername') ?><input type="text" name="email" /></label>
-	<p><input type="submit" class="button" name="forgot" value="<?php echo $this->t->t('password/button') ?>" /></p> 
+	<fieldset>
+		<label for="email"><?php echo $this->t->t('password/emailusername') ?></label>
+		<div class="input">
+			<input type="text" name="email" id="email" />
+		</div>
+		<div class="actions">
+			<input type="submit" class="btn primary" name="forgot" value="<?php echo $this->t->t('password/button') ?>" />
+		</div>
+	</fieldset> 
 </form>
