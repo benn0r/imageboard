@@ -2,8 +2,7 @@
 This project is still in development!
 
 ### About
-This software is an imageboard. In an imageboard you can upload photos (and videos) and 
-discuss with others about this contents.
+This software is an imageboard. (Who who, what a sentence). In an imageboard you can upload photos (and videos) and discuss with others about this contents.
 There exists an old version of this project at (www.4fag.com), i decided to make the new
 version via github.
 
