@@ -1,0 +1,35 @@
+.nav li a {
+	margin: 10px 10px 0px 0px;
+}
+.nav li a:hover {
+	/*background: #f00;*/
+}
+.header {
+	background: url(../../images/header.png) bottom;
+	height: 60px;
+	position: absolute;
+	top: 0px; right: 0px; left: 0px;
+}
+.logo {
+	height: 60px;
+	margin: 0px 20px 0px 20px;
+	width: 220px;
+	background: url(../../images/logo2.png) no-repeat left center;
+	float: left;
+}
+.sidebar {
+	border-right: 1px solid #fff;
+	padding: 20px 0px 0px 0px;
+}
+.content {
+	margin: 20px 0px 0px 0px;
+}
+.login input.span3 {
+	margin: 0px 0px 10px 0px;
+	width: 190px;
+}
+
+body {
+	padding-top: 60px;
+	background-color: #eee;
+}
