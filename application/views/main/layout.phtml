@@ -17,9 +17,6 @@
 ?>
 <!DOCTYPE html>
 <html>
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"> -->
 <head>
 	<title><?php echo time() ?></title>
 	
@@ -41,10 +38,6 @@
 		echo substr($o, 0, -1) . '};';
 	?>
 	</script>
-	
-	<!-- <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/reset.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/colors.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/main.css" /> -->
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>lib/bootstrap/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/main.css" />
@@ -194,12 +187,11 @@
 			$.post(BASE_URL + 'login', $(form).serialize(), function(result) {
 				if (result == 0) {
 					$('#modal-loginerror').modal('show');
-					
-					/*var alert = $('<div class="alert-message error">' + t.login.invalid + '</div>');
-					alert.hide();
-					form.prepend(alert);
-					alert.fadeIn('fast');*/
+
+					// clear loginform
 					form.find('input').val('');
+
+					// reset submit button state
 					form.find('button').button('reset');
 				} else {
 					// login successful
@@ -398,11 +390,7 @@
 </head>
 <body>
 	<div class="header">
-		<!-- <div id="logo"><a href="<?php echo $this->baseUrl() ?>" title="<?php echo $this->t->t('header/homepage') ?>" onclick="return loadpage(this)"></a></div> -->
 		<h5 class="logo"></h5>
-		<!-- <div class="header-buttons">
-			<a href="" class="icon icon-upload" onclick="return showUpload()"><span>Upload</span></a>
-		</div> -->
 				
 		<ul class="nav">
 			<li><a href=""><?php echo $this->t->t('navi/upload') ?></a></li>
@@ -415,12 +403,6 @@
 			<input type="text" autocomplete="off" class="search-input input-default" onclick="$(this).select()" name="search" value="Search" />
 		</form>
 	</div>
-	
-	<!-- <div class="layer layer-upload">
-		<div class="resize-content layer-content" id="layer-upload">
-			<?php //echo $this->render('upload', 'form') ?>
-		</div>
-	</div> -->
 	
 	<div class="container-fluid">
 		<div class="sidebar">
@@ -490,13 +472,7 @@
 		
 		<div class="content">
 			<div class="container">
-				<!-- <div class="column-hide" id="column-hide"></div>
-				<div class="column-board-content"> -->
-					<?php $this->render($this->module, $this->action) ?>
-				<!-- </div>
-				<div class="column-footer">
-					Powered by <a href="">Imageboard 4.0</a>
-				</div> -->
+				<?php $this->render($this->module, $this->action) ?>
 			</div>
 		</div>
 	</div>
