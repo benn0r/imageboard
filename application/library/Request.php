@@ -83,4 +83,8 @@ class Request
 		return $this->_session;
 	}
 	
+	public function isPost() {
+		return count($this->_post) > 0;
+	}
+	
 }
