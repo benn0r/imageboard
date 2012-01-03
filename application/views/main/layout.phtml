@@ -54,6 +54,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/davis.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/buttons.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/modal.js"></script>
 	
 	<link rel="icon" href="<?php echo $this->baseUrl() ?>images/favicon.ico" type="image/x-icon" />
 
@@ -192,10 +193,13 @@
 
 			$.post(BASE_URL + 'login', $(form).serialize(), function(result) {
 				if (result == 0) {
-					var alert = $('<div class="alert-message error">' + t.login.invalid + '</div>');
+					$('#modal-loginerror').modal('show');
+					
+					/*var alert = $('<div class="alert-message error">' + t.login.invalid + '</div>');
 					alert.hide();
 					form.prepend(alert);
-					alert.fadeIn('fast');
+					alert.fadeIn('fast');*/
+					form.find('input').val('');
 					form.find('button').button('reset');
 				} else {
 					// login successful
@@ -341,6 +345,8 @@
 		$('.search-input').keydown(function() {
 			$('.search-quickresult').show();
 		});
+
+		$('#modal-loginerror').modal({'backdrop':'static'});
 	});
 
 	function showUpload() {
@@ -426,6 +432,21 @@
 				<input type="hidden" name="forward" id="login-forward" />
 				<button class="btn primary" data-loading-text="Loading..." name="login"><?php echo $this->t->t('login/send') ?></button>
 			</form>
+			
+			
+			<div id="modal-loginerror" class="modal hide fade">
+            	<div class="modal-header">
+              		<h3><?php echo $this->t->t('login/errortitle') ?></h3>
+            	</div>
+            	<div class="modal-body">
+              		<p><?php echo sprintf($this->t->t('login/errortext'), $this->baseUrl() . 'password') ?></p>
+            	</div>
+            	<div class="modal-footer">
+              		<a href="#" onclick="$(this).parent().parent().modal('hide'); $('input[name=username]').focus(); return false;" class="btn primary"><?php echo $this->t->t('login/closeerror') ?></a>
+            	</div>
+			</div>
+				
+			
 			<h5><?php echo $this->t->t('navi/title') ?></h5>
 			<ul class="mainpage-links">
 				<li><a href="<?php echo $this->baseUrl() ?>register" class="icon-register"><?php echo $this->t->t('register/link') ?></a></li>
