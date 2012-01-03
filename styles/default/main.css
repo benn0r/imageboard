@@ -13,14 +13,17 @@
 }
 .logo {
 	height: 60px;
-	margin: 0px 20px 0px 20px;
+	margin: 0px 20px 0px 70px;
 	width: 220px;
 	background: url(../../images/logo2.png) no-repeat left center;
 	float: left;
 }
 .sidebar {
 	border-right: 1px solid #fff;
-	padding: 20px 0px 0px 0px;
+	padding: 20px 0px 0px 50px;
+}
+.sidebar .alert-message {
+	margin: 0px 20px 10px 0px;
 }
 .content {
 	margin: 40px 0px 0px 0px;
