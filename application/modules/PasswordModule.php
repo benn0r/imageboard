@@ -117,6 +117,10 @@ class PasswordModule extends Module
 			}
 		}
 		
+		if ($r->isPost()) {
+			$this->view()->error = true;
+		}
+		
 		$this->layout('password', 'form');
 	}
 	
