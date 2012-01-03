@@ -42,6 +42,9 @@ class LoginModule extends Module
 			if ($user->num_rows > 0) {
 				$_SESSION['user'] = $user->fetch_array();
 				
+				echo '1';
+				return;
+				
 				// forward to last page
 				if (isset($_SESSION['login_forward'])) {
 					header('Location: ' . $_SESSION['login_forward']);
@@ -56,7 +59,9 @@ class LoginModule extends Module
 			$_SESSION['login_forward'] = $r->forward;
 			
 			// show errorbox
-			$this->layout('login', 'error');
+			//$this->layout('login', 'error');
+			echo '0';
+			return;
 		}
 		
 		// @todo errorpage or loginbox if no logindata received
