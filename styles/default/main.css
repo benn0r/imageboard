@@ -29,8 +29,11 @@
 	margin: 0px 0px 10px 0px;
 	width: 190px;
 }
+.container {
+	width: 820px;
+}
 
 body {
 	padding-top: 60px;
-	background-color: #eee;
+	background-color: #eeeeee;
 }
