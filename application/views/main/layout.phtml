@@ -403,7 +403,9 @@
 			<li><a href=""><?php echo $this->t->t('navi/upload') ?></a></li>
 			<li><a href=""><?php echo $this->t->t('navi/profile') ?></a></li>
 			<li><a href=""><?php echo $this->t->t('navi/settings') ?></a></li>
+			<?php if (!$this->user): ?>
 			<li><a href="<?php echo $this->baseUrl() ?>register" class="btn large"><?php echo $this->t->t('register/link') ?></a></li>
+			<?php endif; ?>
 		</ul>
 		
 		<form class="pull-left" method="post">
@@ -441,11 +443,17 @@
 				<li><a href="<?php echo $this->baseUrl() ?>password" class="icon-register"><?php echo $this->t->t('login/passwordforgot') ?></a></li>
 			</ul>
 			<?php else: ?>
-			<div class="mainpage-user">
+			<div class="userbox">
+				<div class="media-grid">
 				<a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)">
-					<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars ?>/<?php echo $this->user['uid'] . '.' . $this->user['avatar'] ?>" />
+					<img class="avatar-small" src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars ?>/<?php echo $this->user['uid'] . '.' . $this->user['avatar'] ?>" />
 				</a>
-				<span><a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)"><?php echo $this->user['username'] ?></a></span>
+				</div>
+				<div class="username">
+					<a href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" onclick="return loadpage(this)"><?php echo $this->user['username'] ?></a>
+				</div>
+				
+				<div style="clear: both"></div>
 			</div>
 			<h5><?php echo $this->t->t('navi/title') ?></h5>
 			<ul class="mainpage-links">
