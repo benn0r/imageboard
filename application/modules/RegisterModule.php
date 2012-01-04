@@ -85,30 +85,42 @@ class RegisterModule extends Module
 		 */
 		require_once('recaptchalib.php');
 		
-		if ($r->username && $r->password) {
+		if ($r->isPost()) {
 			$table = new Users();
 			
-			if ($this->getConfig()->register->captcha) {
+			$error = array();
+			
+			if (!$r->username) {
+				$error['username'] = true;
+			}
+			
+			if (!$r->password) {
+				$error['password'] = true;
+			}
+			
+			if ($this->getConfig()->register->captcha && !isset($_SESSION['proved_as_a_human'])) {
 				$resp = recaptcha_check_answer($this->getConfig()->captcha->privatekey,
 					$r->getServer('REMOTE_ADDR'),
 					$r->recaptcha_challenge_field,
 					$r->recaptcha_response_field);
 				
 				if (!$resp->is_valid) {
-					$this->view()->error = $this->getLanguage()->t('register/invalidcaptcha');
+					$error['captcha'] = true;
+				} elseif ($this->getConfig()->register->captcha_once == 1) {
+					$_SESSION['proved_as_a_human'] = true;
 				}
 			}
 			
 			if ($r->password && $r->password != $r->passwordrepeat) {
-				$this->view()->error = $this->getLanguage()->t('register/invalidpassword');
+				$error['password'] = true;
 			}
 			
 			$rowset = $table->findUserByName($r->username);
 			if ($rowset->num_rows > 0) {
-				$this->view()->error = $this->getLanguage()->t('register/invalidusername');
+				$error['username'] = $this->getLanguage()->t('register/invalidusername');
 			}
 			
-			if (!$this->view()->error) {
+			if (count($error) == 0) {
 				// everything okay
 				$table->insert(array(
 					'username' => htmlspecialchars($r->username, ENT_QUOTES),
@@ -122,6 +134,8 @@ class RegisterModule extends Module
 				$this->layout('register', 'success');
 				return;
 			}
+			
+			$this->view()->error = $error;
 		}
 		
 		$this->view()->r = $this->getRequest();
