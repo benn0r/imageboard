@@ -76,6 +76,20 @@ class SettingsModule extends Module
 				
 				$view->login = $users->find($user['uid']);
 				break;
+			case 'notifications':
+				if ($r->isPost()) {
+					$users->update(array(
+							'notification_own' => (int)$r->notification_own,
+							'notification_other' => (int)$r->notification_other,
+							'notification_wall' => (int)$r->notification_wall,
+							'notification_own_mail' => (int)$r->notification_own_mail,
+							'notification_other_mail' => (int)$r->notification_other_mail,
+							'notification_wall_mail' => (int)$r->notification_wall_mail,
+					), 'uid = ' . $user['uid']);
+				}
+				
+				$view->notifications = $users->find($user['uid']);
+				break;
 		}
 		
 		if ($_GET['ajax']) {

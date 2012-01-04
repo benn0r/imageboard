@@ -13,24 +13,24 @@
 <form action="<?php echo $this->baseUrl() . 'settings/notifications/?ajax=1' ?>" method="post" onsubmit="return settingsform(this)">
 	<fieldset>
 		<div class="clearfix">
-			<label for="username"><?php echo $this->t->t('settings/notis') ?></label>
+			<label><?php echo $this->t->t('settings/notis') ?></label>
 			<div class="input">
 				<ul class="inputs-list">
 	                <li>
                   		<label>
-                    		<input type="checkbox"<?php echo $this->profile->sex == 1 ? ' checked="checked"' : '' ?> name="comments" value="1" />
+                    		<input type="checkbox"<?php echo $this->notifications->notification_own == 1 ? ' checked="checked"' : '' ?> name="notification_own" value="1" />
                     		<span><?php echo $this->t->t('settings/threads') ?></span>
                   		</label>
 	                </li>
 	                <li>
                   		<label>
-                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="comments2" value="1" />
+                    		<input type="checkbox"<?php echo $this->notifications->notification_other == 1 ? ' checked="checked"' : '' ?> name="notification_other" value="1" />
                     		<span><?php echo $this->t->t('settings/comments') ?></span>
                   		</label>
 	                </li>
 	                <li>
                   		<label>
-                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="wall" value="1" />
+                    		<input type="checkbox"<?php echo $this->notifications->notification_wall == 1 ? ' checked="checked"' : '' ?> name="notification_wall" value="1" />
                     		<span><?php echo $this->t->t('settings/wall') ?></span>
                   		</label>
 	                </li>
@@ -38,35 +38,40 @@
 			</div>
 		</div>
 		<div class="clearfix">
-			<label for="username"><?php echo $this->t->t('settings/mailstitle') ?></label>
+			<label><?php echo $this->t->t('settings/mailstitle') ?></label>
 			<div class="input">
 				<ul class="inputs-list">
 	                <li>
                   		<label>
-                    		<input type="checkbox"<?php echo $this->profile->sex == 1 ? ' checked="checked"' : '' ?> name="commentsmail" value="1" />
+                    		<input type="checkbox"<?php echo $this->notifications->notification_own_mail == 1 ? ' checked="checked"' : '' ?> name="notification_own_mail" value="1" />
                     		<span><?php echo $this->t->t('settings/threads') ?></span>
                   		</label>
 	                </li>
 	                <li>
                   		<label>
-                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="comments2mail" value="1" />
+                    		<input type="checkbox"<?php echo $this->notifications->notification_other_mail == 1 ? ' checked="checked"' : '' ?> name="notification_other_mail" value="1" />
                     		<span><?php echo $this->t->t('settings/comments') ?></span>
                   		</label>
 	                </li>
-	                 <li>
+	                <li>
                   		<label>
-                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="wall" value="1" />
+                    		<input type="checkbox"<?php echo $this->notifications->notification_wall_mail == 1 ? ' checked="checked"' : '' ?> name="notification_wall_mail" value="1" />
                     		<span><?php echo $this->t->t('settings/wall') ?></span>
                   		</label>
 	                </li>
 	        	</ul>
 			</div>
 		</div>
+		
 		<div class="alert-message block-message info">
-			<p><?php echo $this->t->t('settings/emailhelp') ?></p>
+			<p><?php echo sprintf($this->t->t('settings/emailhelp'), $this->baseUrl() . 'settings/login') ?></p>
 		</div>
 		<div class="actions">
 			<button name="save" class="btn primary" data-loading-text="<?php echo $this->t->t('settings/saving') ?>"><?php echo $this->t->t('settings/save') ?></button>
 		</div>
 	</fieldset>
 </form>
+<script type="text/javascript">
+<!-- sometimes the button is disabled. ONLY in this form! I have no fuckin idea!! -->
+$('button[name=save]').removeAttr('disabled');
+</script>
