@@ -48,6 +48,9 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/davis.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/buttons.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/modal.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/twipsy.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/popover.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/alert.js"></script>
 	
 	<link rel="icon" href="<?php echo $this->baseUrl() ?>images/favicon.ico" type="image/x-icon" />
 
@@ -339,6 +342,10 @@
 		});
 
 		$('#modal-loginerror').modal({'backdrop':'static'});
+
+		$(document).ready(function() {
+			$(".alert-message").alert();
+		});
 	});
 
 	function showUpload() {
@@ -411,7 +418,6 @@
 			<form method="post" class="login" action="<?php echo $this->baseUrl() ?>login" onsubmit="return submitlogin(this)">
 				<input type="text" class="span3" name="username" placeholder="<?php echo $this->t->t('login/username') ?>" />
 				<input type="password" class="span3" name="password" placeholder="<?php echo $this->t->t('login/password') ?>" />
-				<input type="hidden" name="forward" id="login-forward" />
 				<button class="btn primary" data-loading-text="Loading..." name="login"><?php echo $this->t->t('login/send') ?></button>
 			</form>
 			
