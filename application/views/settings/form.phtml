@@ -1,0 +1,18 @@
+<div class="page-header">
+	<h2><?php echo $this->t->t('settings/title') ?></h2>
+</div>
+<ul class="tabs">
+    <li<?php echo $this->a == 'profile' ? ' class="active"' : '' ?>><a href="<?php echo $this->baseUrl() . 'settings/profile' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('settings/tabprofile') ?></a></li>
+    <li<?php echo $this->a == 'avatar' ? ' class="active"' : '' ?>><a href="<?php echo $this->baseUrl() . 'settings/avatar' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('settings/tabavatar') ?></a></li>
+    <li<?php echo $this->a == 'login' ? ' class="active"' : '' ?>><a href="<?php echo $this->baseUrl() . 'settings/login' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('settings/tablogin') ?></a></li>
+    <li<?php echo $this->a == 'notifications' ? ' class="active"' : '' ?>><a href="<?php echo $this->baseUrl() . 'settings/notifications' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('settings/tabnotifications') ?></a></li>
+</ul>
+<div id="settingsform">
+	<?php $this->render('settings', $this->a) ?>
+</div>
+<script type="text/javascript">
+function settingsform(form) {
+	$('#settingsform').find('.primary').button('loading');
+	return submitform(form, $('.content .container'));
+}
+</script>

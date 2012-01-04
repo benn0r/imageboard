@@ -1,0 +1,72 @@
+<?php if ($this->r->isPost()): ?>
+<div class="alert-message block-message hide success" id="alert-message-settings">
+	<a class="close" href="">&times;</a>
+	<p><?php echo $this->t->t('settings/saved') ?></p>
+</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+	$('#alert-message-settings').fadeIn('fast');
+	$(".alert-message").alert();
+</script>
+
+<form action="<?php echo $this->baseUrl() . 'settings/notifications/?ajax=1' ?>" method="post" onsubmit="return settingsform(this)">
+	<fieldset>
+		<div class="clearfix">
+			<label for="username"><?php echo $this->t->t('settings/notis') ?></label>
+			<div class="input">
+				<ul class="inputs-list">
+	                <li>
+                  		<label>
+                    		<input type="checkbox"<?php echo $this->profile->sex == 1 ? ' checked="checked"' : '' ?> name="comments" value="1" />
+                    		<span><?php echo $this->t->t('settings/threads') ?></span>
+                  		</label>
+	                </li>
+	                <li>
+                  		<label>
+                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="comments2" value="1" />
+                    		<span><?php echo $this->t->t('settings/comments') ?></span>
+                  		</label>
+	                </li>
+	                <li>
+                  		<label>
+                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="wall" value="1" />
+                    		<span><?php echo $this->t->t('settings/wall') ?></span>
+                  		</label>
+	                </li>
+	        	</ul>
+			</div>
+		</div>
+		<div class="clearfix">
+			<label for="username"><?php echo $this->t->t('settings/mailstitle') ?></label>
+			<div class="input">
+				<ul class="inputs-list">
+	                <li>
+                  		<label>
+                    		<input type="checkbox"<?php echo $this->profile->sex == 1 ? ' checked="checked"' : '' ?> name="commentsmail" value="1" />
+                    		<span><?php echo $this->t->t('settings/threads') ?></span>
+                  		</label>
+	                </li>
+	                <li>
+                  		<label>
+                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="comments2mail" value="1" />
+                    		<span><?php echo $this->t->t('settings/comments') ?></span>
+                  		</label>
+	                </li>
+	                 <li>
+                  		<label>
+                    		<input type="checkbox"<?php echo $this->profile->sex == 2 ? ' checked="checked"' : '' ?> name="wall" value="1" />
+                    		<span><?php echo $this->t->t('settings/wall') ?></span>
+                  		</label>
+	                </li>
+	        	</ul>
+			</div>
+		</div>
+		<div class="alert-message block-message info">
+			<p><?php echo $this->t->t('settings/emailhelp') ?></p>
+		</div>
+		<div class="actions">
+			<button name="save" class="btn primary" data-loading-text="<?php echo $this->t->t('settings/saving') ?>"><?php echo $this->t->t('settings/save') ?></button>
+		</div>
+	</fieldset>
+</form>

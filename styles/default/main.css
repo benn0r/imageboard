@@ -46,6 +46,16 @@
 	color: #404040;
 	text-decoration: none;
 }
+.tabs li.active a, .tabs li.active a:hover {
+	background-color: #eeeeee;
+	color: #404040;
+}
+textarea {
+	resize: none;
+}
+.uneditable-input {
+	background: none;
+}
 
 body {
 	padding-top: 60px;
