@@ -91,6 +91,8 @@ class SettingsModule extends Module
 						$filetype = strtolower($filetype[count($filetype) - 1]);
 						
 						if (!$view->error) {
+							unlink($this->view()->getConfig()->paths->avatars . '/' . $user['uid'] . '.' . $user['avatar']);
+							
 							move_uploaded_file($_FILES['avatar']['tmp_name'],
 									$this->view()->getConfig()->paths->avatars . '/' . $user['uid'] . '.' . $filetype);
 							
