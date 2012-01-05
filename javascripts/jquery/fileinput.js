@@ -43,7 +43,7 @@ $.fn.customFileInput = function(){
 			var fileExt = 'customfile-ext-' + fileName.split('.').pop().toLowerCase();
 			//update the feedback
 			uploadFeedback
-				.text(t.upload.wait) //set feedback text to filename
+				.text(fileInput.val()) //set feedback text to filename
 				.removeClass(uploadFeedback.data('fileExt') || '') //remove any existing file extension class
 				.addClass(fileExt) //add file extension class
 				.data('fileExt', fileExt) //store file extension for class removal on next change
@@ -61,7 +61,7 @@ $.fn.customFileInput = function(){
 	//create custom control container
 	var upload = $('<div class="customfile"></div>');
 	//create custom control button
-	var uploadButton = $('<span class="customfile-button" aria-hidden="true">' + t.upload.button + '</span>').appendTo(upload);
+	var uploadButton = $('<span class="btn secondary customfile-button" aria-hidden="true">' + t.upload.button + '</span>').appendTo(upload);
 	//create custom control feedback
 	var uploadFeedback = $('<span class="customfile-feedback" aria-hidden="true">' + t.upload.nofile + '</span>').appendTo(upload);
 	

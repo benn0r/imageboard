@@ -76,6 +76,32 @@ class SettingsModule extends Module
 				
 				$view->login = $users->find($user['uid']);
 				break;
+			case 'avatar':
+				if ($r->isPost()) {
+					if (exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_GIF &&
+							exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_PNG &&
+							exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_JPEG) {
+						$view->error = true;
+					}
+					
+					$filetype = explode('.', $_FILES['avatar']['name']);
+					$filetype = strtolower($filetype[count($filetype) - 1]);
+					
+					if (!$view->error) {
+						move_uploaded_file($_FILES['avatar']['tmp_name'],
+								$this->view()->getConfig()->paths->avatars . '/' . $user['uid'] . '.' . $filetype);
+						
+						$users->update(array(
+								'avatar' => $filetype,
+						), 'uid = ' . $user['uid']);
+						
+						// reload session
+						$_SESSION['user']['avatar'] = $filetype;
+						$view->user = $_SESSION['user'];
+					}
+				}
+				
+				break;
 			case 'notifications':
 				if ($r->isPost()) {
 					$users->update(array(

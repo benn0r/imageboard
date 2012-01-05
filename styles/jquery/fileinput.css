@@ -7,16 +7,17 @@
 	cursor: pointer; 
 	overflow: hidden; 
 	padding: 0px; 
-	border: 1px solid #c2c2c2;
 	position: relative;
 	
 	width: 313px;
-	height: 30px;
-	margin: 10px 0px 10px 10px;
+	height: 29px;
+	
 	border-radius: 3px 3px 3px 3px;
 	line-height: 30px;
 	font-size: 12px;
-	padding: 0px 0px 0px 5px;
+	padding: 0px 0px 0px 0px;
+	
+	color: #808080;
 }
 .customfile-disabled { opacity: .5; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); cursor: default;  }
 .customfile-feedback { 
@@ -32,7 +33,7 @@
 	padding-left: 23px;
 }
 .customfile-button { 
-	font-size: 12px; 
+	/*font-size: 12px; 
 	height: 30px;  
 	line-height: 30px; 
 	font-weight: bold; 
@@ -41,13 +42,14 @@
 	text-decoration: none;
 	
 	color: #333333;
-	border-left: 1px solid #c2c2c2;
+	border-left: 1px solid #c2c2c2;*/
 	
-	font-size: 10px;
-	font-weight: bold;
-	padding: 0px 10px 0px 10px;
+	float: left;
+	margin-right: 10px;
 }
-.customfile-hover .customfile-button, .customfile-focus .customfile-button  { color: #000000;  }
+.customfile-hover .customfile-button, .customfile-focus .customfile-button  {
+	
+}
 .customfile-focus .customfile-button { outline: 1px dotted #ccc;  }
 
 /*file type icons*/
