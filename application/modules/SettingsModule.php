@@ -78,26 +78,30 @@ class SettingsModule extends Module
 				break;
 			case 'avatar':
 				if ($r->isPost()) {
-					if (exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_GIF &&
-							exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_PNG &&
-							exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_JPEG) {
+					if (!$_FILES['avatar']['tmp_name']) {
 						$view->error = true;
-					}
-					
-					$filetype = explode('.', $_FILES['avatar']['name']);
-					$filetype = strtolower($filetype[count($filetype) - 1]);
-					
-					if (!$view->error) {
-						move_uploaded_file($_FILES['avatar']['tmp_name'],
-								$this->view()->getConfig()->paths->avatars . '/' . $user['uid'] . '.' . $filetype);
+					} else {
+						if (exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_GIF &&
+								exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_PNG &&
+								exif_imagetype($_FILES['avatar']['tmp_name']) != IMAGETYPE_JPEG) {
+							$view->error = true;
+						}
 						
-						$users->update(array(
-								'avatar' => $filetype,
-						), 'uid = ' . $user['uid']);
+						$filetype = explode('.', $_FILES['avatar']['name']);
+						$filetype = strtolower($filetype[count($filetype) - 1]);
 						
-						// reload session
-						$_SESSION['user']['avatar'] = $filetype;
-						$view->user = $_SESSION['user'];
+						if (!$view->error) {
+							move_uploaded_file($_FILES['avatar']['tmp_name'],
+									$this->view()->getConfig()->paths->avatars . '/' . $user['uid'] . '.' . $filetype);
+							
+							$users->update(array(
+									'avatar' => $filetype,
+							), 'uid = ' . $user['uid']);
+							
+							// reload session
+							$_SESSION['user']['avatar'] = $filetype;
+							$view->user = $_SESSION['user'];
+						}
 					}
 				}
 				

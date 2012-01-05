@@ -4,6 +4,23 @@
 <!-- required stylehsheets -->
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/jquery/fileinput.css" />
 
+<?php if ($this->r->isPost() && !$this->error): ?>
+<div class="alert-message block-message hide success" id="alert-message-settings">
+	<a class="close" href="">&times;</a>
+	<p><?php echo $this->t->t('settings/saved') ?></p>
+</div>
+<?php elseif ($this->error): ?>
+<div class="alert-message block-message hide error" id="alert-message-settings">
+	<a class="close" href="">&times;</a>
+	<p><?php echo $this->t->t('settings/avatarerror') ?></p>
+</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+	$('#alert-message-settings').fadeIn('fast');
+	$(".alert-message").alert();
+</script>
+
 <form class="avatarform" action="<?php echo $this->baseUrl() . 'settings/avatar' ?>" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<div class="clearfix">
