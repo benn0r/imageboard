@@ -31,7 +31,7 @@ foreach ($this->comments as $c):
 <?php endforeach; ?>
 <?php if ($this->active < $this->total): ?>
 <div class="comment-loader">
-	<a href="" onclick="loadComments(); return false;"><?php echo $this->t->t('thread/loadcomments') ?></a>
+	<a href="" class="btn" onclick="loadComments(); return false;"><?php echo $this->t->t('thread/loadcomments') ?></a>
 </div>
 <?php endif; ?>
 

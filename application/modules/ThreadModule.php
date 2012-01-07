@@ -116,18 +116,18 @@ class ThreadModule extends Module
 				$mediaset = array();
 				while(($row = $rowset->fetch_object()) != null) {
 					$media = new Media();
-								
-					$media->mid = $c->mid;
-					$media->name = $c->name;
-					$media->description = $c->description;
-					$media->published = strtotime($c->published);
-					$media->author = new Media_Uri($c->author_name, $c->author_uri);
-					$media->source = new Media_Uri($c->source_name, $c->source_uri);
-					$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
-					$media->type = $c->type;
-					$media->extid = $c->extid;
+												
+					$media->mid = $row->mid;
+					$media->name = $row->name;
+					$media->description = $row->description;
+					$media->published = strtotime($row->published);
+					$media->author = new Media_Uri($row->author_name, $row->author_uri);
+					$media->source = new Media_Uri($row->source_name, $row->source_uri);
+					$media->image = $this->getConfig()->paths->uploads . '/' . date('Ymd', strtotime($row->inserttime)) . '/' . $row->mid . '.' . $row->image;
+					$media->type = $row->type;
+					$media->extid = $row->extid;
 					
-					$media->thumbnail = $thumb->getThumbnail($media,	63 * 2, 95);
+					$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
 					
 					$mediaset[] = $media;
 				}

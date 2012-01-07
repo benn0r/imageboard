@@ -18,7 +18,7 @@ function loadComments() {
 	
 	$.get(BASE_URL + 'thread/<?php echo $this->thread->pid ?>/?load=' + page, function(result) {
 		$('.comment-loader').hide();
-		$('.thread-content').append(result);
+		$('.comments').append(result);
 	});
 }
 
@@ -49,7 +49,7 @@ function loadComments() {
 	<div class="row">
 		
 		<!-- comments -->
-		<div class="span14">
+		<div class="span14 comments">
 			<div class="row comment commentfirst">
 				<div class="span3 commentinfo">
 					<a href="<?php echo $this->baseUrl() . 'user/' . $this->thread->uid ?>/" onclick="return loadpage(this)" class="username" style="<?php echo $this->thread->namestyle ?>"><?php echo $this->thread->username ?></a>
@@ -113,7 +113,7 @@ function loadComments() {
 	
 	</div>
 	
-	<div class="thread-content">
+	<?php /*<div class="thread-content">
 		<div class="thread-info">
 			<!-- <div class="thread-buttons">
 				<div class="rate-up">
@@ -152,7 +152,7 @@ function loadComments() {
 		</div>
 		<?php endif; ?>
 		
-	</div>
+	</div>*/ ?>
 </div>
 <?php if (isset($_GET['goto'])): ?>
 <script type="text/javascript">
