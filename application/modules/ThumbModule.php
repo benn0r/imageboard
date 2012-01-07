@@ -54,7 +54,7 @@ class ThumbModule extends Module
 				mkdir($this->_config->paths->cache . '/' . session_id());
 			}
 			
-			$filename = $this->_config->paths->cache . '/' . session_id() . '/' . md5(session_id() . $w . $h) . '.' . $type[count($type) - 1];
+			$filename = $this->_config->paths->cache . '/' . session_id() . '/' . md5($media->image . $w . $h) . '.' . $type[count($type) - 1];
 			if (file_exists($filename)) {
 				// Temporäre Thumbnails werden jedes mal neu erstellt
 				unlink($filename);

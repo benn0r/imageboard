@@ -2,30 +2,47 @@
 	
 	<legend><?php echo $this->t->t('upload/mediatitle') ?></legend>
 	
-	<div class="clearfix">
-		<label><?php echo $this->t->t('upload/media') ?></label>
-		<div class="input" id="media">
-			
-		</div>
-	</div>
-	
-	<div class="clearfix">
-		<label for="url"><?php echo $this->t->t('upload/remotefile') ?></label>
-		<div class="input">
-			<div class="inline-inputs">
-				<input type="text" name="url" id="url" class="span4 share-url" value="http://www.youtube.com/watch?v=pWo5WqRVzdQ" /><button class="btn share-button"><?php echo $this->t->t('upload/addlocalfile') ?></button>
+	<!-- form tag only for bootstrap.css -->
+	<form method="post" action="" onsubmit="return false" class="<?php echo count($_SESSION['media']) == 0 ? 'hide' : '' ?>" id="mediacontainer">
+		<div class="clearfix">
+			<label><?php echo $this->t->t('upload/media') ?></label>
+			<div class="input">
+				<ul class="media-grid span9" id="media">
+					<?php foreach ($_SESSION['media'] as $media): $media = unserialize($media); ?>
+						<li><a href="#" rel="twipsy" title="<?php echo $this->t->t('upload/makeprimary') ?>"><img src="<?php echo $this->baseUrl() . $media->thumbnail . '?' . time() ?> " /></a></li>
+					<?php endforeach; ?>
+				</ul>
 			</div>
 		</div>
-	</div>
+	</form>
 	
-	<div class="clearfix">
-		<label><?php echo $this->t->t('upload/localfile') ?></label>
-		<div class="input">
-			<div class="inline-inputs">
-				<input type="file" name="file" id="file" />
-				<script type="text/javascript">$("#file").customFileInput();</script>
+	<form method="post" action="<?php echo $this->baseUrl() ?>upload/share" onsubmit="return upload(this)" target="upload-iframe" id="shareform">
+		<div class="clearfix">
+			<label for="url"><?php echo $this->t->t('upload/remotefile') ?></label>
+			<div class="input">
+				<div class="inline-inputs">
+					<input type="text" name="url" id="url" class="span4 share-url" value="" /><button class="btn share-button"><?php echo $this->t->t('upload/addlocalfile') ?></button>
+				</div>
 			</div>
 		</div>
-	</div>
+	</form>
+	
+	<form method="post" action="<?php echo $this->baseUrl() ?>upload/upload" onsubmit="return upload(this)" enctype="multipart/form-data" target="upload-iframe" id="uploadform">
+		<div class="clearfix">
+			<label for="filebutton"><?php echo $this->t->t('upload/localfile') ?></label>
+			<div class="input">
+				<div class="inline-inputs">
+					<input type="file" name="file" id="file" />
+					
+					<![if !IE]>
+					<button class="btn" data-loading-text="<?php echo $this->t->t('upload/uploading') ?>" id="filebutton" onclick="$('#file').click(); return false;"><?php echo $this->t->t('upload/nofile') ?></button>
+					<script type="text/javascript">
+						$('#file').hide();
+					</script>
+					<![endif]>
+				</div>
+			</div>
+		</div>
+	</form>
 	
 </fieldset>

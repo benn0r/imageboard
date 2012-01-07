@@ -46,6 +46,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/davis.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/inlog.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/buttons.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/modal.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/twipsy.js"></script>
@@ -60,7 +61,7 @@
 		var NTIME = '<?php echo time() - 10 ?>';
 		var TIME = '<?php echo time() ?>';
 
-		if(document.location.href.replace('#!', '') != document.location.href) {
+		/*if(document.location.href.replace('#!', '') != document.location.href) {
 			redirect = document.location.href.substring(
 					document.location.href.search('#!') + 2,
 					document.location.href.length
@@ -96,7 +97,7 @@
 				setTimeout('observeLink()', 300);
 			}
 			observeLink();
-		}
+		}*/
 
 		var activetime = NTIME;
 		var notificationsTimer = setInterval(notifications = function notifications() {
@@ -129,7 +130,7 @@
 		}, 10000);
 
 		// update notifications
-		notifications();
+		//notifications();
 
 		function loadpage(link) {
 			var elem = $(link);
@@ -215,19 +216,6 @@
 					//$(img).find('.image-large').animate({width: 142, height: 206}, 500);
 					
 					$(img).addClass('active');
-
-					/*$(img).animate({
-						'margin-left': '-' + ((154 - $(img).find('.image-small').width()) / 2) + 'px',
-						'margin-top': '-' + ((218 - $(img).find('.image-small').height()) / 2) + 'px',
-						'margin-bottom': '0px',
-						'margin-right': '0px',
-						'width': '142px'
-					}, 100);*/
-
-					/*$(img).find('.image-large').animate({
-						 'width': '142px',
-						 'height': '206px'
-					}, 200);*/
 					
 					$(img).css('margin-left', '-' + ((154 - $(img).find('.image-small').width()) / 2) + 'px');
 					$(img).css('margin-top', '-' + ((218 - $(img).find('.image-small').height()) / 2) + 'px');
@@ -257,15 +245,6 @@
 
 				board.bufferright = 0;
 				board.dispatchAfterImage = function(image, startcoord, endcoord) {
-					/*ipanel = document.getElementById('p' + image.id);
-					ipanel.style.top = parseInt(image.style.top) + parseInt(image.style.height) + 'px';
-					ipanel.style.left = parseInt(image.style.left) + 'px';
-					if(this.grid[startcoord[0]] && startcoord[1] + 2 == this.grid[startcoord[0]].length) {
-						ipanel.style.left = parseInt(image.style.left) - 63 + 'px';
-					}
-					if(this.grid[startcoord[0]] && startcoord[1] + 1 == this.grid[startcoord[0]].length) {
-						ipanel.style.left = parseInt(image.style.left) - 126 + 'px';
-					}*/
 				}
 				board.isImageValid = function(image) {
 					if(parseInt(image.id) == image.id) {
@@ -341,59 +320,13 @@
 			$('.search-quickresult').show();
 		});
 
-		$('#modal-loginerror').modal({'backdrop':'static'});
+		$('.modal').modal({'backdrop':'static'});
 
 		//$('#modal-upload').modal({'backdrop':'static'});
 		//$('#modal-upload').modal('show');
 
 		$(".alert-message").alert();
 	});
-
-	function showUpload() {
-		$('.layer-upload').show();
-		$('.layer-upload').animate({height: $('.layer-upload .resize-content').height() + 40 + 'px' }, 400, function() {
-			$('.layer-upload').height('auto');
-		});
-
-		return false;
-	}
-
-	function hideUpload() {		
-		$('.layer-upload').animate({height: '0px' }, 400, function() {
-			$('.layer-upload').hide();
-		});
-	}
-
-	function uploadSuccess(file, serverData) {
-		try {
-			var progress = new FileProgress(file,  this.customSettings.upload_target);
-
-			if (serverData.substring(0, 7) === "FILEID:") {
-				$.get(baseUrl + 'upload/?image=1&fileid=' + serverData.substring(7), function(result) {
-					$('#upload-media').hide();
-					$('#media-shared').html(result);
-					$('#media-shared').fadeIn();
-
-					$('#media-loading').hide();
-					$('#media-shared').show();
-					
-				});
-				
-				progress.setStatus("Thumbnail Created.");
-				progress.toggleCancel(false);
-			} else {
-				addImage("images/error.gif");
-				progress.setStatus("Error.");
-				progress.toggleCancel(false);
-				alert(serverData);
-
-			}
-
-
-		} catch (ex) {
-			this.debug(ex);
-		}
-	}
 	</script>
 </head>
 <body>
@@ -415,16 +348,16 @@
 	</div>
 	
 	<div id="modal-upload" class="modal hide fade">
-            	<div class="modal-header">
-              		<h3><?php echo $this->t->t('login/errortitle') ?></h3>
-            	</div>
-            	<div class="modal-body">
-              		<p><?php echo sprintf($this->t->t('login/errortext'), $this->baseUrl() . 'password') ?></p>
-            	</div>
-            	<div class="modal-footer">
-              		<a href="#" onclick="$(this).parent().parent().modal('hide'); $('input[name=username]').focus(); return false;" class="btn primary"><?php echo $this->t->t('login/closeerror') ?></a>
-            	</div>
-			</div>
+    	<div class="modal-header">
+        	<h3><?php echo $this->t->t('login/errortitle') ?></h3>
+        </div>
+   		<div class="modal-body">
+        	<p><?php echo sprintf($this->t->t('login/errortext'), $this->baseUrl() . 'password') ?></p>
+  		</div>
+   		<div class="modal-footer">
+			<a href="#" onclick="$(this).parent().parent().modal('hide'); $('input[name=username]').focus(); return false;" class="btn primary"><?php echo $this->t->t('login/closeerror') ?></a>
+    	</div>
+	</div>
 	
 	<div class="container-fluid">
 		<div class="sidebar">

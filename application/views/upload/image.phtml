@@ -2,11 +2,13 @@
 
 header("Content-Type: text/html; charset=UTF-8"); 
 $size = getimagesize($this->media->image);
+ob_start();
 
 ?>
 
-<div id="content">
-	<!-- <h2><?php echo $this->media->getPlugin()->name() ?></h2> -->
+<img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" />
+
+<!-- <div id="content">
 	<div class="share-thumb"><img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" /></div>
 	<div class="share-data">
 		<div class="share-name"><?php echo $this->media->getPlugin()->name() ?></div>
@@ -17,8 +19,10 @@ $size = getimagesize($this->media->image);
 		<br />
 		<a href="" onclick="return cancel()" class="button button-icon icon icon-cancel"><span><?php echo $this->t->t('upload/cancel') ?></span></a>
 	</div>
-</div>
+</div> -->
 
-<script type="text/javascript">
-parent.uploadedmedia(document.getElementById('content').innerHTML);
-</script>
+<?php
+
+echo '<script type="text/javascript">parent.addmedia(\'' . str_replace(array("\t", "\r\n", "\r", "\n"), "", str_replace("'", "\\'", ob_get_clean())) . '\');</script>';
+
+?>

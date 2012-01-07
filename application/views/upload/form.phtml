@@ -1,51 +1,47 @@
-<!-- required scripts -->
-<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/fileinput.js"></script>
-
-<!-- required stylehsheets -->
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/jquery/fileinput.css" />
-
 <script type="text/javascript">
-	function submituploadform(form, target) {
-		var form = $(form);
-		form.find('.input-default').each(function() {
-			$(this).val('');
-		})
-
-		return submitform(form, target);
+	// does nothing yet, can check the uploadform before submitting 
+	function upload(form) {
+		return true;
 	}
 
-	/**
-	 * Called form uploadiframe and share button
-	 */
-	function uploadedmedia(html) {
-		/* clear error */
-		$('#upload-error').html('');
-		$('#media-shared').hide();
-		$('#media-shared').html(html);
-		$('#media-shared').fadeIn();
+	// callback for error while upload (shows a modal with errormsg)
+	function adderror(msg) {
+		$('#modalerror .modal-body p').html(msg);
+		$('#modalerror').modal('show');
 	}
 
+	// callback for iframe
 	function addmedia(html) {
-		$('#media').append(html);
-	}
+		var elem = $('<li style="display:none"></li>');
+		elem.html('<a href="#" rel="twipsy" title="' + t.upload.makeprimary +'">' + html + '</a>');
 
-	function uploaderror(html) {
-		$('#upload-error').hide();
-		$('#upload-error').html(html);
-		$('#upload-error').fadeIn();
+		$('#mediacontainer').show();
+		$('#media').append(elem);
 
-		$('.customfile-feedback').removeClass('customfile-feedback-populated');
-		$('.customfile-feedback').html(t.upload.nofile);
-	}
+		elem.fadeIn();
 
-	function cancel() {
-		$.get(BASE_URL + 'upload/form', function(html) {
-			uploadedmedia(html);
-		});
+		// reset form
+		$('#shareform')[0].reset();
 
-		return false;
+		// reset localfile button
+		$('#filebutton').button('reset');
+
+		// add twipsy handler to new image
+		$('*[rel=twipsy]').twipsy();
 	}
 </script>
+
+<div id="modalerror" class="modal hide fade">
+	<div class="modal-header">
+		<h3><?php echo $this->t->t('upload/errortitle') ?></h3>
+	</div>
+  	<div class="modal-body">
+       	<p></p>
+ 	</div>
+ 	<div class="modal-footer">
+		<a href="#" onclick="$(this).parent().parent().modal('hide'); $('input[name=username]').focus(); return false;" class="btn primary"><?php echo $this->t->t('login/closeerror') ?></a>
+ 	</div>
+</div>
 
 <div class="page-header">
 	<h2><?php echo $this->t->t('upload/title') ?></h2>
@@ -59,17 +55,31 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#url,#file').change(function() {
-		$('#shareform').submit();
+
+	// if file changes, submit form instantly
+	$('#file').change(function() {
+		$('#filebutton').button('loading');
+		$('#uploadform').submit();
+	});
+
+	// detect copy&paste
+	$('#url').bind('paste', function() {
+		var elem = $(this);
+		setTimeout(function() {
+			$('#shareform').submit();
+		}, 100);
+	});
+
+	$('#media a').click(function() {
+		$('#media .defaultmedia').removeClass('defaultmedia');
+		$(this).addClass('defaultmedia');
 	});
 });
 </script>
 
 <iframe name="upload-iframe" class="upload-iframe"></iframe> 
 
-<form method="post" action="<?php echo $this->baseUrl() ?>upload" enctype="multipart/form-data" target="upload-iframe" id="shareform">
-	<?php echo $this->render('upload', 'uploadform') ?>
-</form>
+<?php echo $this->render('upload', 'uploadform') ?>
 <form method="post" action="<?php echo $this->baseUrl() ?>upload/create" onsubmit="return submituploadform(this, $('#layer-upload'))">
 	<fieldset>
 		
@@ -109,17 +119,7 @@ $(document).ready(function() {
 	</fieldset>
 </form>
 
-<script type="text/javascript">
-	var formid = '<?php echo $formid ?>';
-	
-	$('#'+formid+' .share-url').bind('paste', function() {
-		var elem = $(this);
-		setTimeout(function() {
-			// click event auslösen wenn wir einen paste event bemerken
-			$('#share-link').click();
-		}, 100);
-	});
-
+<script type="text/javascript">	
 	$('#comment').autoResize({
 	    // On resize:
 	    onResize : function() {
@@ -137,7 +137,4 @@ $(document).ready(function() {
 	});
 
 	$('*[rel=twipsy]').twipsy();
-
-	$('.input-default').mousedown(mouseevent);
-	$('.input-default').focus(mouseevent);
 </script>

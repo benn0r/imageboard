@@ -5,13 +5,15 @@ ob_start();
 
 ?>
 
-<div class="share-thumb"><img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" /></div>
+<img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" />
+
+<!-- <div class="share-thumb"><img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" /></div>
 <div class="share-data">
 	<div class="share-name"><p><?php echo $this->media->name ?></p></div>
 	<div class="share-source"><p>Uploaded by <a href="<?php echo $this->media->author->uri ?>" target="_blank"><?php echo $this->media->author->name ?></a> on <?php echo $this->media->source->name ?></p></div>
 	<br />
 	<a href="" onclick="return cancel()" class="button button-icon icon icon-cancel"><span><?php echo $this->t->t('upload/cancel') ?></span></a>
-</div>
+</div> -->
 
 <?php
 

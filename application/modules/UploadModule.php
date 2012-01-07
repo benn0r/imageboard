@@ -36,14 +36,18 @@ class UploadModule extends Module
 		$filetype = strtolower($filetype[count($filetype) - 1]);
 	
 		$media = new Media(new Media_Share_Plugin_Image());
-		$media->image = $this->view()->getConfig()->paths->cache . '/' . session_id() . '/' . md5('image') . '.' . $filetype;
+		
+		rename($this->view()->getConfig()->paths->cache . '/' . session_id() . '/' . md5('image') . '.' . $filetype,
+				$this->view()->getConfig()->paths->cache . '/' . session_id() . '/' . md5($time = microtime(true)) . '.' . $filetype);
+		
+		$media->image = $this->view()->getConfig()->paths->cache . '/' . session_id() . '/' . md5($time) . '.' . $filetype;
 		$media->temp = true;
 		$media->filename = $img['name'];
 	
 		$thumb = Module::init('Thumb', $this);
 		$media->thumbnail = $thumb->getThumbnail($media, 124, 93);
 	
-		$_SESSION['media'] = serialize($media);
+		$_SESSION['media'][] = serialize($media);
 	
 		$view = $this->view();
 		$view->media = $media;
@@ -76,7 +80,7 @@ class UploadModule extends Module
 				mkdir($this->_config->paths->cache . '/' . session_id());
 			}
 	
-			$newimage = $this->_config->paths->cache . '/' . session_id() . '/' . md5('image') . '.' . $media->getFiletype();
+			$newimage = $this->_config->paths->cache . '/' . session_id() . '/' . md5(microtime(true)) . '.' . $media->getFiletype();
 			file_put_contents($newimage,
 					file_get_contents($media->image));
 	
@@ -89,7 +93,7 @@ class UploadModule extends Module
 			$thumb = Module::init('Thumb', $this);
 			$media->thumbnail = $thumb->getThumbnail($media, 124, 93);
 	
-			$_SESSION['media'] = serialize($media);
+			$_SESSION['media'][] = serialize($media);
 	
 			$this->render('upload', 'share');
 	
@@ -234,6 +238,10 @@ class UploadModule extends Module
 			$args[1] = '';
 		}
 		
+		if (!isset($_SESSION['media'])) {
+			$_SESSION['media'] = array();
+		}
+		
 		switch ($args[1]) {
 			case 'form':
 				$this->render('upload', 'uploadform');
@@ -245,6 +253,13 @@ class UploadModule extends Module
 					$this->createThread();
 				}
 				return;
+			case 'share':
+			case 'upload':
+				if (!$r->url && !is_uploaded_file($_FILES['file']['tmp_name'])) {
+					echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/errorbody') . '\');</script>';
+					return;
+				}
+					
 			default:
 				if ($r->url) {
 					return $this->share($this->getRequest()->url);
@@ -266,7 +281,7 @@ class UploadModule extends Module
 						return;
 					}
 					
-					$_SESSION['upload']['image'] = $_FILES['file'];
+					$image = $_FILES['file'];
 					
 					$filetype = explode('.', $_FILES['file']['name']);
 					$filetype = strtolower($filetype[count($filetype) - 1]);
@@ -278,7 +293,7 @@ class UploadModule extends Module
 					move_uploaded_file($_FILES['file']['tmp_name'],
 							$this->view()->getConfig()->paths->cache . '/' . session_id() . '/' . md5('image') . '.' . $filetype);
 					
-					return $this->image($_SESSION['upload']['image']);
+					return $this->image($image);
 				}
 		}
 		

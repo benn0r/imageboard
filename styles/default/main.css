@@ -81,7 +81,11 @@ textarea {
   	border-radius: 4px 0px 0px 4px;
 }
 .upload-iframe {
-	/*display: none;*/
+	display: none;
+}
+
+.defaultmedia {
+	background: #0069d6;
 }
 
 body {
