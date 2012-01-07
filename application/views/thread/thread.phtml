@@ -42,14 +42,14 @@ function loadComments() {
 	</ul>
 	<?php endif; ?>
 
-	<div class="image<?php echo $this->thread->astatus == 0 ? ' thread-image-deleted' : '' ?>"><a href="<?php echo $this->baseUrl() . $image ?>" title="<?php echo $this->t->t('thread/original') ?>">
-		<img src="<?php echo $this->baseUrl() . $this->media->image ?>" <?php if ($size[0] > 800) { echo 'style="width: 800px"'; } ?> />
+	<div class="image<?php echo $this->thread->astatus == 0 ? ' thread-image-deleted' : '' ?>"><a href="<?php echo $this->baseUrl() . $this->media->image ?>" title="<?php echo $this->t->t('thread/original') ?>" target="_blank">
+		<img src="<?php echo $this->baseUrl() . $this->media->image ?>" <?php if ($size[0] > 820) { echo 'style="width: 820px"'; } ?> />
 	</a></div>
 	
 	<div class="row">
 		
 		<!-- comments -->
-		<div class="span10">
+		<div class="span14">
 			<div class="row comment commentfirst">
 				<div class="span3 commentinfo">
 					<a href="<?php echo $this->baseUrl() . 'user/' . $this->thread->uid ?>/" onclick="return loadpage(this)" class="username" style="<?php echo $this->thread->namestyle ?>"><?php echo $this->thread->username ?></a>
@@ -60,9 +60,9 @@ function loadComments() {
 						</a></li>
 					</ul>
 				</div>
-				<div class="span7 commentcontent">
+				<div class="span11 commentcontent">
 					<p><?php echo nl2br(htmlentities($this->thread->content, ENT_QUOTES)) ?>
-					<br /><small><nobr><?php echo Printdate::get(strtotime($this->thread->updatetime), $this->t) ?></nobr></small></p>
+					<?php if($this->thread->content) echo '<br />' ?><small><nobr><?php echo Printdate::get(strtotime($this->thread->updatetime), $this->t) ?></nobr></small></p>
 				</div>
 			</div>
 			

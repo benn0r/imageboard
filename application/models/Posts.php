@@ -77,7 +77,7 @@ class Posts extends Model {
 		');
 	}
 	
-	public function findChilds($pid, $admin = false, $from = 0, $to = 5) {		
+	public function findChilds($pid, $admin = false, $from = 0, $to = 10) {		
 		return $this->_db->select('
 			SELECT a.*,c.*,d.*,a.status AS astatus, f.username as pusername FROM board_posts AS a
 			LEFT JOIN board_users AS c ON a.uid = c.uid

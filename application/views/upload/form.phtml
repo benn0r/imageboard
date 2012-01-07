@@ -38,6 +38,7 @@ if ($this->comment) {
 		var form = $(form);
 
 		form.find('button[name=save]').button('loading');
+		form.find('button[name=cancel]').attr('disabled', 'disabled');
 
 		var warning = setTimeout(function() {
 			$('#relax-message').fadeIn();
@@ -54,6 +55,7 @@ if ($this->comment) {
 
 				$('#relax-message').hide();
 				form.find('button[name=save]').button('reset');
+				form.find('button[name=cancel]').removeAttr('disabled');
 			}
 
 			if (response.forward) {
@@ -201,7 +203,7 @@ $(document).ready(function() {
 		<div class="actions">
 			<button name="save" class="btn primary" data-loading-text="<?php echo $this->t->t('upload/saving') ?>"><?php echo $this->t->t($publish) ?></button>
 			<?php if ($this->comment): ?>
-			<button class="btn" onclick="$('.commentbutton').fadeIn('fast'); $('.commentform').hide(); return false;"><?php echo $this->t->t('upload/cancel') ?></button>
+			<button name="cancel" class="btn" onclick="$('.commentbutton').fadeIn('fast'); $('.commentform').hide(); return false;"><?php echo $this->t->t('upload/cancel') ?></button>
 			<?php endif; ?>
 		</div>
 		

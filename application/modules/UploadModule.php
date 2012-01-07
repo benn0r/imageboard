@@ -148,7 +148,9 @@ class UploadModule extends Module
 		rename($media->image, $dir . '/' . $media->mid . '.' . $media->getFiletype());
 		
 		// delete thumbnail, we create some new
-		unlink($media->thumbnail);
+		if (file_exists($media->thumbnail)) {
+			unlink($media->thumbnail);
+		}
 	}
 	
 	/**
@@ -276,6 +278,9 @@ class UploadModule extends Module
 					$return->error = $this->getLanguage()->t('upload/errorsession');
 				} elseif (!$r->ppid && count($_SESSION['media']) == 0) {
 					$return->error = $this->getLanguage()->t('upload/errornomedia');
+					echo json_encode($return); return;
+				} elseif ($r->ppid && count($_SESSION['media']) == 0 && !$r->comment) {
+					$return->error = $this->getLanguage()->t('upload/errornothing');
 					echo json_encode($return); return;
 				}
 				
