@@ -1,17 +1,8 @@
-<?php 
-
-$formid = 'upload-form';
-$buttondid = md5(microtime(true));
-
-?>
-
 <!-- required scripts -->
 <script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/fileinput.js"></script>
 
 <!-- required stylehsheets -->
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/jquery/fileinput.css" />
-
-<iframe name="upload-iframe" class="upload-iframe"></iframe> 
 
 <script type="text/javascript">
 	function submituploadform(form, target) {
@@ -34,6 +25,10 @@ $buttondid = md5(microtime(true));
 		$('#media-shared').fadeIn();
 	}
 
+	function addmedia(html) {
+		$('#media').append(html);
+	}
+
 	function uploaderror(html) {
 		$('#upload-error').hide();
 		$('#upload-error').html(html);
@@ -52,25 +47,66 @@ $buttondid = md5(microtime(true));
 	}
 </script>
 
-<h1 class="media-title"><?php echo $this->t->t('upload/title') ?></h1>
-<div id="upload-error">
-	<!-- empty div for uploaderrors -->
+<div class="page-header">
+	<h2><?php echo $this->t->t('upload/title') ?></h2>
 </div>
-<div id="media-shared">
-	<?php echo $this->render('upload', 'uploadform') ?>
-</div>
-<form class="upload <?php echo $formid ?>" method="post" action="<?php echo $this->baseUrl() ?>upload/create" onsubmit="return submituploadform(this, $('#layer-upload'))">
-	<textarea name="comment" class="media-comment input-default"><?php echo $this->t->t('upload/writecomment') ?></textarea>
-	<input type="hidden" name="ppid" value="<?php echo $this->ppid ? $this->ppid : '' ?>" />
-	<input type="hidden" name="replyto" value="<?php echo $this->replyto ? $this->replyto : '0' ?>" />
-	<!-- <h2>Optionen</h2>
-	<label><input type="checkbox" name="abothread" checked="checked" class="checkbox" />Thread abonnieren</label>
-	<label><input type="checkbox" name="forwardthread" checked="checked" class="checkbox" />Thread nach dem Erstellen anzeigen</label> -->
-	<div class="media-buttons">
-		<!-- <div class="buttons-text">Vor dem posten bitte die Regeln lesen!</div> -->
-		<input type="button" name="" value="<?php echo $this->t->t('upload/cancel') ?>" onclick="hideUpload()" class="button button-no" />
-		<input type="submit" name="" value="<?php echo $this->comment ? $this->t->t('thread/publish') : $this->t->t('upload/publish') ?>" class="button button-yes" />
+
+<?php if(!$this->user): ?>
+	<div class="alert-message block-message info">
+		<p><?php echo $this->t->t('upload/loggedout') ?></p>
 	</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#url,#file').change(function() {
+		$('#shareform').submit();
+	});
+});
+</script>
+
+<iframe name="upload-iframe" class="upload-iframe"></iframe> 
+
+<form method="post" action="<?php echo $this->baseUrl() ?>upload" enctype="multipart/form-data" target="upload-iframe" id="shareform">
+	<?php echo $this->render('upload', 'uploadform') ?>
+</form>
+<form method="post" action="<?php echo $this->baseUrl() ?>upload/create" onsubmit="return submituploadform(this, $('#layer-upload'))">
+	<fieldset>
+		
+		<legend><?php echo $this->t->t('upload/contenttitle') ?></legend>
+		
+		<div class="clearfix">
+			<label for="comment"><?php echo $this->t->t('upload/writecomment') ?></label>
+			<div class="input">
+				<textarea id="comment" name="comment" rows="5" class="span6"></textarea>
+			</div>
+		</div>
+		
+		<div class="clearfix">
+			<label><?php echo $this->t->t('upload/options') ?></label>
+			<div class="input">
+				<ul class="inputs-list">
+	                <li>
+                  		<label>
+                    		<input type="checkbox" name="abothread" checked="checked" />
+                    		<span data-placement="right" rel='twipsy' title='<?php echo $this->t->t('upload/abothreadhelp') ?>'><?php echo $this->t->t('upload/abothread') ?></span>
+                  		</label>
+	                </li>
+	                <li>
+                  		<label>
+                    		<input type="checkbox" name="forwardthread" checked="checked" />
+                    		<span><?php echo $this->t->t('upload/forwardthread') ?></span>
+                  		</label>
+	                </li>
+	        	</ul>
+			</div>
+		</div>
+
+		<div class="actions">
+			<button name="save" class="btn primary" data-loading-text="<?php echo $this->t->t('upload/saving') ?>"><?php echo $this->t->t('upload/publish') ?></button>
+		</div>
+		
+	</fieldset>
 </form>
 
 <script type="text/javascript">
@@ -84,7 +120,7 @@ $buttondid = md5(microtime(true));
 		}, 100);
 	});
 
-	$('.media-comment').autoResize({
+	$('#comment').autoResize({
 	    // On resize:
 	    onResize : function() {
 	        $(this).css({opacity:0.8});
@@ -96,9 +132,11 @@ $buttondid = md5(microtime(true));
 	    // Quite slow animation:
 	    animateDuration : 300,
 	    // More extra space:
-	    extraSpace : 18,
+	    extraSpace : 0,
 	    limit : 400,
 	});
+
+	$('*[rel=twipsy]').twipsy();
 
 	$('.input-default').mousedown(mouseevent);
 	$('.input-default').focus(mouseevent);

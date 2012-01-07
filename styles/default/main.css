@@ -67,6 +67,23 @@ textarea {
 	margin: 0px 10px 0px 0px;
 }
 
+.share-button {
+	border-left: none;
+	
+	-webkit-border-radius: 0px 4px 4px 0px;
+  	-moz-border-radius: 0px 4px 4px 0px;
+  	border-radius: 0px 4px 4px 0px;
+  	height: 28px;
+}
+.share-url {
+	-webkit-border-radius: 4px 0px 0px 4px;
+  	-moz-border-radius: 4px 0px 0px 4px;
+  	border-radius: 4px 0px 0px 4px;
+}
+.upload-iframe {
+	/*display: none;*/
+}
+
 body {
 	padding-top: 60px;
 	background-color: #eeeeee;

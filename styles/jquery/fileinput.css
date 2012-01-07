@@ -2,35 +2,48 @@
 .customfile-input { position: absolute; height: 100px; cursor: pointer; background: transparent; border: 0; opacity: 0; -moz-opacity: 0; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); z-index: 999;  }
 
 .customfile { 
-	width: 300px; 
-	height: 20px; 
 	cursor: pointer; 
 	overflow: hidden; 
 	padding: 0px; 
 	position: relative;
 	
-	width: 313px;
-	height: 29px;
+	width: 311px;
+	height: 26px;
 	
-	border-radius: 3px 3px 3px 3px;
-	line-height: 30px;
+	border-radius: 4px;
+	line-height: 28px;
 	font-size: 12px;
 	padding: 0px 0px 0px 0px;
 	
 	color: #808080;
+	background: #ffffff;
+	
+	border: 1px solid #cccccc;
+	
+	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-ms-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-o-transition: border linear 0.2s, box-shadow linear 0.2s;
+	transition: border linear 0.2s, box-shadow linear 0.2s;
+	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .customfile-disabled { opacity: .5; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); cursor: default;  }
 .customfile-feedback { 
 	display: block; 
 	margin: 0px 0px 0px 5px; 
-	line-height: 30px;
+	line-height: 28px;
 	font-size: 12px;
+	
+	color: #808080;
 }
 .customfile-feedback-populated { 
 	font-weight: bold;
-	color: #333333;
+	color: #808080;
 	background: url(../../images/ajax-loader-ffffff.gif) no-repeat left;
 	padding-left: 23px;
+	overflow: hidden;
 }
 .customfile-button { 
 	/*font-size: 12px; 
@@ -44,8 +57,13 @@
 	color: #333333;
 	border-left: 1px solid #c2c2c2;*/
 	
-	float: left;
-	margin-right: 10px;
+	border-top: none;
+	border-right: none;
+	border-bottom: none;
+	
+	border-radius: 0px;
+	
+	float: right;
 }
 .customfile-hover .customfile-button, .customfile-focus .customfile-button  {
 	
