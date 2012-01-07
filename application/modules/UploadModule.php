@@ -47,9 +47,9 @@ class UploadModule extends Module
 		$thumb = Module::init('Thumb', $this);
 		$media->thumbnail = $thumb->getThumbnail($media, 124, 93);
 	
-		$_SESSION['media'][] = serialize($media);
-	
 		$view = $this->view();
+		
+		$view->key = array_push($_SESSION['media'], serialize($media)) - 1;
 		$view->media = $media;
 	
 		$this->render('upload', 'image');
@@ -87,13 +87,13 @@ class UploadModule extends Module
 			$media->image = $newimage;
 	
 			$view = $this->view();
+			
+			$view->key = array_push($_SESSION['media'], serialize($media)) - 1;
 			$view->media = $media;
 	
 			// Laden des Thumb Module
 			$thumb = Module::init('Thumb', $this);
 			$media->thumbnail = $thumb->getThumbnail($media, 124, 93);
-	
-			$_SESSION['media'][] = serialize($media);
 	
 			$this->render('upload', 'share');
 	
@@ -189,7 +189,7 @@ class UploadModule extends Module
 	
 		foreach ($arrmedia as $media) {
 			$media = unserialize($media);
-			
+						
 			// insert entity in mediatable
 			$pmedia->insert(array(
 					'pid' => $pid,
@@ -204,6 +204,7 @@ class UploadModule extends Module
 					'source_uri' => $media->source ? $media->source->uri : '',
 					'type' => $media->getPlugin()->id(),
 					'filename' => $media->filename,
+					'default' => $media->default === true ? 1 : 0,
 			));
 	
 			$media->mid = $this->_db->lastInsertId();

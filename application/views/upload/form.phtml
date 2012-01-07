@@ -22,13 +22,24 @@
 
 	function create(form) {
 		var form = $(form);
+
+		form.find('button[name=save]').button('loading');
+
+		var warning = setTimeout(function() {
+			$('#relax-message').fadeIn();
+		}, 1000);
 		
 		$.post(form.attr('action'), form.serialize(), function(result) {
+			clearTimeout(warning);
+			
 			var response = jQuery.parseJSON(result);
 
 			if (response.error) {
 				$('#modalerror .modal-body p').html(response.error);
 				$('#modalerror').modal('show');
+
+				$('#relax-message').hide();
+				form.find('button[name=save]').button('reset');
 			}
 
 			if (response.forward) {
@@ -158,6 +169,10 @@ $(document).ready(function() {
 	                </li>
 	        	</ul>
 			</div>
+		</div>
+		
+		<div class="alert-message block-message warning hide" id="relax-message">
+			<p><?php echo $this->t->t('upload/relax') ?></p>
 		</div>
 
 		<div class="actions">

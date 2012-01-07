@@ -6,7 +6,7 @@ ob_start();
 
 ?>
 
-<img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" />
+<img src="<?php echo $this->baseUrl() . $this->media->thumbnail . '?' . time() ?>" data-media-id="<?php echo $this->key ?>" />
 <span class="delete" rel="twipsy" data-placement="right" onmouseout="$(this).parent().twipsy('show')" onmouseover="$(this).parent().twipsy('hide')" title="<?php echo $this->t->t('upload/delmedia') ?>"></span>
 
 <!-- <div id="content">
