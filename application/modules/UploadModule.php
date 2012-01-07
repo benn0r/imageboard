@@ -224,6 +224,7 @@ class UploadModule extends Module
 			$thumb->getThumbnail($media, 63 * 2 - 4, 95 * 2 - 4);
 	
 			$thumb->getThumbnail($media, 142, 206);
+			$thumb->getThumbnail($media, 90, 90);
 		}
 		
 		// everything is fine, go on
