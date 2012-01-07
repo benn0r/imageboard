@@ -233,7 +233,7 @@ class UploadModule extends Module
 		$this->removeDir($this->_config->paths->cache . '/' . session_id(), true);
 		unset($_SESSION['media']);
 		
-		$return->forward = $this->view()->baseUrl() . 'thread/' . $pid;
+		$return->forward = $this->view()->baseUrl() . 'thread/' . $pid . '/';
 	
 		/*if ($r->ppid > 0 && $r->replyto >= 0) {
 			// its a comment, load the thread
