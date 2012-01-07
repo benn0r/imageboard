@@ -2462,7 +2462,7 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
 .media-grid a img {
   display: block;
 }
-.media-grid a:hover {
+.media-grid a:hover, .media-grid .active a /* modified by benn0r 2012/01/07 */ {
   border-color: #0069d6;
   -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
