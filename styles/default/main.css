@@ -88,6 +88,48 @@ textarea {
 	background: #0069d6;
 }
 
+.media-grid li a {
+	position: relative;
+}
+.delete {
+	position: absolute;
+	right: 4px; bottom: 4px;
+	background: #eeeeee url(../../images/cancel.png) no-repeat center center;
+	padding: 2px;
+	height: 16px; width: 16px;
+}
+.delete:hover {
+	background: #eeeeee url(../../images/cancelhover.png) no-repeat center center;
+}
+.defaultmedia .delete {
+	background-color: #0069d6;
+}
+
+.loading {
+	position: absolute;
+	top: 62px; right: 0px; left: 290px;
+	text-align: center;
+	z-index: 100;
+}
+.loading p {
+	width: auto;
+	margin: 0px auto;
+	text-align: center;
+	line-height: 30px;
+	border: 1px solid #ffffff;
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	
+	display: inline;
+	padding: 10px 20px 10px 46px;
+	
+	-webkit-border-radius: 0px 0px 4px 4px;
+  	-moz-border-radius: 0px 0px 4px 4px;
+  	border-radius: 0px 0px 4px 4px;
+  	
+  	background: #d0d0d0 url(../../images/ajax-loader-d0d0d0.gif) no-repeat 20px center;
+}
+
 body {
 	padding-top: 60px;
 	background-color: #eeeeee;

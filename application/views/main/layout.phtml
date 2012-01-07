@@ -138,6 +138,7 @@
 			return loadlink(elem.attr('href'));
 		}
 		function loadlink(uri) {
+			$('.loading').fadeIn('fast');
 			var link = uri.replace(BASE_URL, '');
 
 			lastlink = link;
@@ -156,6 +157,7 @@
 
 			$.get(uri, function(result) {
 				$('.content .container').html(result);
+				$('.loading').hide();
 			});
 
 			<?php if (!$this->user): ?>
@@ -345,6 +347,10 @@
 		<form class="pull-left" method="post">
 			<input type="text" autocomplete="off" class="search-input input-default" onclick="$(this).select()" name="search" value="Search" />
 		</form>
+	</div>
+	
+	<div class="loading hide">
+		<p><span></span><?php echo $this->t->t('header/loading') ?></p>
 	</div>
 	
 	<div id="modal-upload" class="modal hide fade">

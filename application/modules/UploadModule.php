@@ -143,9 +143,12 @@ class UploadModule extends Module
 		if (!is_dir($dir)) {
 			mkdir($dir);
 		}
-	
+		
+		// moved uploaded image
 		rename($media->image, $dir . '/' . $media->mid . '.' . $media->getFiletype());
-		$this->removeDir($this->_config->paths->cache . '/' . session_id(), true);
+		
+		// delete thumbnail, we create some new
+		unlink($media->thumbnail);
 	}
 	
 	/**
@@ -161,13 +164,17 @@ class UploadModule extends Module
 	
 		if (isset($_SESSION['media'])) {
 			// take media from session
-			$media = unserialize($_SESSION['media']);
+			$arrmedia = $_SESSION['media'];
 		}
 		
 		$user = $this->getUser();
 		$view = $this->view();
 		
-		// insert entity in poststable
+		$return = new stdClass();
+		
+		$this->getDb()->exec('START TRANSACTION');
+		
+		// insert entity in posts
 		$posts->insert(array(
 				'content' => $r->comment,
 				
@@ -180,7 +187,9 @@ class UploadModule extends Module
 		));
 		$pid = $this->_db->lastInsertId();
 	
-		if (isset($media)) {
+		foreach ($arrmedia as $media) {
+			$media = unserialize($media);
+			
 			// insert entity in mediatable
 			$pmedia->insert(array(
 					'pid' => $pid,
@@ -215,16 +224,26 @@ class UploadModule extends Module
 	
 			$thumb->getThumbnail($media, 142, 206);
 		}
-	
+		
+		// everything is fine, go on
+		$this->getDb()->exec('COMMIT');
+		
+		// finally delete cache folder and session data
+		$this->removeDir($this->_config->paths->cache . '/' . session_id(), true);
 		unset($_SESSION['media']);
+		
+		$return->forward = $this->view()->baseUrl() . 'thread/' . $pid;
 	
-		if ($r->ppid > 0 && $r->replyto >= 0) {
+		/*if ($r->ppid > 0 && $r->replyto >= 0) {
 			// its a comment, load the thread
-			echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . 'thread/' . $r->ppid . '/\'); hideUpload();</script>';
+			//echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . 'thread/' . $r->ppid . '/\'); hideUpload();</script>';
+			$return->forward = $this->view()->baseUrl() . 'thread/' . $r->ppid;
 		} else {
-			$this->render('upload', 'form');
-			echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . '1\'); hideUpload();</script>';
-		}
+			//$this->render('upload', 'form');
+			//echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . '1\'); hideUpload();</script>';
+		}*/
+		
+		echo json_encode($return);
 		
 		// i'm sure it worked well
 		return true;
@@ -247,20 +266,69 @@ class UploadModule extends Module
 				$this->render('upload', 'uploadform');
 				return;
 			case 'create':
-				$r = $this->getRequest();
-				if (($this->getRequest()->comment !== null && isset($_SESSION['media'])) ||
-						($r->ppid >= 0 && $r->replyto >= 0)) {
+				$return = new stdClass();
+				if (!isset($_SESSION['media'])) {
+					$return->error = $this->getLanguage()->t('upload/errorsession');
+				} elseif (count($_SESSION['media']) == 0) {
+					$return->error = $this->getLanguage()->t('upload/errornomedia');
+					echo json_encode($return); return;
+				}
+				
+				
+				if ($r->comment !== null && is_array($_SESSION['media'])) {
 					$this->createThread();
 				}
+				
 				return;
+			case 'delmedia':
+				$delete = $args[2];
+				
+				foreach ($_SESSION['media'] as $key => $media) {
+					if ($key == $delete) {
+						$media = unserialize($media);
+						
+						unlink($media->image);
+						unlink($media->thumbnail);
+						
+						unset($_SESSION['media'][$key]);
+					}
+				}
+				
+				return; // finish request
+			case 'setdefault':
+				$default = $args[2];
+				
+				foreach ($_SESSION['media'] as $key => $media) {
+					$media = unserialize($media);
+					
+					if ($key == $default) {
+						$media->default = true;
+					} else {
+						$media->default = false;
+					}
+					
+					$_SESSION['media'][$key] = serialize($media);
+				}
+				
+				return; // finish request
 			case 'share':
 			case 'upload':
 				if (!$r->url && !is_uploaded_file($_FILES['file']['tmp_name'])) {
 					echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/errorbody') . '\');</script>';
 					return;
 				}
+				
+				$limit = $this->getConfig()->upload->medialimit;
+				if (!$_SESSION['user'] && count($_SESSION['media']) >= $limit->anon) {
+					echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/maxmediaanon') . '\');</script>';
+					return;
+				}
+				
+				if (count($_SESSION['media']) >= $limit->users) {
+					echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/maxmedia') . '\');</script>';
+					return;
+				}
 					
-			default:
 				if ($r->url) {
 					return $this->share($this->getRequest()->url);
 				} else if (is_uploaded_file($_FILES['file']['tmp_name'])) {

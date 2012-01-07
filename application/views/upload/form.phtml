@@ -1,19 +1,67 @@
 <script type="text/javascript">
+	function mediaclick() {
+		$('#media .defaultmedia').removeClass('defaultmedia');
+		$(this).addClass('defaultmedia');
+	
+		$.get(BASE_URL + 'upload/setdefault/' + $(this).find('img').data('media-id'));
+	
+		return false;
+	}
+	function deleteclick() {
+		$(this).parent().parent().fadeOut('fast');
+
+		$.get(BASE_URL + 'upload/delmedia/' + $(this).parent().find('img').data('media-id'));
+
+		return false;
+	};
+
 	// does nothing yet, can check the uploadform before submitting 
 	function upload(form) {
 		return true;
+	}
+
+	function create(form) {
+		var form = $(form);
+		
+		$.post(form.attr('action'), form.serialize(), function(result) {
+			var response = jQuery.parseJSON(result);
+
+			if (response.error) {
+				$('#modalerror .modal-body p').html(response.error);
+				$('#modalerror').modal('show');
+			}
+
+			if (response.forward) {
+				loadlink(response.forward);
+			}
+		});
+
+		// cancle regular form submit
+		return false;
 	}
 
 	// callback for error while upload (shows a modal with errormsg)
 	function adderror(msg) {
 		$('#modalerror .modal-body p').html(msg);
 		$('#modalerror').modal('show');
+
+		// reset form
+		$('#shareform')[0].reset();
+
+		// reset localfile button
+		$('#filebutton').button('reset');
 	}
 
 	// callback for iframe
 	function addmedia(html) {
 		var elem = $('<li style="display:none"></li>');
-		elem.html('<a href="#" rel="twipsy" title="' + t.upload.makeprimary +'">' + html + '</a>');
+		var link = $('<a href="#" rel="twipsy" title="' + t.upload.makeprimary +'">' + html + '</a>');
+
+		// add handlers
+		link.click(mediaclick);
+		link.find('.delete').click(deleteclick);
+		
+		elem.html(link);
 
 		$('#mediacontainer').show();
 		$('#media').append(elem);
@@ -29,6 +77,28 @@
 		// add twipsy handler to new image
 		$('*[rel=twipsy]').twipsy();
 	}
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+	// if file changes, submit form instantly
+	$('#file').change(function() {
+		$('#filebutton').button('loading');
+		$('#uploadform').submit();
+	});
+
+	// detect copy&paste
+	$('#url').bind('paste', function() {
+		var elem = $(this);
+		setTimeout(function() {
+			$('#shareform').submit();
+		}, 100);
+	});
+
+	$('#media a').click(mediaclick);
+	$('#media a .delete').click(deleteclick);
+});
 </script>
 
 <div id="modalerror" class="modal hide fade">
@@ -48,39 +118,17 @@
 </div>
 
 <?php if(!$this->user): ?>
-	<div class="alert-message block-message info">
+	<div class="alert-message block-message warning">
 		<p><?php echo $this->t->t('upload/loggedout') ?></p>
 	</div>
 <?php endif; ?>
 
-<script type="text/javascript">
-$(document).ready(function() {
-
-	// if file changes, submit form instantly
-	$('#file').change(function() {
-		$('#filebutton').button('loading');
-		$('#uploadform').submit();
-	});
-
-	// detect copy&paste
-	$('#url').bind('paste', function() {
-		var elem = $(this);
-		setTimeout(function() {
-			$('#shareform').submit();
-		}, 100);
-	});
-
-	$('#media a').click(function() {
-		$('#media .defaultmedia').removeClass('defaultmedia');
-		$(this).addClass('defaultmedia');
-	});
-});
-</script>
-
-<iframe name="upload-iframe" class="upload-iframe"></iframe> 
+<!-- iframe used for upload -->
+<iframe name="upload-iframe" class="upload-iframe"></iframe>
 
 <?php echo $this->render('upload', 'uploadform') ?>
-<form method="post" action="<?php echo $this->baseUrl() ?>upload/create" onsubmit="return submituploadform(this, $('#layer-upload'))">
+
+<form method="post" action="<?php echo $this->baseUrl() ?>upload/create" onsubmit="return create(this)">
 	<fieldset>
 		
 		<legend><?php echo $this->t->t('upload/contenttitle') ?></legend>
@@ -99,7 +147,7 @@ $(document).ready(function() {
 	                <li>
                   		<label>
                     		<input type="checkbox" name="abothread" checked="checked" />
-                    		<span data-placement="right" rel='twipsy' title='<?php echo $this->t->t('upload/abothreadhelp') ?>'><?php echo $this->t->t('upload/abothread') ?></span>
+                    		<span data-placement="right" rel="twipsy" title="<?php echo $this->t->t('upload/abothreadhelp') ?>"><?php echo $this->t->t('upload/abothread') ?></span>
                   		</label>
 	                </li>
 	                <li>
