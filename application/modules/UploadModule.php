@@ -183,7 +183,6 @@ class UploadModule extends Module
 				
 				// NULL for thread and integer for comment
 				'ppid' => $r->ppid > 0 ? (int)$r->ppid : new Database_Expression('NULL'),
-				'replyto' => (int)$r->replyto,
 		));
 		$pid = $this->_db->lastInsertId();
 	
@@ -234,7 +233,11 @@ class UploadModule extends Module
 		$this->removeDir($this->_config->paths->cache . '/' . session_id(), true);
 		unset($_SESSION['media']);
 		
-		$return->forward = $this->view()->baseUrl() . 'thread/' . $pid . '/';
+		if ($r->ppid) {
+			$return->forward = $this->view()->baseUrl() . 'thread/' . $r->ppid . '/';
+		} else {
+			$return->forward = $this->view()->baseUrl() . 'thread/' . $pid . '/';
+		}
 	
 		/*if ($r->ppid > 0 && $r->replyto >= 0) {
 			// its a comment, load the thread
@@ -271,7 +274,7 @@ class UploadModule extends Module
 				$return = new stdClass();
 				if (!isset($_SESSION['media'])) {
 					$return->error = $this->getLanguage()->t('upload/errorsession');
-				} elseif (count($_SESSION['media']) == 0) {
+				} elseif (!$r->ppid && count($_SESSION['media']) == 0) {
 					$return->error = $this->getLanguage()->t('upload/errornomedia');
 					echo json_encode($return); return;
 				}

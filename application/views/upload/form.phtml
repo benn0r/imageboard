@@ -1,3 +1,17 @@
+<?php
+
+if (!isset($_SESSION['media'])) {
+	// create array if not exists
+	$_SESSION['media'] = array();
+}
+
+if ($this->comment) {
+	$publish = $this->t->t('upload/publishcomment');
+} else {
+	$publish = $this->t->t('upload/publish');
+}
+
+?>
 <script type="text/javascript">
 	function mediaclick() {
 		$('#media .defaultmedia').removeClass('defaultmedia');
@@ -124,9 +138,12 @@ $(document).ready(function() {
  	</div>
 </div>
 
+
+<?php if (!$this->comment): ?>
 <div class="page-header">
-	<h2><?php echo $this->t->t('upload/title') ?></h2>
+	<h3><?php echo $this->t->t('upload/title') ?></h3>
 </div>
+<?php endif; ?>
 
 <?php if(!$this->user): ?>
 	<div class="alert-message block-message warning">
@@ -161,12 +178,14 @@ $(document).ready(function() {
                     		<span data-placement="right" rel="twipsy" title="<?php echo $this->t->t('upload/abothreadhelp') ?>"><?php echo $this->t->t('upload/abothread') ?></span>
                   		</label>
 	                </li>
+	                <?php if (!$this->comment): ?>
 	                <li>
                   		<label>
                     		<input type="checkbox" name="forwardthread" checked="checked" />
                     		<span><?php echo $this->t->t('upload/forwardthread') ?></span>
                   		</label>
 	                </li>
+	                <?php endif; ?>
 	        	</ul>
 			</div>
 		</div>
@@ -174,30 +193,21 @@ $(document).ready(function() {
 		<div class="alert-message block-message warning hide" id="relax-message">
 			<p><?php echo $this->t->t('upload/relax') ?></p>
 		</div>
+		
+		<?php if ($this->comment): ?>
+		<input type="hidden" name="ppid" value="<?php echo $this->ppid ?>" />
+		<?php endif; ?>
 
 		<div class="actions">
-			<button name="save" class="btn primary" data-loading-text="<?php echo $this->t->t('upload/saving') ?>"><?php echo $this->t->t('upload/publish') ?></button>
+			<button name="save" class="btn primary" data-loading-text="<?php echo $this->t->t('upload/saving') ?>"><?php echo $this->t->t($publish) ?></button>
+			<?php if ($this->comment): ?>
+			<button class="btn" onclick="$('.commentbutton').fadeIn('fast'); $('.commentform').hide(); return false;"><?php echo $this->t->t('upload/cancel') ?></button>
+			<?php endif; ?>
 		</div>
 		
 	</fieldset>
 </form>
 
 <script type="text/javascript">	
-	$('#comment').autoResize({
-	    // On resize:
-	    onResize : function() {
-	        $(this).css({opacity:0.8});
-	    },
-	    // After resize:
-	    animateCallback : function() {
-	        $(this).css({opacity:1});
-	    },
-	    // Quite slow animation:
-	    animateDuration : 300,
-	    // More extra space:
-	    extraSpace : 0,
-	    limit : 400,
-	});
-
-	$('*[rel=twipsy]').twipsy();
+$('*[rel=twipsy]').twipsy();
 </script>

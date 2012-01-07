@@ -31,6 +31,13 @@ class Posts extends Model {
 		')->fetch_object();
 	}
 	
+	public function fetchMedia($pid, $admin = false) {
+		return $this->_db->select('
+			SELECT * FROM board_media AS a
+			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . 'a.pid = ' . $pid . '
+		');
+	}
+	
 	public function countThreads($uid) {
 		return $this->_db->select('
 			SELECT COUNT(*) AS cthreads FROM board_posts AS a
@@ -72,8 +79,7 @@ class Posts extends Model {
 	
 	public function findChilds($pid, $admin = false, $from = 0, $to = 5) {		
 		return $this->_db->select('
-			SELECT a.*,b.*,c.*,d.*,a.status AS astatus, f.username as pusername FROM board_posts AS a
-			LEFT JOIN board_media AS b ON a.pid = b.pid
+			SELECT a.*,c.*,d.*,a.status AS astatus, f.username as pusername FROM board_posts AS a
 			LEFT JOIN board_users AS c ON a.uid = c.uid
 			LEFT JOIN board_userstyles AS d ON c.sid = d.sid
 			LEFT JOIN board_posts AS e ON a.replyto = e.pid
@@ -87,7 +93,6 @@ class Posts extends Model {
 	public function countChilds($pid, $admin = false) {
 		$count = $this->_db->select('
 			SELECT COUNT(*) AS childs FROM board_posts AS a
-			LEFT JOIN board_media AS b ON a.pid = b.pid
 			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . 'a.ppid = ' . (int)$pid . '
 			ORDER BY a.pid DESC
 		');

@@ -8,16 +8,34 @@ foreach ($this->comments as $c):
 		$size = getimagesize($image);
 	}
 ?>
-<div class="comment<?php echo $c->astatus == 0 ? ' comment-deleted' : '' ?>" id="post<?php echo $c->pid ?>">
-	<div class="thread-user">
-		<img src="<?php echo $this->baseUrl() . 'avatars/' . $c->uid . '.' . $c->avatar ?>" class="thread-avatar" />
-		<div class="user-descr">
-			<a href="<?php echo $this->baseUrl() ?>user/<?php echo $c->uid ?>/" class="thread-username" onclick="return loadpage(this)"><?php echo $c->username ?></a>
-			<div class="thread-online"><img src="<?php echo $this->baseUrl() . '/images/' . ($c->online == 1 ? 'online' : 'offline') . '.png' ?>" title="<?php echo $c->online == 1 ? sprintf($this->t->t('thread/online'), $c->username) : sprintf($this->t->t('thread/offline'), $c->username) ?>" /></div>
-			<div class="thread-usertitle"><?php echo $c->stylename ?></div>
-		</div>
+<div class="row comment" id="post<?php echo $c->pid ?>">
+	<div class="span3 commentinfo">
+		<a href="<?php echo $this->baseUrl() ?>user/<?php echo $c->uid ?>/" class="username" style="<?php echo $c->namestyle ?>" onclick="return loadpage(this)"><?php echo $c->username ?></a>
+		<img class="userstatus" src="<?php echo $this->baseUrl() . '/images/' . ($c->online == 1 ? 'online' : 'offline') . '.png' ?>" title="<?php echo $c->online == 1 ? sprintf($this->t->t('thread/online'), $c->username) : sprintf($this->t->t('thread/offline'), $c->username) ?>" data-placement="above" rel="twipsy" />
+		<ul class="media-grid avatar">
+			<li><a href="<?php echo $this->baseUrl() . 'user/' . $c->uid ?>/" onclick="return loadpage(this)">
+				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $c->uid . '.' . $c->avatar ?>" />
+			</a></li>
+		</ul>
 	</div>
-	<div class="thread-text">
+	<div class="span7 commentcontent">
+		<ul class="media-grid">
+			<?php foreach ($c->mediaset as $media): ?>
+			<li><a href="<?php echo $this->baseUrl() . $media->image ?>" target="_blank"><img src="<?php echo $this->baseUrl() . $media->thumbnail ?>" /></a></li>
+			<?php endforeach; ?>
+		</ul>
+		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . nl2br(htmlentities($c->content, ENT_QUOTES)) ?>
+		<br /><small><nobr><?php echo Printdate::get(strtotime($c->updatetime), $this->t) ?></nobr></small></p>
+	</div>
+</div>
+<?php endforeach; ?>
+<?php if ($this->active < $this->total): ?>
+<div class="comment-loader">
+	<a href="" onclick="loadComments(); return false;"><?php echo $this->t->t('thread/loadcomments') ?></a>
+</div>
+<?php endif; ?>
+
+<?php /* <div class="thread-text">
 		<?php if ($c->media && $c->media->type == 4): // Video ?>
 		<div class="comment-media">
 			<a onclick="$(this).parent().hide(); $(this).parent().parent().find('.comment-video').show(); return false;" href="http://www.youtube.com/watch?v=<?php echo $c->media->extid ?>" class="comment-image" target="_blank" title="<?php echo $this->t->t('thread/original') ?>">
@@ -46,11 +64,4 @@ foreach ($this->comments as $c):
 		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . nl2br(htmlentities($c->content, ENT_QUOTES)) ?></p>
 		<p class="thread-date"><?php echo Printdate::get(strtotime($c->updatetime), $this->t) ?></p>
 	</div>
-	<div style="clear: both"></div>
-</div>
-<?php endforeach; ?>
-<?php if ($this->active < $this->total): ?>
-<div class="comment-loader">
-	<a href="" onclick="loadComments(); return false;"><?php echo $this->t->t('thread/loadcomments') ?></a>
-</div>
-<?php endif; ?>
+	<div style="clear: both"></div> */ ?>

@@ -33,12 +33,63 @@ class ThreadModule extends Module
 		$visits = new PostsVisits();
 		$tags = new PostsTags();
 		$user = $this->getUser();
+		$view = $this->view();
 		
 		if ($pid == 0) {
 			return $this->notFound();
 		}
 		
 		$thread = $posts->find($pid, $user['grade'] >= 8 ? true : false);
+		$rowset = $posts->fetchMedia($pid, $user['grade'] >= 8 ? true : false);
+		
+		// load module for generating thumbnails
+		$thumb = Module::init('Thumb', $this);
+		
+		$allmedia = array();
+		while (($c = $rowset->fetch_object()) != null) {
+			$media = new Media();
+			
+			$media->mid = $c->mid;
+			$media->name = $c->name;
+			$media->description = $c->description;
+			$media->published = strtotime($c->published);
+			$media->author = new Media_Uri($c->author_name, $c->author_uri);
+			$media->source = new Media_Uri($c->source_name, $c->source_uri);
+			$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
+			$media->type = $c->type;
+			$media->extid = $c->extid;
+			$media->default = $c->default;
+			
+			$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
+			
+			$allmedia[] = $media;
+		}
+		
+		if ($args[2]) {
+			$view->mid = $mid = $args[2];
+			foreach ($allmedia as $media) {
+				if ($media->mid == $mid) {
+					$view->media = $media;
+				}
+			}
+		} else {
+			foreach ($allmedia as $media) {
+				if ($media->default == 1) {
+					$view->mid = $media->mid;
+					$view->media = $media;
+				}
+			}
+			
+			if (!$view->media) {
+				// take first media
+				$view->mid = $allmedia[0]->mid;
+				$view->media = $allmedia[0];
+			}
+		}
+		
+		$view->pid = $pid;
+		$view->mediaset = $allmedia;
+		
 		/*if (!$thread || !$posts->isThread($thread)) {
 			return $this->notFound();
 		}*/
@@ -47,9 +98,6 @@ class ThreadModule extends Module
 			// Aktivität des eingeloggten Benutzer aktualisieren
 			Users::setactive($user, array('thread', $pid));
 		}
-		
-		// Laden des Thumb Module
-		$thumb = Module::init('Thumb', $this);
 		
 		// @todo Dieser Part ist zu grossen Teilen redundant mit dem Code unten
 		if (isset($_GET['load'])) {
@@ -64,8 +112,9 @@ class ThreadModule extends Module
 			
 			$arr = array();
 			while(($c = $comments->fetch_object()) != null) {
-				$key = array_push($arr, $c);
-				if ($c->mid) {
+				$rowset = $posts->fetchMedia($c->pid);
+				$mediaset = array();
+				while(($row = $rowset->fetch_object()) != null) {
 					$media = new Media();
 								
 					$media->mid = $c->mid;
@@ -80,8 +129,11 @@ class ThreadModule extends Module
 					
 					$media->thumbnail = $thumb->getThumbnail($media,	63 * 2, 95);
 					
-					$arr[$key - 1]->media = $media;
+					$mediaset[] = $media;
 				}
+				$c->mediaset = $mediaset;
+				
+				$arr[] = $c;
 			}
 			$view->comments = $arr;
 			
@@ -102,26 +154,32 @@ class ThreadModule extends Module
 		
 		$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false);
 		$arr = array();
+		
 		while(($c = $comments->fetch_object()) != null) {
-			$key = array_push($arr, $c);
-			if ($c->mid) {
+			$rowset = $posts->fetchMedia($c->pid);
+			$mediaset = array();
+			while(($row = $rowset->fetch_object()) != null) {
 				$media = new Media();
-							
-				$media->mid = $c->mid;
-				$media->name = $c->name;
-				$media->description = $c->description;
-				$media->published = strtotime($c->published);
-				$media->author = new Media_Uri($c->author_name, $c->author_uri);
-				$media->source = new Media_Uri($c->source_name, $c->source_uri);
-				$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
-				$media->type = $c->type;
-				$media->extid = $c->extid;
+											
+				$media->mid = $row->mid;
+				$media->name = $row->name;
+				$media->description = $row->description;
+				$media->published = strtotime($row->published);
+				$media->author = new Media_Uri($row->author_name, $row->author_uri);
+				$media->source = new Media_Uri($row->source_name, $row->source_uri);
+				$media->image = $this->getConfig()->paths->uploads . '/' . date('Ymd', strtotime($row->inserttime)) . '/' . $row->mid . '.' . $row->image;
+				$media->type = $row->type;
+				$media->extid = $row->extid;
 				
-				$media->thumbnail = $thumb->getThumbnail($media,	63 * 2, 95);
+				$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
 				
-				$arr[$key - 1]->media = $media;
+				$mediaset[] = $media;
 			}
+			$c->mediaset = $mediaset;
+			
+			$arr[] = $c;
 		}
+		
 		$view->comments = $arr;
 		
 		if (!isset($_SESSION['user_visits']) || !is_array($_SESSION['user_visits'])) {
