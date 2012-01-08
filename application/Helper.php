@@ -36,6 +36,8 @@ class Helper extends Application_Helper
 				return 'Notifications';
 			case 'res':
 				return 'Ressource';
+			case 'search':
+				return 'Search';
 			case 'user':
 				return 'User';
 			case 'login':
