@@ -17,7 +17,7 @@
 </div>-->
 <div id="imageboard">
 	<?php foreach ($this->posts as $post): ?>
-	<div class="board-image<?php echo $post->status == 0 ? ' board-image-deleted' : '' ?>" id="<?php echo $post->mid ?>" style="width: <?php echo $post->width ?>px; height: <?php echo $post->height ?>px;">
+	<div class="boardimage<?php echo $post->status == 0 ? ' board-image-deleted' : '' ?>" id="<?php echo $post->mid ?>" style="width: <?php echo $post->width ?>px; height: <?php echo $post->height ?>px;">
 		<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $post->ppid ? $post->ppid . '/?goto=' . $post->pid : $post->pid . '/' ?>" onclick="return loadpage(this)" onmouseover="timer(this)" onmouseout="stoptimer(this)">
 			<div class="image-small"
 				style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;

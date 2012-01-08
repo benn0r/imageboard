@@ -284,6 +284,93 @@ textarea {
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
+#imageboard {
+	position: absolute;
+	top: 100px;
+	left: 320px;
+	right: 10px;
+}
+.boardimage {
+	position: absolute;
+}
+.boardimage a {
+	display: block;
+	margin: 2px;
+	position: relative;
+	z-index: 1;
+	background: #fff;
+}
+.boardimage a:hover {
+	box-shadow: 0px 0px 2px #777;
+}
+.boardimage a.activelarge {
+	box-shadow: 0px 0px 2px #777;
+	padding: 8px;
+	margin: -6px;
+	z-index: 30;
+	background: url(../../images/image.png);
+}
+.boardimage a .image-large {
+	display: none;
+}
+.boardimage a.active {
+	box-shadow: 0px 0px 2px #777;
+	padding: 8px;
+	z-index: 30;
+	background: url(../../images/image.png);
+	text-decoration: none;
+	width: 142px;
+}
+.boardimage a.active .image-small {
+	display: none;
+}
+.boardimage a.active .image-large {
+	display: block;
+}
+.boardimage .panel {
+	display: none;
+	min-width: 122px;
+}
+.boardimage a.active .panel, .boardimage a.activelarge .panel {
+	display: block;
+	padding: 10px 4px 0px 0px;
+}
+.boardimage .panel .panel-avatar {
+	width: 26px;
+	height: 26px;
+	float: left;
+}
+.boardimage .panel .panel-username {
+	line-height: 13px;
+	display: block;
+	float: left;
+	padding: 0px 0px 0px 4px;
+	font-size: 10px;
+	font-weight: bold;
+}
+.boardimage .panel .panel-datetime {
+	font-weight: normal;
+}
+.boardimage a .image-play {
+	width: 50px;
+	height: 50px;
+	background: url(../../images/play.png);
+	position: absolute;
+	left: 50%;
+	margin-left: -25px;
+	top: 50%;
+	margin-top: -25px;
+}
+.boardimage a:hover .image-play {
+	background: url(../../images/playhover.png);
+}
+.boardimage a.active .image-play {
+	/*margin-top: 2px;*/
+}
+.boardimage-deleted .image-small, .thread-image-deleted img, .comment-deleted {
+	opacity: .3;
+	filter: alpha(opacity=30);
+}
 
 body {
 	padding-top: 60px;
