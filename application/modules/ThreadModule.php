@@ -21,8 +21,8 @@
  * IndexModule
  * 
  * @author benn0r <benjamin@benn0r.ch>
- * @since 29102011
- * @version 29102011
+ * @since 2011/10/29
+ * @version 2012/01/08
  */
 class ThreadModule extends Module
 {
@@ -87,6 +87,20 @@ class ThreadModule extends Module
 			}
 		}
 		
+		if ($view->media && $_SESSION['user']) {
+			// load rating
+			$ratings = new MediaRatings();
+			$rowset = $ratings->find($view->media->mid, $user['uid']);
+			
+			if ($rowset->num_rows > 0) {
+				$view->rating = $rating = $rowset->fetch_object();
+			}
+			
+			// load ratings for this media
+			$rating = Module::init('Rating', $this);
+			$view->ratingbar = $rating->run(array('rating', 'show', $view->media->mid, 'parent'));
+		}
+		
 		$view->pid = $pid;
 		$view->mediaset = $allmedia;
 		
@@ -126,6 +140,7 @@ class ThreadModule extends Module
 					$media->image = $this->getConfig()->paths->uploads . '/' . date('Ymd', strtotime($row->inserttime)) . '/' . $row->mid . '.' . $row->image;
 					$media->type = $row->type;
 					$media->extid = $row->extid;
+					$media->pid = $row->pid;
 					
 					$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
 					
@@ -170,6 +185,8 @@ class ThreadModule extends Module
 				$media->image = $this->getConfig()->paths->uploads . '/' . date('Ymd', strtotime($row->inserttime)) . '/' . $row->mid . '.' . $row->image;
 				$media->type = $row->type;
 				$media->extid = $row->extid;
+				$media->pid = $row->pid;
+				$media->default = $row->default;
 				
 				$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
 				

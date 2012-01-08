@@ -19,11 +19,14 @@ foreach ($this->comments as $c):
 		</ul>
 	</div>
 	<div class="span11 commentcontent">
+		<?php if (count($c->mediaset) > 0): ?>
 		<ul class="media-grid">
 			<?php foreach ($c->mediaset as $media): ?>
-			<li><a href="<?php echo $this->baseUrl() . $media->image ?>" target="_blank"><img src="<?php echo $this->baseUrl() . $media->thumbnail ?>" /></a></li>
+			<li><a href="<?php echo $this->baseUrl() . 'thread/' . $media->pid . '/' . (!$media->default ? $media->mid . '/' : '') ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $media->thumbnail ?>" /></a></li>
 			<?php endforeach; ?>
 		</ul>
+		<?php endif; ?>
+		
 		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . nl2br(htmlentities($c->content, ENT_QUOTES)) ?>
 		<?php if($c->content) echo '<br />' ?><small><nobr><?php echo Printdate::get(strtotime($c->updatetime), $this->t) ?></nobr></small></p>
 	</div>

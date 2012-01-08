@@ -46,6 +46,30 @@ function loadComments() {
 		<img src="<?php echo $this->baseUrl() . $this->media->image ?>" <?php if ($size[0] > 820) { echo 'style="width: 820px"'; } ?> />
 	</a></div>
 	
+	<div class="info actions">
+		<?php if (isset($_SESSION['user'])): ?>
+		<div class="rating">
+			<button class="btn success<?php if ($this->rating && $this->rating->rating == 1) echo ' active'; ?>" rel="twipsy" data-placement="above" title="<?php echo $this->t->t('thread/like') ?>"><img src="<?php echo $this->baseUrl() ?>images/thumb_up.png" /><?php echo $this->t->t('thread/like') ?></button><button class="btn danger<?php if ($this->rating && $this->rating->rating == 0) echo ' active'; ?>" rel="twipsy" data-placement="above" title="<?php echo $this->t->t('thread/dislike') ?>"><img src="<?php echo $this->baseUrl() ?>images/thumb_down.png" /></button>
+			
+			<div class="bar">
+				<div class="like" rel="twipsy" data-placement="below" title="<?php echo sprintf($this->t->t('thread/likes'), $this->ratingbar->likes) ?>" style="width: <?php echo round(148 * $this->ratingbar->like / 100) ?>px"></div>
+				<div class="dislike" rel="twipsy" data-placement="below" title="<?php echo sprintf($this->t->t('thread/dislikes'), $this->ratingbar->dislikes) ?>" style="width: <?php echo round(148 * $this->ratingbar->dislike / 100) ?>px"></div>
+			</div>
+		</div>
+		<?php endif; ?>
+	
+		<div class="buttons">
+			<img src="<?php echo $this->baseUrl() ?>images/facebook.png" />
+			<img src="<?php echo $this->baseUrl() ?>images/twitter.png" />
+			<img src="<?php echo $this->baseUrl() ?>images/reddit.png" />
+			<img src="<?php echo $this->baseUrl() ?>images/furl.png" />
+			<img src="<?php echo $this->baseUrl() ?>images/delicious.png" />
+		</div>
+		
+		<!-- :after { clear: both; } does not work for me -->
+		<div style="clear:both"></div>
+	</div>
+	
 	<div class="row">
 		
 		<!-- comments -->
@@ -154,8 +178,44 @@ function loadComments() {
 		
 	</div>*/ ?>
 </div>
-<?php if (isset($_GET['goto'])): ?>
 <script type="text/javascript">
+$('.rating button').click(function() {
+	$('.rating button').removeClass('active');
+
+	if ($(this).hasClass('success')) {
+		$.get(BASE_URL + 'rating/like/<?php echo $this->media->mid ?>/', rating);
+	} else if ($(this).hasClass('danger')) {
+		$.get(BASE_URL + 'rating/dislike/<?php echo $this->media->mid ?>/', rating);
+	}
+	
+	$(this).addClass('active');
+});
+
+function rating(result) {
+	var json = jQuery.parseJSON(result);
+
+	if (json.like  || json.dislike) {
+		$('.rating .bar').hide();
+
+		//$('.rating .bar .like').twipsy({title:'new'});
+		
+		$('.rating .bar .like').attr('title', t.thread.likes.replace('%s', json.likes));
+		$('.rating .bar .like').twipsy();
+
+		$('.rating .bar .dislike').attr('title', t.thread.dislikes.replace('%s', json.dislikes));
+		$('.rating .bar .dislike').twipsy();
+
+		$('.rating .bar .like').css('width', Math.round(148 * json.like / 100));
+		$('.rating .bar .dislike').css('width', Math.round(148 * json.dislike / 100));
+		
+		$('.rating .bar').fadeIn();
+
+		$('.rating .bar .like, .rating .bar .dislike').twipsy();
+	}
+}
+</script>
+<?php if (isset($_GET['goto'])): ?>
+<script type="text/javascript">	
 $('html, body').animate({
     scrollTop: $('#post<?php echo $_GET['goto'] ?>').offset().top
 }, 500);

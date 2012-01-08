@@ -64,11 +64,25 @@ class RatingModule extends Module
 			
 			$return = new stdClass();
 			
-			// lets always round likes up :)
-			$return->like = ceil($like / (($like + $dislike) / 100));
+			// generate likes in percent
+			if ($like + $dislike == 0) {
+				$return->like = 0;
+			} else {
+				$return->like = round($like / (($like + $dislike) / 100));
+			}
+			$return->likes = $like;
 			
-			// lets always round dislikes up
-			$return->dislike = floor($dislike / (($like + $dislike) / 100));
+			// generate dislikes in percent
+			if ($like + $dislike == 0) {
+				$return->dislike = 0;
+			} else {
+				$return->dislike = round($dislike / (($like + $dislike) / 100));
+			}
+			$return->dislikes = $dislike;
+			
+			if ($args[3] == 'parent') {
+				return $return;
+			}
 			
 			echo json_encode($return);
 		}
