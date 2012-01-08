@@ -303,6 +303,8 @@
 
 	function search() {
 		$.get(BASE_URL + 'search/' + $('.search input[type=text]').val(), function(result) {
+			$('.searchresults').show();
+			
 			var results = jQuery.parseJSON(result);
 			var container = $('.searchresults');
 			
@@ -341,7 +343,7 @@
 		$('.alert-message').alert();
 		$('*[rel=twipsy]').twipsy();
 
-		search();
+		//search();
 	});
 	</script>
 </head>
@@ -360,7 +362,7 @@
 		
 		<form class="pull-left search" method="post">
 			<input type="text" autocomplete="off" onclick="$(this).select()" name="search" value="benn0r" />
-			<div class="searchresults">
+			<div class="searchresults hide">
 				
 			</div>
 		</form>
