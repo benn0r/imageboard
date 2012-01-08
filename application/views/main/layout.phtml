@@ -301,6 +301,17 @@
 		}, 10);
 	};
 
+	function search() {
+		$.get(BASE_URL + 'search/' + $('.search input[type=text]').val(), function(result) {
+			var results = jQuery.parseJSON(result);
+			var container = $('.searchresults');
+			
+			for (var i = 0; i < results.length; i++) {
+				container.append('<div class="searchresult"><h4>' + results[i].content + '</h4><p>' + results[i].content + '</p></div>');
+			}
+		});
+	}
+
 	$(document).ready(function() {
 		<?php if (!$this->user): ?>
 		// update login-forward
@@ -328,8 +339,9 @@
 		//$('#modal-upload').modal('show');
 
 		$('.alert-message').alert();
-
 		$('*[rel=twipsy]').twipsy();
+
+		search();
 	});
 	</script>
 </head>
@@ -337,17 +349,20 @@
 	<div class="header">
 		<h5 class="logo"></h5>
 				
-		<ul class="nav">
+		<!-- <ul class="nav">
 			<li><a href=""><?php echo $this->t->t('navi/upload') ?></a></li>
 			<li><a href=""><?php echo $this->t->t('navi/profile') ?></a></li>
 			<li><a href=""><?php echo $this->t->t('navi/settings') ?></a></li>
 			<?php if (!$this->user): ?>
 			<li><a href="<?php echo $this->baseUrl() ?>register" class="btn large"><?php echo $this->t->t('register/link') ?></a></li>
 			<?php endif; ?>
-		</ul>
+		</ul> -->
 		
-		<form class="pull-left" method="post">
-			<input type="text" autocomplete="off" class="search-input input-default" onclick="$(this).select()" name="search" value="Search" />
+		<form class="pull-left search" method="post">
+			<input type="text" autocomplete="off" onclick="$(this).select()" name="search" value="benn0r" />
+			<div class="searchresults">
+				
+			</div>
 		</form>
 	</div>
 	

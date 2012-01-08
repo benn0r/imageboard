@@ -25,11 +25,13 @@ class Searchindex extends Model {
 		
 	}
 	
-	public function addData($table, $pk, $content) {
+	public function addData($table, $pk, $content, $parent = 0, $image = '') {
 		$this->insert(array(
 				'table' => $table,
 				'pk' => $pk,
 				'content' => $content,
+				'parent' => $parent,
+				'image' => $image,
 		));
 	}
 	

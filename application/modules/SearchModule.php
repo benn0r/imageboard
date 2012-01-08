@@ -28,12 +28,14 @@ class SearchModule extends Module
 {
 	
 	public function run(array $args) {
+		$search = new Search($this->getDb());
 		$term = $args[1];
 		
-		$search = new Search($this->getDb());
+		if ($term == 'index') {
+			$search->index();
+		}
 		
 		$search->addTerm($term);
-		
 		$search->search();
 		
 	}

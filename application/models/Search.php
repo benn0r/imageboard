@@ -46,15 +46,15 @@ class Search {
 		$db->exec('TRUNCATE TABLE board_search');
 		
 		// add users
-		$users = $db->select('SELECT uid,username FROM board_users');
+		$users = $db->select('SELECT uid,username,avatar FROM board_users');
 		while (($row = $users->fetch_object()) != null) {
-			$index->addData(self::TABLE_USERS, $row->uid, $row->username);
+			$index->addData(self::TABLE_USERS, $row->uid, $row->username, 0, 'avatars/' . $row->uid . '.' . $row->avatar);
 		}
 		
 		// add posts
-		$posts = $db->select('SELECT pid,content FROM board_posts WHERE status = 1 AND content != ""');
+		$posts = $db->select('SELECT pid,ppid,content FROM board_posts WHERE status = 1 AND content != ""');
 		while (($row = $posts->fetch_object()) != null) {
-			$index->addData(self::TABLE_POSTS, $row->pid, $row->content);
+			$index->addData(self::TABLE_POSTS, $row->pid, $row->content, $row->ppid);
 		}
 		
 	}
@@ -68,12 +68,15 @@ class Search {
 		}
 		
 		$results = $db->select('SELECT *,MATCH (content) AGAINST ("' . $terms . '" WITH QUERY EXPANSION) AS score FROM board_search
-				WHERE MATCH (content) AGAINST ("' . $terms . '" WITH QUERY EXPANSION)');
+				WHERE MATCH (content) AGAINST ("' . $terms . '" WITH QUERY EXPANSION)
+				GROUP BY `table`,pk');
+		
+		$json = array();
 		while (($row = $results->fetch_object()) != null) {
-			print_r($row);
+			$json[] = $row;
 		}
 		
-		exit;
+		echo json_encode($json);
 		
 		/*$results = array();
 		foreach ($this->enabled as $func) {

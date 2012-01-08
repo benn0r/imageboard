@@ -203,6 +203,18 @@ textarea {
 	padding: 0px 0px 40px 180px;
 }
 
+.search {
+	line-height: 60px;
+}
+.searchresults {
+	background: #ffffff;
+	position: absolute;
+	width: 400px;
+	z-index: 200;
+	top: 45px;
+	padding: 10px;
+}
+
 .info {
 	border-bottom: 1px solid #dddddd;
 	padding-left: 20px;
