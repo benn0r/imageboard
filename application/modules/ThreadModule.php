@@ -65,7 +65,7 @@ class ThreadModule extends Module
 			$allmedia[] = $media;
 		}
 		
-		if ($args[2]) {
+		if ($args[2] && $args[2] > 0) {
 			$view->mid = $mid = $args[2];
 			foreach ($allmedia as $media) {
 				if ($media->mid == $mid) {
