@@ -56,6 +56,8 @@ class Helper extends Application_Helper
 				return 'Shoutbox';
 			case 'thread':
 				return 'Thread';
+			case 'rating':
+				return 'Rating';
 			case 'delete':
 				return 'Delete';
 			default:
