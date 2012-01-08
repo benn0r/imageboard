@@ -199,6 +199,9 @@ textarea {
 	margin-bottom: 30px;
 	padding-left: 180px;
 }
+.commentloader {
+	padding: 0px 0px 40px 180px;
+}
 
 .info {
 	border-bottom: 1px solid #dddddd;
@@ -252,10 +255,6 @@ textarea {
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	border-color: #57a957 #57a957 #3d773d;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	
-	-webkit-border-radius: 2px 0px 0px 2px;
-	-moz-border-radius: 2px 0px 0px 2px;
-	border-radius: 2px 0px 0px 2px;
 }
 .rating .bar .dislike {
 	background-color: #c43c35;
@@ -271,10 +270,6 @@ textarea {
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	border-color: #c43c35 #c43c35 #882a25;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	
-	-webkit-border-radius: 0px 2px 2px 0px;
-	-moz-border-radius: 0px 2px 2px 0px;
-	border-radius: 0px 2px 2px 0px;
 }
 	
 

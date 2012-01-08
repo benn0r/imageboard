@@ -4,30 +4,6 @@ $size = getimagesize($this->media->image);
 $user = $this->user;
 
 ?>
-<script type="text/javascript">
-function loadCommentForm() {
-	$.get('<?php echo $this->baseUrl() ?>upload/?form=1', function(html) {
-		$('#comment-form').html(html);
-	});
-}
-
-var page = 0;
-
-function loadComments() {
-	page = page + 1;
-	
-	$.get(BASE_URL + 'thread/<?php echo $this->thread->pid ?>/?load=' + page, function(result) {
-		$('.comment-loader').hide();
-		$('.comments').append(result);
-	});
-}
-
-/*$(window).scroll(function(){
-	if ($(window).scrollTop() == $(document).height() - $(window).height()){
-		loadComments();
-	}
-});*/
-</script>
 <div class="thread">
 	<?php if (count($this->mediaset) > 1): ?>
 	<ul class="media-grid">
@@ -213,6 +189,34 @@ function rating(result) {
 		$('.rating .bar .like, .rating .bar .dislike').twipsy();
 	}
 }
+
+function loadCommentForm() {
+	$.get('<?php echo $this->baseUrl() ?>upload/?form=1', function(html) {
+		$('#comment-form').html(html);
+	});
+}
+
+var page = 0;
+function loadComments() {
+	page = page + 1;
+
+	$('.commentloader button').button('loading');
+	
+	$.get(BASE_URL + 'thread/<?php echo $this->thread->pid ?>/?load=' + page, function(result) {
+		$('.commentloader').hide();
+
+		var container = $('<div>' + result + '</div>');
+
+		$('.comments').append(container);
+
+		$('html, body').animate({
+		    scrollTop: $(container.find('.comment').first()).offset().top  - 30
+		}, 500);
+	});
+}
+
+$('.alert-message').alert();
+$('*[rel=twipsy]').twipsy();
 </script>
 <?php if (isset($_GET['goto'])): ?>
 <script type="text/javascript">	

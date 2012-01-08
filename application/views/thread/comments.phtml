@@ -33,38 +33,12 @@ foreach ($this->comments as $c):
 </div>
 <?php endforeach; ?>
 <?php if ($this->active < $this->total): ?>
-<div class="comment-loader">
-	<a href="" class="btn" onclick="loadComments(); return false;"><?php echo $this->t->t('thread/loadcomments') ?></a>
+<div class="commentloader">
+	<button class="btn" onclick="loadComments(); return false;" data-loading-text="<?php echo $this->t->t('thread/loadingcomments') ?>"><?php echo $this->t->t('thread/loadcomments') ?></button>
 </div>
 <?php endif; ?>
 
-<?php /* <div class="thread-text">
-		<?php if ($c->media && $c->media->type == 4): // Video ?>
-		<div class="comment-media">
-			<a onclick="$(this).parent().hide(); $(this).parent().parent().find('.comment-video').show(); return false;" href="http://www.youtube.com/watch?v=<?php echo $c->media->extid ?>" class="comment-image" target="_blank" title="<?php echo $this->t->t('thread/original') ?>">
-				<img src="<?php echo $this->baseUrl() . $c->media->thumbnail ?>" alt="Thumbnail" />
-			</a>
-			<div class="comment-media-info-video">
-				<p class="videoname"><?php echo htmlspecialchars(strip_tags(strlen($c->media->name) > 33 ? substr($c->media->name, 0, 30) . '...' : $c->media->name)) ?></p>
-				<p class="videosrc"><?php echo sprintf($this->t->t('upload/youtube'), '<a href="' . $c->media->author->uri . '" target="_blank">' . $c->media->author->name .  '</a>', '<a href="' . $c->media->source->uri . '" target="_blank">' . $c->media->source->name .  '</a>') ?></p>
-			</div>
-		</div>
-		<div class="comment-video">
-			<iframe width="380" height="223" src="http://www.youtube.com/embed/<?php echo $c->media->extid ?>" frameborder="0" allowfullscreen></iframe>
-		</div>
-		<?php elseif ($c->media): ?>
-		<div class="comment-media">
-			<a href="<?php echo $this->baseUrl() . $c->media->image ?>" class="comment-image" target="_blank" title="<?php echo $this->t->t('thread/original') ?>">
-				<img src="<?php echo $this->baseUrl() . $c->media->thumbnail ?>" alt="Thumbnail" />
-			</a>
-			<div class="comment-media-info">
-				<p><span class="thread-data"><?php echo $this->t->t('thread/size') ?></span><span class="thread-value"><?php echo $size[0] . 'x' . $size[1] ?></span></p>
-				<p><span class="thread-data"><?php echo $this->t->t('thread/filesize') ?></span><span class="thread-value"><?php echo Printsize::filesize($image) ?></span></p>
-				<p><span class="thread-data"><?php echo $this->t->t('thread/filename') ?></span><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($c->filename) > 15 ? substr($c->filename, 0, 12) . '...' . $c->image : $c->filename)) ?></span></p>
-			</div>
-		</div>
-		<?php endif; ?>
-		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . nl2br(htmlentities($c->content, ENT_QUOTES)) ?></p>
-		<p class="thread-date"><?php echo Printdate::get(strtotime($c->updatetime), $this->t) ?></p>
-	</div>
-	<div style="clear: both"></div> */ ?>
+<script type="text/javascript">
+$('.alert-message').alert();
+$('*[rel=twipsy]').twipsy();
+</script>
