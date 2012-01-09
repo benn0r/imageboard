@@ -241,7 +241,7 @@ textarea {
 .rating .success img {
 	margin-right: 10px;
 }
-.rating .success img, .rating .danger img {
+.rating .success img, .rating .danger img, .mediainfo button img {
 	vertical-align: middle;
 }
 .rating .bar {
@@ -370,6 +370,19 @@ textarea {
 .boardimage-deleted .image-small, .thread-image-deleted img, .comment-deleted {
 	opacity: .3;
 	filter: alpha(opacity=30);
+}
+
+.mediainfo p {
+	float: right;
+	padding: 10px 0px 0px 0px;
+	font-size: 30px;
+}
+.mediainfo {
+	float: left;
+	padding-left: 10px;
+}
+.mediainfo button {
+	margin-left: 10px;
 }
 
 body {

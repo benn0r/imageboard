@@ -33,14 +33,20 @@ $user = $this->user;
 			</div>
 		</div>
 		<?php endif; ?>
+		
+		<div class="mediainfo">
+			<button class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/sharedescr') ?>"><?php echo $this->t->t('thread/share') ?></button><button class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/report') ?>"><img src="<?php echo $this->baseUrl() ?>images/report.png" /></button>
+		</div>
+		
+		<!-- <p rel="twipsy" title="<?php echo sprintf($this->t->t($this->visits == 1 ? 'thread/visits' : 'thread/visitsplural'), $this->visits) ?>"><?php echo $this->visits ?></p> -->
 	
-		<div class="buttons">
+		<!-- <div class="buttons">
 			<img src="<?php echo $this->baseUrl() ?>images/facebook.png" />
 			<img src="<?php echo $this->baseUrl() ?>images/twitter.png" />
 			<img src="<?php echo $this->baseUrl() ?>images/reddit.png" />
 			<img src="<?php echo $this->baseUrl() ?>images/furl.png" />
 			<img src="<?php echo $this->baseUrl() ?>images/delicious.png" />
-		</div>
+		</div> -->
 		
 		<!-- :after { clear: both; } does not work for me -->
 		<div style="clear:both"></div>
