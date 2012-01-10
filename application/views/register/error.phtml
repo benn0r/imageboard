@@ -1,5 +1,8 @@
-<div class="error-box">
+<div class="page-header">
 	<h2><?php echo $this->t->t('register/disabledtitle') ?></h2>
+</div>
+
+<div class="alert-message block-message info">
 	<p><?php echo $this->t->t('register/disabled') ?></p>
 	<?php if ($this->getConfig()->register->disabledmessage): ?>
 	<p><?php echo $this->t->t($this->getConfig()->register->disabledmessage) ?></p>
