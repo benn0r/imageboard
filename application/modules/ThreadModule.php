@@ -219,6 +219,11 @@ class ThreadModule extends Module
 			$visits->insert($data);
 		}
 		
+		/**
+		 * library for captcha
+		 */
+		require_once('recaptchalib.php');
+		
 		if ($_GET['ajax'] == 1) {
 			$this->render('thread', 'thread');
 		} else {

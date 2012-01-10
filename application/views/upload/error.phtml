@@ -1,6 +1,8 @@
+<?php if(!$this->comment): ?>
 <div class="page-header">
 	<h2><?php echo $this->t->t('upload/disabledtitle') ?></h2>
 </div>
+<?php endif; ?>
 
 <div class="alert-message block-message warning">
 	<p><?php echo $this->t->t('upload/disabled') ?></p>

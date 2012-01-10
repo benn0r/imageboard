@@ -72,22 +72,32 @@ $user = $this->user;
 				</div>
 			</div>
 			
-			<div class="commentbutton">
+			<?php
 			
-				<button class="btn success" onclick="$('.commentform').fadeIn('fast'); $(this).parent().hide(); return false;"><?php echo $this->t->t('thread/writenew') ?></button>
+			$this->comment = true;
+			$this->ppid = $this->thread->pid;
 			
-			</div>
-			
-			<div class="commentform hide">
-				<?php
-				
-				$this->comment = true;
-				$this->ppid = $this->thread->pid;
-				
-				echo $this->render('upload', 'form');
-				
+			if ($this->getConfig()->upload->disabled) {
+				echo '<div class="commentbutton">';
+				echo $this->render('upload', 'error');
+				echo '</div>';
+			} elseif (!isset($_SESSION['user']) && !$this->getConfig()->upload->anonenabled) {
+				echo '<div class="commentbutton">';
+				echo $this->render('upload', 'anonerror');
+				echo '</div>';
+			} else {
 				?>
-			</div>
+				<div class="commentbutton">
+					<button class="btn success" onclick="$('.commentform').fadeIn('fast'); $(this).parent().hide(); return false;"><?php echo $this->t->t('thread/writenew') ?></button>
+				</div>
+				
+				<div class="commentform hide">
+				<?php echo $this->render('upload', 'form'); ?>
+				</div>
+				<?php
+			}
+			
+			?>
 			
 			<?php echo $this->render('thread', 'comments') ?>
 		</div>
