@@ -22,8 +22,8 @@ $user = $this->user;
 		<img src="<?php echo $this->baseUrl() . $this->media->image ?>" <?php if ($size[0] > 820) { echo 'style="width: 820px"'; } ?> />
 	</a></div>
 	
+	<?php if (isset($_SESSION['user'])): ?>
 	<div class="info actions">
-		<?php if (isset($_SESSION['user'])): ?>
 		<div class="rating">
 			<button class="btn success<?php if ($this->rating && $this->rating->rating == 1) echo ' active'; ?>" rel="twipsy" data-placement="above" title="<?php echo $this->t->t('thread/like') ?>"><img src="<?php echo $this->baseUrl() ?>images/thumb_up.png" /><?php echo $this->t->t('thread/like') ?></button><button class="btn danger<?php if ($this->rating && $this->rating->rating == 0) echo ' active'; ?>" rel="twipsy" data-placement="above" title="<?php echo $this->t->t('thread/dislike') ?>"><img src="<?php echo $this->baseUrl() ?>images/thumb_down.png" /></button>
 			
@@ -32,7 +32,6 @@ $user = $this->user;
 				<div class="dislike" rel="twipsy" data-placement="below" title="<?php echo sprintf($this->t->t('thread/dislikes'), $this->ratingbar->dislikes) ?>" style="width: <?php echo round(148 * $this->ratingbar->dislike / 100) ?>px"></div>
 			</div>
 		</div>
-		<?php endif; ?>
 		
 		<div class="mediainfo">
 			<button class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/sharedescr') ?>"><?php echo $this->t->t('thread/share') ?></button><button class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/report') ?>"><img src="<?php echo $this->baseUrl() ?>images/report.png" /></button>
@@ -51,6 +50,7 @@ $user = $this->user;
 		<!-- :after { clear: both; } does not work for me -->
 		<div style="clear:both"></div>
 	</div>
+	<?php endif; ?>
 	
 	<div class="row">
 		
