@@ -1,6 +1,10 @@
-<div id="content">
-	<div class="error-box-upload" id="error-box-upload"><p><?php echo $this->error ?></p></div>
+<div class="page-header">
+	<h2><?php echo $this->t->t('upload/disabledtitle') ?></h2>
 </div>
-<script type="text/javascript">
-parent.uploaderror(document.getElementById('content').innerHTML);
-</script>
+
+<div class="alert-message block-message warning">
+	<p><?php echo $this->t->t('upload/disabled') ?></p>
+	<?php if ($this->getConfig()->upload->disabledmessage): ?>
+	<p><?php echo $this->t->t($this->getConfig()->upload->disabledmessage) ?></p>
+	<?php endif; ?>
+</div>

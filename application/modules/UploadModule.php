@@ -24,7 +24,7 @@
  * 
  * @author benn0r <benjamin@benn0r.ch>
  * @since 2011/11/02
- * @version 2011/12/18
+ * @version 2012/01/10
  */
 class UploadModule extends Module
 {
@@ -236,19 +236,11 @@ class UploadModule extends Module
 		unset($_SESSION['media']);
 		
 		if ($r->ppid) {
+			// @todo load only comments new
 			$return->forward = $this->view()->baseUrl() . 'thread/' . $r->ppid . '/';
 		} else {
 			$return->forward = $this->view()->baseUrl() . 'thread/' . $pid . '/';
 		}
-	
-		/*if ($r->ppid > 0 && $r->replyto >= 0) {
-			// its a comment, load the thread
-			//echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . 'thread/' . $r->ppid . '/\'); hideUpload();</script>';
-			$return->forward = $this->view()->baseUrl() . 'thread/' . $r->ppid;
-		} else {
-			//$this->render('upload', 'form');
-			//echo '<script type="text/javascript">loadlink(\'' . $this->view()->baseUrl() . '1\'); hideUpload();</script>';
-		}*/
 		
 		echo json_encode($return);
 		
@@ -268,14 +260,47 @@ class UploadModule extends Module
 			$_SESSION['media'] = array();
 		}
 		
+		
+		/**
+		 * library for captcha
+		 */
+		require_once('recaptchalib.php');
+		
 		switch ($args[1]) {
 			case 'form':
 				$this->render('upload', 'uploadform');
 				return;
 			case 'create':
 				$return = new stdClass();
+				
+				$config = $this->getConfig();
+				if ($config->upload->disabled) {
+					$return->error = $this->getLanguage()->t('upload/noaccess');
+					echo json_encode($return); return;
+				}
+				
+				if (!$_SESSION['user'] && !$config->upload->anonenabled) {
+					$return->error = $this->getLanguage()->t('upload/noaccess');
+					echo json_encode($return); return;
+				}
+				
+				if ($this->getConfig()->upload->captcha && !isset($_SESSION['user']) && !isset($_SESSION['proved_as_a_human'])) {
+					$resp = recaptcha_check_answer($this->getConfig()->captcha->privatekey,
+							$r->getServer('REMOTE_ADDR'),
+							$r->recaptcha_challenge_field,
+							$r->recaptcha_response_field);
+				
+					if (!$resp->is_valid) {
+						$return->error = $this->getLanguage()->t('upload/invalidcaptcha');
+						echo json_encode($return); return;
+					} elseif ($this->getConfig()->upload->captcha_once == 1) {
+						$_SESSION['proved_as_a_human'] = true;
+					}
+				}
+				
 				if (!isset($_SESSION['media'])) {
 					$return->error = $this->getLanguage()->t('upload/errorsession');
+					echo json_encode($return); return;
 				} elseif (!$r->ppid && count($_SESSION['media']) == 0) {
 					$return->error = $this->getLanguage()->t('upload/errornomedia');
 					echo json_encode($return); return;
@@ -373,6 +398,17 @@ class UploadModule extends Module
 					
 					return $this->image($image);
 				}
+		}
+		
+		$config = $this->getConfig();
+		if ($config->upload->disabled) {
+			$this->layout('upload', 'error');
+			return;
+		}
+		
+		if (!$_SESSION['user'] && !$config->upload->anonenabled) {
+			$this->layout('upload', 'anonerror');
+			return;
 		}
 		
 		$this->layout('upload', 'form');
