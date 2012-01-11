@@ -385,6 +385,19 @@ textarea {
 	margin-left: 10px;
 }
 
+.usercomment h4 {
+	font-size: 13px;
+	padding: 0px;
+	margin: 0px;
+}
+.usercomment h4 small {
+	font-size: 10px;
+}
+.usercomment p {
+	padding: 0px;
+	margin: 0px 0px 10px 0px;
+}
+
 body {
 	padding-top: 60px;
 	background-color: #eeeeee;

@@ -38,27 +38,42 @@
 	</div>
 	
 	<div class="row">
-		<div class="span9 comments">
+		<div class="span8 comments">
 			<?php echo $this->render('user', 'form') ?>
 		</div>
-		<div class="span5 comments">
-			<p>asdf</p>
+		<div class="span6">
+			<div class="row">
+				<div class="span3">
+					<dl>
+						<dt><?php echo $this->t->t('profile/birthday') ?></dt>
+						<dd><?php echo floor((time() - strtotime($this->u->birthday)) / (3600 * 24 * 365)) ?></dd>
+						
+						<dt><?php echo $this->t->t('profile/registered') ?></dt>
+						<dd><?php echo Printdate::get(strtotime($this->u->regtime), $this->t) ?></dd>
+						
+						<dt><?php echo $this->t->t('profile/grade') ?></dt>
+						<dd><?php echo $this->u->stylename ?></dd>
+					</dl>
+				</div>
+				<div class="span3">
+					<dl>
+						<dt><?php echo $this->t->t('profile/threads') ?></dt>
+						<dd><?php echo $this->cthreads ?></dd>
+						
+						<dt><?php echo $this->t->t('profile/comments') ?></dt>
+						<dd><?php echo $this->ccomments ?></dd>
+					</dl>
+				</div>
+			</div>
+		
+			<div class="user-info">
+
+				<?php foreach ($this->threads as $t): ?><a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a><?php endforeach; ?>
+				<div style="clear: both"></div>
+				<div class="topvisits-box">
+					<?php foreach ($this->threads as $t): ?><a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a><?php endforeach; ?>
+				</div>
+			</div>
 		</div>
 	</div>
-	
-	<div class="user-info">
-		<div class="info-box">
-			<div class="thread-data"><?php echo $this->t->t('profile/birthday') ?><div class="thread-value"><?php echo floor((time() - strtotime($this->u->birthday)) / (3600 * 24 * 365)) ?></div></div>
-			<div class="thread-data"><?php echo $this->t->t('profile/registered') ?><div class="thread-value"><?php echo Printdate::get(strtotime($this->u->regtime), $this->t) ?></div></div>
-			<div class="thread-data"><?php echo $this->t->t('profile/grade') ?><div class="thread-value"><?php echo $this->u->stylename ?></div></div>
-			<div class="thread-data"><?php echo $this->t->t('profile/threads') ?><div class="thread-value"><?php echo $this->cthreads ?></div></div>
-			<div class="thread-data"><?php echo $this->t->t('profile/comments') ?><div class="thread-value"><?php echo $this->ccomments ?></div></div>
-		</div>
-		<?php foreach ($this->threads as $t): ?><a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a><?php endforeach; ?>
-		<div style="clear: both"></div>
-		<div class="topvisits-box">
-			<?php foreach ($this->threads as $t): ?><a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a><?php endforeach; ?>
-		</div>
-	</div>
-	<div style="clear: both"></div>
 </div>
