@@ -37,12 +37,12 @@
 				<div class="inline-inputs">
 					<input type="file" name="file" id="file" />
 					
-					<![if !IE]>
-					<button class="btn" data-loading-text="<?php echo $this->t->t('upload/uploading') ?>" id="filebutton" onclick="$('#file').click(); return false;"><?php echo $this->t->t('upload/nofile') ?></button>
 					<script type="text/javascript">
+					if (navigator.userAgent.search(/Firefox/) > -1) {
+						document.write('<button class="btn" data-loading-text="<?php echo $this->t->t('upload/uploading') ?>" id="filebutton" onclick="$(\'#file\').click(); return false;"><?php echo $this->t->t('upload/nofile') ?></button>');
 						$('#file').hide();
+					}
 					</script>
-					<![endif]>
 				</div>
 			</div>
 		</div>

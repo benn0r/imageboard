@@ -50,18 +50,6 @@ class SettingsModule extends Module
 		$users = new Users();
 		
 		switch ($view->a) {
-			case 'profile':
-				if ($r->isPost()) {
-					$users->update(array(
-							'homepage' => $r->homepage,
-							'hobbies' => $r->hobbies,
-							'sex' => (int)$r->sex,
-							'birthday' => date('Y-m-d', strtotime($r->birthday)),
-					), 'uid = ' . $user['uid']);
-				}
-				
-				$view->profile = $users->find($user['uid']);
-				break;
 			case 'login':
 				if ($r->isPost()) {
 					if ($r->password != $r->passwordrepeat) {
@@ -121,6 +109,21 @@ class SettingsModule extends Module
 				}
 				
 				$view->notifications = $users->find($user['uid']);
+				break;
+			case 'profile':
+			default:
+				$view->a = 'profile';
+				
+				if ($r->isPost()) {
+					$users->update(array(
+							'homepage' => $r->homepage,
+							'hobbies' => $r->hobbies,
+							'sex' => (int)$r->sex,
+							'birthday' => date('Y-m-d', strtotime($r->birthday)),
+					), 'uid = ' . $user['uid']);
+				}
+			
+				$view->profile = $users->find($user['uid']);
 				break;
 		}
 		

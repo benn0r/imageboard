@@ -26,7 +26,7 @@
 		<div class="clearfix">
 			<label for="birthday"><?php echo $this->t->t('settings/birthday') ?></label>
 			<div class="input">
-				<input id="birthday" type="text" name="birthday" value="<?php echo date($this->t->t('main/date'), strtotime($this->profile->birthday)) ?>" class="span3" />
+				<input id="birthday" type="text" name="birthday" value="<?php echo ($this->profile->birthday != '0000-00-00') ? date($this->t->t('main/date'), strtotime($this->profile->birthday)) : '' ?>" class="span3" />
 				<span class="help-block"><?php echo $this->t->t('settings/birthdayhelp') ?></span>
 			</div>
 		</div>
