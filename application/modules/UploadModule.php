@@ -406,7 +406,7 @@ class UploadModule extends Module
 			return;
 		}
 		
-		if (!$_SESSION['user'] && !$config->upload->anonenabled) {
+		if (!isset($_SESSION['user']) && !$config->upload->anonenabled) {
 			$this->layout('upload', 'anonerror');
 			return;
 		}

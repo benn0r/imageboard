@@ -44,7 +44,7 @@ class SettingsModule extends Module
 		}
 		
 		$view = $this->view();
-		$view->a = $args[1];
+		$view->a = isset($args[1]) ? $args[1] : '';
 		$view->r = $r;
 		
 		$users = new Users();
@@ -127,7 +127,7 @@ class SettingsModule extends Module
 				break;
 		}
 		
-		if ($_GET['ajax']) {
+		if (isset($_GET['ajax'])) {
 			$this->render('settings', 'form');
 		} else {
 			$this->layout('settings', 'form');

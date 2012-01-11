@@ -87,7 +87,7 @@ class ThreadModule extends Module
 			}
 		}
 		
-		if ($view->media && $_SESSION['user']) {
+		if ($view->media && isset($_SESSION['user'])) {
 			// load rating
 			$ratings = new MediaRatings();
 			$rowset = $ratings->find($view->media->mid, $user['uid']);
@@ -165,7 +165,7 @@ class ThreadModule extends Module
 		// Wenn es keine Kommentare mehr gibt wollen wir den Link nicht sehen
 		$total = $posts->countChilds($pid, $user['grade'] >= 8 ? true : false);
 		$view->total = $total;
-		$view->active = 5 * ($_GET['load']) + 5;
+		$view->active = 5 * (isset($_GET['load'])) + 5;
 		
 		$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false);
 		$arr = array();
@@ -224,7 +224,7 @@ class ThreadModule extends Module
 		 */
 		require_once('recaptchalib.php');
 		
-		if ($_GET['ajax'] == 1) {
+		if (isset($_GET['ajax']) == 1) {
 			$this->render('thread', 'thread');
 		} else {
 			$this->layout('thread', 'thread');
