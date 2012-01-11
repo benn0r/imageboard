@@ -32,7 +32,7 @@ class UserModule extends Module
 		$users = new Users();
 		$posts = new Posts();
 		$comments = new UserComments();
-		$uid = $args[1];
+		$uid = isset($args[1]) ? $args[1] : 0;
 		
 		$view->u = $users->find($uid); // Angezeigter User
 		$view->user = $this->getUser(); // Eingeloggter User
@@ -84,7 +84,7 @@ class UserModule extends Module
 			$media->updatetime = $post->updatetime;
 			$media->pid = $post->pid;
 			$media->ppid = $post->ppid;
-			$media->status = $post->astatus;
+			$media->status = $post->status;
 						
 			$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
 			$media->lthumbnail = $thumb->getThumbnail($media, 142, 206);
@@ -109,8 +109,13 @@ class UserModule extends Module
 		$percent = array();
 		foreach ($activity as $i) {
 			$a = array();
-			$a['percent'] = 100 * $i->total / $highest;
-			//$a['percent'] = rand(0, 100);
+			
+			if ($highest > 0) {
+				$a['percent'] = 100 * $i->total / $highest;
+			} else {
+				$a['percent'] = 0;
+			}
+			
 			$a['points'] = $i->total;
 			$a['threads'] = $i->threads;
 			$a['comments'] = $i->comments;
@@ -121,7 +126,7 @@ class UserModule extends Module
 		}
 		$view->activity = $percent;
 		
-		if ($_GET['ajax']) {
+		if (isset($_GET['ajax'])) {
 			$this->render('user', 'show');
 		} else {
 			$this->layout('user', 'show');

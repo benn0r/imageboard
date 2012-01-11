@@ -1,6 +1,6 @@
 <?php
 foreach ($this->comments as $c):
-	if ($c->media) {
+	if (isset($c->media)) {
 		$image = $this->getConfig()->paths->uploads  . '/' . 
 			date('Ymd', strtotime($c->updatetime)) . '/' . 
 			$c->mid . '.' . $c->image;

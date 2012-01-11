@@ -65,7 +65,8 @@ class Users extends Model {
 			SELECT *
 			FROM board_posts AS a
 			LEFT JOIN board_media AS b ON a.pid = b.pid
-			WHERE b.mid IS NOT NULL AND uid = ' . (int)$uid . ' AND a.status = 1
+			LEFT JOIN board_users AS c ON a.uid = c.uid
+			WHERE b.mid IS NOT NULL AND a.uid = ' . (int)$uid . ' AND a.status = 1
 			ORDER BY a.pid DESC
 			LIMIT 0,' . $limit . ' 
 		');

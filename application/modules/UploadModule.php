@@ -195,8 +195,8 @@ class UploadModule extends Module
 			$pmedia->insert(array(
 					'pid' => $pid,
 					'image' => $media->getFiletype(),
-					'extid' => $media->extid,
-					'name' => $media->name,
+					'extid' => isset($media->extid) ? $media->extid : '',
+					'name' => isset($media->name) ? $media->name : '',
 					'description' => $media->description,
 					'published' => date('Y-m-d H:i:s', $media->published),
 					'author_name' => $media->author ? $media->author->name : '',
@@ -205,7 +205,7 @@ class UploadModule extends Module
 					'source_uri' => $media->source ? $media->source->uri : '',
 					'type' => $media->getPlugin()->id(),
 					'filename' => $media->filename,
-					'default' => $media->default === true ? 1 : 0,
+					'default' => isset($media->default) && $media->default === true ? 1 : 0,
 			));
 	
 			$media->mid = $this->_db->lastInsertId();

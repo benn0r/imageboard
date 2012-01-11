@@ -33,7 +33,13 @@
 			<label for="file"><?php echo $this->t->t('settings/avatar') ?></label>
 			<div class="input">
 				<input type="file" name="avatar" id="file" />
-				<script type="text/javascript">$('#file').customFileInput();</script>
+				
+				<script type="text/javascript">
+				if (navigator.userAgent.search(/Firefox/) > -1) {
+					document.write('<button class="btn" data-loading-text="<?php echo $this->t->t('upload/uploading') ?>" id="filebutton" onclick="$(\'#file\').click(); return false;"><?php echo $this->t->t('upload/nofile') ?></button>');
+					$('#file').hide();
+				}
+				</script>
 			</div>
 		</div>
 		<div class="actions">
