@@ -9,7 +9,7 @@
 			<div class="input">
 				<ul class="media-grid <?php echo $this->comment ? 'span7' : 'span9' ?>" id="media">
 					<?php foreach ($_SESSION['media'] as $key => $media): $media = unserialize($media); ?>
-						<li><a href="#" rel="twipsy" <?php echo $media->default ? 'class="defaultmedia"' : '' ?> title="<?php echo $this->t->t('upload/makeprimary') ?>">
+						<li><a href="#" rel="twipsy" <?php echo isset($media->default) && $media->default ? 'class="defaultmedia"' : '' ?> title="<?php echo $this->t->t('upload/makeprimary') ?>">
 							<img src="<?php echo $this->baseUrl() . $media->thumbnail . '?' . time() ?> " data-media-id="<?php echo $key ?>" />
 							<span class="delete" rel="twipsy" data-placement="right" onmouseout="$(this).parent().twipsy('show')" onmouseover="$(this).parent().twipsy('hide')" title="<?php echo $this->t->t('upload/delmedia') ?>"></span>
 						</a></li>

@@ -25,7 +25,7 @@
 		</div>
 	</div>
 	<div class="user-infotop">
-		<?php foreach ($this->activity as $i): ?>
+		<?php /*foreach ($this->activity as $i): ?>
 			<div class="activitybar" style="height: <?php echo $i['percent'] * 0.5 ?>px; margin-top: <?php echo 98 - ($i['percent'] * 0.5) ?>px;">
 				<div class="infotext">
 					<?php echo Printdate::get($i['datetime'], $this->t) ?><br />
@@ -34,13 +34,18 @@
 					<?php echo sprintf($this->t->t('user/activityguestbook')) . ' ' . $i['guestbook'] ?><br />
 				</div>
 			</div>
-		<?php endforeach; ?>
+		<?php endforeach;*/ ?>
 	</div>
-	<div class="user-posts">
-		<div id="user-posts-form">
+	
+	<div class="row">
+		<div class="span9 comments">
 			<?php echo $this->render('user', 'form') ?>
 		</div>
+		<div class="span5 comments">
+			<p>asdf</p>
+		</div>
 	</div>
+	
 	<div class="user-info">
 		<div class="info-box">
 			<div class="thread-data"><?php echo $this->t->t('profile/birthday') ?><div class="thread-value"><?php echo floor((time() - strtotime($this->u->birthday)) / (3600 * 24 * 365)) ?></div></div>
