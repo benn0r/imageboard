@@ -119,7 +119,7 @@ class SettingsModule extends Module
 							'homepage' => $r->homepage,
 							'hobbies' => $r->hobbies,
 							'sex' => (int)$r->sex,
-							'birthday' => date('Y-m-d', strtotime($r->birthday)),
+							'birthday' => $r->birthday ? date('Y-m-d', strtotime($r->birthday)) : '0000-00-00',
 					), 'uid = ' . $user['uid']);
 				}
 			
