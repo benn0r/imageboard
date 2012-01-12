@@ -65,7 +65,7 @@ class SettingsModule extends Module
 				$view->login = $users->find($user['uid']);
 				break;
 			case 'avatar':
-				if ($r->isPost()) {
+				if (isset($_FILES) && isset($_FILES['avatar'])) {
 					if (!$_FILES['avatar']['tmp_name']) {
 						$view->error = true;
 					} else {
