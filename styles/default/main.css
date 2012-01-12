@@ -36,6 +36,9 @@
 	width: 50px;
 	height: 50px;
 }
+.avatar-profile a {
+	background: #ffffff;
+}
 .userbox .username, .userbox .media-grid {
 	float: left;
 	line-height: 56px;
@@ -156,7 +159,7 @@ textarea {
 .comment .avatar {
 	margin-top: 10px;
 }
-.comment .userstatus {
+.userstatus {
 	width: 10px;
 	height: 10px;
 }
@@ -398,6 +401,54 @@ textarea {
 	margin: 0px 0px 10px 0px;
 }
 
+.user-header {
+	width: 820px;
+	height: 220px;
+	background-repeat: no-repeat;
+	position: relative;
+}
+.user-header .media-grid {
+	position: absolute;
+	bottom: -70px;
+	left: 20px;
+}
+.user-header .header-username {
+	position: absolute;
+	left: 140px;
+	bottom: -35px;
+	font-size: 20px;
+}
+.user-header .header-lastactivity {
+	position: absolute;
+	right: 20px;
+	bottom: -35px;
+}
+.userinfo {
+	/*border: 1px solid #dddddd;
+	background: #f5f5f5;
+	
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;*/
+}
+
+.user-infobars {
+	border-bottom: 1px solid #dddddd;
+	margin-bottom: 40px;
+	height: 98px;
+	background: #f5f5f5;
+}
+.activitybar {
+	background: #a9a9a9;
+	float: right;
+	width: 10px;
+	margin-right: 1px;
+	position: relative;
+}
+.activitybar .infotext {
+	display: none;
+}
+
 body {
 	padding-top: 60px;
 	background-color: #eeeeee;
@@ -413,3 +464,4 @@ body {
 
 .icon-delete { background-image: url(../../images/delete.png); }
 .icon-favorite { background-image: url(../../images/heart.png); }
+.icon-time { background-image: url(../../images/time.png); }

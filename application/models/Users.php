@@ -73,31 +73,24 @@ class Users extends Model {
 	}
 	
 	public function activity($uid, $date) {
-		$threads = $this->_db->select('
+		$yours = $this->_db->select('
 			SELECT COUNT(*) AS threads
 			FROM board_posts
-			WHERE ppid IS NULL AND uid = ' . (int)$uid . ' AND status = 1 AND DATE(updatetime) = "' . date('Y-m-d', $date) . '" 
+			WHERE uid = ' . (int)$uid . ' AND status = 1 AND DATE(updatetime) = "' . date('Y-m-d', $date) . '" 
 		')->fetch_object()->threads;
 		
-		$comments = $this->_db->select('
+		$others = $this->_db->select('
 			SELECT COUNT(*) AS threads
 			FROM board_posts
-			WHERE ppid > 0 AND uid = ' . (int)$uid . ' AND status = 1 AND DATE(updatetime) = "' . date('Y-m-d', $date) . '" 
-		')->fetch_object()->threads;
-		
-		$guestbook = $this->_db->select('
-			SELECT COUNT(*) AS threads
-			FROM board_usercomments
-			WHERE uid = ' . (int)$uid . ' AND status = 1 AND DATE(inserttime) = "' . date('Y-m-d', $date) . '" 
+			WHERE uid != ' . (int)$uid . ' AND status = 1 AND DATE(updatetime) = "' . date('Y-m-d', $date) . '"
 		')->fetch_object()->threads;
 		
 		$obj = new stdClass();
-		$obj->threads = $threads;
-		$obj->comments = $comments;
-		$obj->guestbook = $guestbook;
-		$obj->total = ($threads * 2) + $comments + $guestbook;
+		$obj->your = $yours;
+		$obj->others = $others;
+		$obj->total = $yours + $others;
 		$obj->datetime = $date;
-		
+				
 		return $obj;
 	}
 	

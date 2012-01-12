@@ -9,6 +9,11 @@
 	<script type="text/javascript">
 	
 	function sendcomment() {
+		if ($("#commentform").find('textarea').val() == '') {
+			$("#commentform").find('textarea').focus();
+			return false;
+		}
+		
 		$.post(BASE_URL + 'user/<?php echo $this->u->uid ?>/', $("#commentform").serialize(), function(result) {
 			$('.comments').html(result);
 		});

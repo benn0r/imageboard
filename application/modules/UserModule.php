@@ -21,8 +21,8 @@
  * UserModule
  * 
  * @author benn0r <benjamin@benn0r.ch>
- * @since 29102011
- * @version 29102011
+ * @since 2011/10/29
+ * @version 2012/01/12
  */
 class UserModule extends Module
 {
@@ -94,32 +94,23 @@ class UserModule extends Module
 		$view->threads = $threads;
 		
 		$activity = array();
-		// max: 79
+		// max 79 days back
 		for ($i = 1; $i < 79 / 2; $i++) {
 			$activity[] = $users->activity($uid, time() - (86400 * $i));
-		}
-						
-		$highest = 0;
-		foreach ($activity as $i) {
-			if ((int)$highest < (int)$i->total) {
-				$highest = $i->total;
-			}
 		}
 				
 		$percent = array();
 		foreach ($activity as $i) {
 			$a = array();
 			
-			if ($highest > 0) {
-				$a['percent'] = 100 * $i->total / $highest;
+			if ($i->total > 0) {
+				$a['percent'] = 100 * $i->your / $i->total;
 			} else {
 				$a['percent'] = 0;
 			}
 			
-			$a['points'] = $i->total;
-			$a['threads'] = $i->threads;
-			$a['comments'] = $i->comments;
-			$a['guestbook'] = $i->guestbook;
+			$a['points'] = $i->your;
+			$a['total'] = $i->total;
 			$a['datetime'] = $i->datetime;
 			
 			$percent[] = $a;
