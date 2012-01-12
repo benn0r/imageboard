@@ -39,6 +39,8 @@
 					$('#file').after('<button class="btn" data-loading-text="<?php echo $this->t->t('upload/uploading') ?>" id="filebutton" onclick="$(\'#file\').click(); return false;"><?php echo $this->t->t('upload/nofile') ?></button>');
 					$('#file').hide();
 				}
+
+				$('#file').change(function() { $('.avatarform').submit(); });
 				</script>
 			</div>
 		</div>
