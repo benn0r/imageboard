@@ -411,7 +411,11 @@ class UploadModule extends Module
 			return;
 		}
 		
-		$this->layout('upload', 'form');
+		if (isset($_GET['ajax'])) {
+			$this->render('upload', 'form');
+		} else {
+			$this->layout('upload', 'form');
+		}
 	}
 	
 }
