@@ -32,6 +32,8 @@ class Helper extends Application_Helper
 	 */
 	public function getModule($module) {
 		switch ($module) {
+			case 'language':
+				return 'Language';
 			case 'notifications':
 				return 'Notifications';
 			case 'res':
