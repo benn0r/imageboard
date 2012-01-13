@@ -22,26 +22,10 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
-	<script type="text/javascript">
-	<?php
-		// print all translations for javascript
-		// json_encode from php does not work in internet explorer? (tested in ie9)
-		$o = 'var t = {';
-		foreach ($this->t->getContents() as $key => $arr) {
-			$o .= '"' . $key . '":{';
-			foreach ($arr as $key => $txt) {
-				$o .= '"' . $key . '":"' . str_replace('\\', '\\\\', $txt) . '",';
-			}
-			$o = substr($o, 0, -1) . '},';
-		}
-		
-		echo substr($o, 0, -1) . '};';
-	?>
-	</script>
-	
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>lib/bootstrap/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/main.css" />
 	
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>language"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
@@ -349,7 +333,7 @@
 </head>
 <body>
 	<div class="header">
-		<h5 class="logo"></h5>
+		<h5 class="logo"><a href="<?php echo $this->baseUrl() ?>" onclick="return loadpage(this)"></a></h5>
 				
 		<!-- <ul class="nav">
 			<li><a href=""><?php echo $this->t->t('navi/upload') ?></a></li>
