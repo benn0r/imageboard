@@ -147,6 +147,10 @@ class Users extends Model {
 				$obj->msg = sprintf($t->t('useraction/board'), $data[1]);
 				$obj->link = '' . $data[1] . '/';
 				break;
+			case 'settings':
+				$obj->msg = sprintf($t->t('useraction/settings'));
+				$obj->link = '';
+				break;
 		}
 		
 		return $obj;
