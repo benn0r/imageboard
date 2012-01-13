@@ -22,7 +22,7 @@ if ($this->comment) {
 		return false;
 	}
 	function deleteclick() {
-		$(this).parent().parent().fadeOut('fast');
+		$(this).parent().fadeOut('fast');
 
 		$.get(BASE_URL + 'upload/delmedia/' + $(this).parent().find('img').data('media-id'));
 
