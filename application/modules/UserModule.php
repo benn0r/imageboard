@@ -27,6 +27,28 @@
 class UserModule extends Module
 {
 	
+	/**
+	 * deva dot ananth at gmail dot com
+	 * http://php.net/manual/en/function.cal-days-in-month.php
+	 * 
+	 * @param string $devabirthdate YYYY-MM-DD
+	 * @return int days
+	 */
+	public function daysLeftForBirthday($devabirthdate)
+	{
+		/* input birthday date format -> Y-m-d */
+		list($y, $m, $d) = explode('-',$devabirthdate);
+		$nowdate = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+		$nextbirthday = mktime(0,0,0,$m, $d, date("Y"));
+	
+		if ($nextbirthday<$nowdate)
+			$nextbirthday=$nextbirthday+(60*60*24*365);
+	
+		$daycount=intval(($nextbirthday-$nowdate)/(60*60*24));
+	
+		return $daycount;
+	}
+	
 	public function run(array $args) {
 		$view = $this->view();
 		$users = new Users();
@@ -35,6 +57,7 @@ class UserModule extends Module
 		$uid = isset($args[1]) ? $args[1] : 0;
 		
 		$view->u = $users->find($uid); // Angezeigter User
+		$view->u->days = $this->daysLeftForBirthday($view->u->birthday);
 		$view->user = $this->getUser(); // Eingeloggter User
 		
 		if (isset($_POST['text'])) {

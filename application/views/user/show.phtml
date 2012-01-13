@@ -1,3 +1,13 @@
+<?php if ($this->u->days == 0): ?>
+<div class="alert-message success">
+	<p><?php echo sprintf($this->t->t('profile/birthdaytoday'), $this->u->username, $this->u->days) ?></p>
+</div>
+<?php elseif ($this->u->days < 7): ?>
+<div class="alert-message">
+	<p><?php echo sprintf($this->t->t($this->u->days == 1 ? 'profile/birthdaytomorrow' : 'profile/nextbirthday'), $this->u->username, $this->u->days) ?></p>
+</div>
+<?php endif; ?>
+
 <div class="user-header" style="background-image: url(<?php echo $this->baseUrl() . $this->getConfig()->paths->headers . '/' . $this->u->uid . '.' . $this->u->header ?>);">
 	<div class="media-grid avatar-profile">
 		<a href="">
@@ -14,13 +24,17 @@
 		
 		if ($time <= 60) {
 			$act = Users::printactivity($this->u->activity_text, $this->t);
-			echo '<a href="' . $this->baseUrl() . $act->link . '" onclick="return loadpage(this)">' . $act->msg . '</a>';
+			if ($act->link) {
+				echo '<a href="' . $this->baseUrl() . $act->link . '" onclick="return loadpage(this)">' . $act->msg . '</a>';
+			} else {
+				echo $act->msg;
+			}
 			
-			echo '<span>, ';
+			echo '<small>, ';
 			echo $time == 0 || $time == 1 ? $this->t->t('useraction/timenow') : sprintf($this->t->t('useraction/time'), $time);
-			echo '</span>';
+			echo '</small>';
 		} else {
-			echo '<span>' . $this->t->t('useraction/noaction') . '</span>';
+			echo '<small>' . $this->t->t('useraction/noaction') . '</small>';
 		}
 		?>
 	</div>
@@ -33,6 +47,8 @@
 		</div>
 	<?php endforeach; ?>
 </div>
+
+
 
 <div class="row">
 	<div class="span8 comments">
