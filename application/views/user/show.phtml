@@ -59,8 +59,10 @@
 		<div class="row userinfo">
 			<div class="span3">
 				<dl>
+					<?php if ($this->u->birthday != '0000-00-00'): ?>
 					<dt><?php echo $this->t->t('profile/birthday') ?></dt>
 					<dd><?php echo floor((time() - strtotime($this->u->birthday)) / (3600 * 24 * 365)) ?></dd>
+					<?php endif; ?>
 					
 					<dt><?php echo $this->t->t('profile/registered') ?></dt>
 					<dd><?php echo Printdate::get(strtotime($this->u->regtime), $this->t) ?></dd>
