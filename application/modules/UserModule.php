@@ -57,6 +57,16 @@ class UserModule extends Module
 		$uid = isset($args[1]) ? $args[1] : 0;
 		
 		$view->u = $users->find($uid); // Angezeigter User
+		
+		if (!$view->u) {
+			if (isset($_GET['ajax'])) {
+				$this->render('thread', 'notfound');
+			} else {
+				$this->layout('thread', 'notfound');
+			}
+			return;
+		}
+		
 		$view->u->days = $this->daysLeftForBirthday($view->u->birthday);
 		$view->user = $this->getUser(); // Eingeloggter User
 		
