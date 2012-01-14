@@ -1,4 +1,26 @@
-<div class="error-box">
+<?php
+
+/**
+ * Source: http://ditio.net/2008/11/04/php-string-to-hex-and-hex-to-string-functions/
+ */
+function strToHex($string)
+{
+	$hex='';
+	for ($i=0; $i < strlen($string); $i++)
+	{
+		$hex .= dechex(ord($string[$i])) . ' ';
+}
+return $hex;
+}
+
+?>
+
+<!-- <div class="page-header">
 	<h2><?php echo $this->t->t('page/notfoundtitle') ?></h2>
-	<p><?php echo $this->t->t('page/notfound') ?></p>
+</div> -->
+<div class="block-message error-message">
+	
+	<p class="bluescreen-title"><span><?php echo $this->t->t('page/notfoundsubtitle') ?></span></p>
+	<p><?php echo sprintf($this->t->t('page/notfound'), strToHex($_SERVER['REQUEST_URI']), $this->baseUrl()) ?></p>
+
 </div>

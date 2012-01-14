@@ -455,6 +455,24 @@ textarea {
 	display: none;
 }
 
+.error-message {
+	font-family: Lucida Console;
+	background-color: #0001ab;
+	color: #ffffff;
+	padding: 100px 50px 100px 50px;
+}
+.bluescreen-title {
+	text-align: center;
+	margin: 0px 0px 30px 0px;
+}
+.bluescreen-title span {
+	background: #ffffff;
+	color: #0001ab;
+	padding: 3px 6px 3px 6px;
+	letter-spacing: 1px;
+	font-size: 14px;
+}
+
 body {
 	padding-top: 60px;
 	background-color: #eeeeee;

@@ -40,6 +40,11 @@ class ThreadModule extends Module
 		}
 		
 		$thread = $posts->find($pid, $user['grade'] >= 8 ? true : false);
+		
+		if (!$thread) {
+			return $this->notFound();
+		}
+		
 		$rowset = $posts->fetchMedia($pid, $user['grade'] >= 8 ? true : false);
 		
 		// load module for generating thumbnails
@@ -232,7 +237,7 @@ class ThreadModule extends Module
 	}
 	
 	public function notFound() {
-	if ($_GET['ajax'] == 1) {
+		if (isset($_GET['ajax'])) {
 			$this->render('thread', 'notfound');
 		} else {
 			$this->layout('thread', 'notfound');
