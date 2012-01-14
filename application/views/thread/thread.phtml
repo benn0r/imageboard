@@ -39,7 +39,7 @@ $user = $this->user;
 				<?php if($user['grade'] >= 8 && $this->thread->astatus == 0): ?>
 				<a href="<?php echo $this->baseUrl() ?>delete/?pid=<?php echo $this->thread->pid ?>&restore=1" onclick="return loadpage(this)" class="icon icon-restore"><?php echo $this->t->t('thread/restore') ?></a>
 				<?php else: ?>
-				<button onclick="return loadlink('<?php echo $this->baseUrl() ?>delete/?pid=<?php echo $this->thread->pid ?>')" class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/delete') ?>"><img src="<?php echo $this->baseUrl() ?>images/report.png" /></button>
+				<button onclick="$(this).twipsy('hide'); return loadlink('<?php echo $this->baseUrl() ?>delete/?pid=<?php echo $this->thread->pid ?>')" class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/delete') ?>"><img src="<?php echo $this->baseUrl() ?>images/report.png" /></button>
 				<?php endif; ?>
 			<?php else: ?>
 			<button class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/report') ?>"><img src="<?php echo $this->baseUrl() ?>images/report.png" /></button>
