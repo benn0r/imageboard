@@ -64,6 +64,8 @@ class Helper extends Application_Helper
 				return 'Rating';
 			case 'delete':
 				return 'Delete';
+			case 'report':
+				return 'Report';
 			default:
 				if ($this->isBoard($module)) {
 					return 'Board';

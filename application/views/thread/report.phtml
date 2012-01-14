@@ -1,0 +1,29 @@
+<div class="page-header">
+	<h2><?php echo $this->t->t('report/title') ?></h2>
+</div>
+	
+<div class="alert-message block-message">
+	<h3><?php echo $this->t->t('delete/threaddata') ?></h3>
+	<dl>
+		<dt><?php echo $this->t->t('delete/username') ?></dt>
+		<dd><?php echo $this->post->username ?></dd>
+		
+		<dt><?php echo $this->t->t('delete/message') ?></dt>
+		<dd><?php echo htmlspecialchars(strip_tags(strlen($this->post->content) > 27 ? substr($this->post->content, 0, 30) . '...' : $this->post->content)) ?></dd>
+	</dl>
+	
+	<form action="" method="post" id="reportform">
+		<dl>
+			<dt><?php echo $this->t->t('report/message') ?></dt>
+			<dd><textarea name="message" rows="5" class="span7"></textarea></dd>
+		</dl>
+		
+	</form>
+	
+	<p>&nbsp;</p>
+	
+	<p>
+		<button class="btn success" onclick="return postlink(<?php echo '\'' . $this->baseUrl() . 'report/\', $(\'#reportform\').serialize() + \'&pid=' . $_GET['pid'] . '&report=1\'' ?>)"><?php echo $this->t->t('report/button') ?></button>
+		<button class="btn" onclick="return postlink(<?php echo '\'' . $this->baseUrl() . 'report/\', \'&pid=' . $_GET['pid'] . '&cancel=1\'' ?>)"><?php echo $this->t->t('delete/cancel') ?></button>
+	</p>
+</div>
