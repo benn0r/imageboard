@@ -37,7 +37,7 @@ class ReportModule extends Module
 		
 		$posts = new Posts();
 		
-		if ($pid == 0) {
+		if (!isset($pid) || $pid == 0) {
 			return $this->notFound();
 		}
 		
@@ -144,7 +144,7 @@ class ReportModule extends Module
 	}
 	
 	public function noAccess() {
-		if ($_GET['ajax'] == 1) {
+		if (isset($_GET['ajax'])) {
 			$this->render('thread', 'noaccess');
 		} else {
 			$this->layout('thread', 'noaccess');
@@ -152,7 +152,7 @@ class ReportModule extends Module
 	}
 	
 	public function notFound() {
-		if ($_GET['ajax'] == 1) {
+		if (isset($_GET['ajax'])) {
 			$this->render('thread', 'notfound');
 		} else {
 			$this->layout('thread', 'notfound');
