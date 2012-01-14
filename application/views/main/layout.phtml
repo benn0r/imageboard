@@ -151,6 +151,37 @@
 
 			return false;
 		}
+		function postlink(uri, data) {			
+			$('.loading').fadeIn('fast');
+			var link = uri.replace(BASE_URL, '');
+
+			lastlink = link;
+
+			if (typeof history.pushState != 'undefined') {
+				history.pushState({foo: 'bar'}, uri, uri);
+			} else {
+				document.location.href = '#!' + link;
+			}
+
+			if (uri.indexOf('?') > 0) {
+				uri = uri + '&ajax=1';
+			} else {
+				uri = uri + '/?ajax=1';
+			}
+
+			$.post(uri, data, function(result) {
+				$('.loading').hide();
+
+				loadlink(result);
+			});
+
+			<?php if (!$this->user): ?>
+			// update login-forward
+			$('#login-forward').val(document.location.href);
+			<?php endif; ?>
+
+			return false;
+		}
 		function submitform(form, target) {
 			var form = $(form);
 
