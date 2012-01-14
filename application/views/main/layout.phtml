@@ -151,7 +151,7 @@
 			return false;
 		}
 		function postlink(uri, data) {			
-			$('.loading').fadeIn('fast');
+			//$('.loading').fadeIn('fast');
 			var link = uri.replace(BASE_URL, '');
 
 			lastlink = link;
@@ -169,8 +169,6 @@
 			}
 
 			$.post(uri, data, function(result) {
-				$('.loading').hide();
-
 				loadlink(result);
 			});
 

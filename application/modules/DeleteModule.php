@@ -70,7 +70,7 @@ class DeleteModule extends Module
 			} elseif (isset($_POST['cancel'])) {
 				echo $this->view()->baseUrl() . 'thread/' . $_POST['pid'] . '/'; return;
 				exit;
-			} elseif (!isset($_GET['restore'])) {
+			} elseif (!isset($_POST['restore'])) {
 				$thumb = Module::init('Thumb', $this);
 				$view = $this->view();
 				
@@ -109,7 +109,7 @@ class DeleteModule extends Module
 					$this->layout('thread', 'delete');
 				}
 			}
-		} elseif($u['grade'] >= 8 && isset($_GET['restore'])) { 
+		} elseif($u['grade'] >= 8 && isset($_POST['restore'])) { 
 			$p = $posts->find($pid, true); // Auch gelöschte Threads suchen
 			if ($p) {
 				// Thread wiederherstellen
@@ -121,7 +121,7 @@ class DeleteModule extends Module
 					$posts->show($c->pid);
 				}
 				
-				header('Location: ' . $this->view()->baseUrl() . 'thread/' . $_GET['pid'] . '/?ajax=1');
+				echo $this->view()->baseUrl() . 'thread/' . $_POST['pid'] . '/'; return;
 				exit;
 			} else {
 				// Thread existiert wirklich nicht
