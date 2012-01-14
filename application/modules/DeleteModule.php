@@ -28,7 +28,13 @@ class DeleteModule extends Module
 {
 	
 	public function run(array $args) {
-		$pid = (int)$_GET['pid'];
+		if (isset($_GET['pid'])) {
+			$pid = (int)$_GET['pid'];
+		}
+		if (isset($_POST['pid'])) {
+			$pid = (int)$_POST['pid'];
+		}
+		
 		$posts = new Posts();
 		
 		if ($pid == 0) {
@@ -42,10 +48,10 @@ class DeleteModule extends Module
 		$p = $posts->find($pid);
 		
 		// Rechte überprüfen
-		if ($p && is_array($u) && ($u['uid'] == $p->user_id || $u['grade'] >= 8)) {
+		if ($p && is_array($u) && ($u['uid'] == $p->uid || $u['grade'] >= 8)) {
 			// Benutzer ist Besitzer oder mindestens Moderator
 			
-			if (isset($_GET['delete'])) {
+			if (isset($_POST['delete'])) {
 				// Thread löschen
 				$posts->hide($pid);
 				
@@ -56,36 +62,48 @@ class DeleteModule extends Module
 				}
 				
 				if ($u['grade'] >= 8) {
-					header('Location: ' . $this->view()->baseUrl() . 'thread/' . $_GET['pid'] . '/?ajax=1');
+					echo $this->view()->baseUrl() . 'thread/' . $_POST['pid'] . '/'; return;
 				} else {
-					header('Location: ' . $this->view()->baseUrl() . '?ajax=1');
+					echo $this->view()->baseUrl(); return;
 				}
 				exit;
-			} elseif (isset($_GET['cancel'])) {
-				header('Location: ' . $this->view()->baseUrl() . 'thread/' . $_GET['pid'] . '/?ajax=1');
+			} elseif (isset($_POST['cancel'])) {
+				echo $this->view()->baseUrl() . 'thread/' . $_POST['pid'] . '/'; return;
 				exit;
 			} elseif (!isset($_GET['restore'])) {
 				$thumb = Module::init('Thumb', $this);
 				$view = $this->view();
 				
-				$c = $p; // Zu faul um alle Variablen auf $p zu ändern
-				$media = new Media();
-						
-				$media->mid = $c->mid;
-				$media->name = $c->name;
-				$media->description = $c->description;
-				$media->published = strtotime($c->published);
-				$media->author = new Media_Uri($c->author_name, $c->author_uri);
-				$media->source = new Media_Uri($c->source_name, $c->source_uri);
-				$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
-				
-				$media->thumbnail = $thumb->getThumbnail($media,	63 * 2, 95);
-				
-				$p->media = $media;
 				$view->post = $p;
 				$view->comments = $posts->findChilds($pid);
+				
+				$rowset = $posts->fetchMedia($p->pid, isset($_SESSION['user']) && $_SESSION['user']['grade'] >= 8 ? true : false);
+				
+				// load module for generating thumbnails
+				$thumb = Module::init('Thumb', $this);
+				
+				$allmedia = array();
+				while (($c = $rowset->fetch_object()) != null) {
+					$media = new Media();
+				
+					$media->mid = $c->mid;
+					$media->name = $c->name;
+					$media->description = $c->description;
+					$media->published = strtotime($c->published);
+					$media->author = new Media_Uri($c->author_name, $c->author_uri);
+					$media->source = new Media_Uri($c->source_name, $c->source_uri);
+					$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
+					$media->type = $c->type;
+					$media->extid = $c->extid;
+					$media->default = $c->default;
+				
+					$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
+				
+					$allmedia[] = $media;
+				}
+				$view->media = $allmedia;
 								
-				if ($_GET['ajax'] == 1) {
+				if (isset($_GET['ajax'])) {
 					$this->render('thread', 'delete');
 				} else {
 					$this->layout('thread', 'delete');

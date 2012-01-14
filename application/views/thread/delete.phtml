@@ -1,19 +1,41 @@
-<div class="warning-box">
-	<h2><?php echo $this->t->t('delete/title') ?></h2>
-	<div><a href="<?php echo $this->baseUrl() . $this->post->media->image ?>" class="comment-image" target="_blank">
-		<img src="<?php echo $this->baseUrl() . $this->post->media->thumbnail ?>" alt="Thumbnail" />
-	</a>
-	<div class="comment-media-info">
-		<p class="thread-data"><?php echo $this->t->t('delete/username') ?><span class="thread-value"><?php echo $this->post->username ?></span></p>
-		<p class="thread-data"><?php echo $this->t->t('delete/message') ?><span class="thread-value"><?php echo htmlspecialchars(strip_tags(strlen($this->post->content) > 17 ? substr($this->post->content, 0, 20) . '...' : $this->post->content)) ?></span></p>
-		<p class="thread-data"><?php echo $this->t->t('delete/dependencies') ?><span class="thread-value danger"><?php echo $this->comments->num_rows ?></span></p>
+<div class="alert-message block-message">
+	<div class="page-header">
+		<h2><?php echo $this->t->t('delete/title') ?></h2>
 	</div>
+
+	<div class="row">
+		<div class="span5">
+			<ul class="media-grid">
+				<?php foreach ($this->media as $media): ?>
+				<li>
+					<a href="<?php echo $this->baseUrl() . $media->image ?>" class="comment-image" target="_blank">
+						<img src="<?php echo $this->baseUrl() . $media->thumbnail ?>" alt="Thumbnail" />
+					</a>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<div class="span8">
+			<h3><?php echo $this->t->t('delete/threaddata') ?></h3>
+			<dl>
+				<dt><?php echo $this->t->t('delete/username') ?></dt>
+				<dd><?php echo $this->post->username ?></dd>
+				
+				<dt><?php echo $this->t->t('delete/message') ?></dt>
+				<dd><?php echo htmlspecialchars(strip_tags(strlen($this->post->content) > 27 ? substr($this->post->content, 0, 30) . '...' : $this->post->content)) ?></dd>
+				
+				<dt><?php echo $this->t->t('delete/dependencies') ?></dt>
+				<dd><?php echo $this->comments->num_rows ?></dd>
+			</dl>
+		</div>
 	</div>
-	<p style="clear: both"><?php echo $this->t->t('delete/msg') ?></p>
-	<form action="<?php echo $this->baseUrl() . 'delete/?pid=' . $_GET['pid'] ?>" method="post">
-		<p style="padding: 10px 0px 0px 0px">
-			<a class="button" href="<?php echo $this->baseUrl() . 'delete/?pid=' . $_GET['pid'] . '&delete=1' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('delete/doit') ?></a>
-			<a class="button" href="<?php echo $this->baseUrl() . 'delete/?pid=' . $_GET['pid'] . '&cancel=1' ?>" onclick="return loadpage(this)"><?php echo $this->t->t('delete/cancel') ?></a>
-		</p>
-	</form>
+	
+	<p><?php echo $this->t->t('delete/msg') ?></p>
+	
+	<p>&nbsp;</p>
+	
+	<p>
+		<button class="btn success" onclick="return postlink(<?php echo '\'' . $this->baseUrl() . 'delete/\', \'pid=' . $_GET['pid'] . '&delete=1\'' ?>)"><?php echo $this->t->t('delete/doit') ?></button>
+		<button class="btn" onclick="return postlink(<?php echo '\'' . $this->baseUrl() . 'delete/\', \'pid=' . $_GET['pid'] . '&cancel=1\'' ?>)"><?php echo $this->t->t('delete/cancel') ?></button>
+	</p>
 </div>
