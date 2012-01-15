@@ -23,7 +23,7 @@ class Posts extends Model {
 	
 	public function find($pid, $admin = false) {
 		return $this->_db->select('
-			SELECT *,a.status AS astatus FROM board_posts AS a
+			SELECT *,a.status AS astatus,a.pid FROM board_posts AS a
 			LEFT JOIN board_media AS b ON a.pid = b.pid
 			LEFT JOIN board_users AS c ON a.uid = c.uid
 			LEFT JOIN board_userstyles AS d ON c.sid = d.sid
