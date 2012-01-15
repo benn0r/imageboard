@@ -49,6 +49,7 @@ abstract class Module
 		$classname = $name . 'Module';
 		$module = new $classname($parent->getRequest(), $parent->getDb(), $parent->getLanguage(), $parent->view(), $parent->_config);
 		
+		
 		return $module;
 	}
 	
@@ -63,6 +64,7 @@ abstract class Module
 	protected function layout($module, $action, $layout = 'layout') {
 		$view = $this->view();
 		
+		$view->ctrl = $this;
 		$view->module = $module;
 		$view->action = $action;
 		

@@ -25,6 +25,19 @@ class Notifications extends Model {
 		
 	}
 	
+	public function fetchAll($uid, $limit = 30) {
+		$where = 'uid = ' . $uid . ' AND status > 0';
+	
+		$result = $this->_db->select('
+			SELECT * FROM ' . $this->_table . '
+			WHERE ' . $where . '
+			ORDER BY inserttime DESC
+			LIMIT 0, ' . $limit . '
+		');
+		
+		return $result;
+	}
+	
 	public function fetchAfter($uid, $time, $limit = 10) {
 		$where = 'uid = ' . $uid . ' AND status > 0 AND TIMESTAMP(inserttime) > TIMESTAMP("' . date('Y-m-d H:i:s', $time) . '")';
 		

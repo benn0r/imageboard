@@ -26,5 +26,27 @@ class Printdate
 		
 		return date($t->t('main/datetime'), $time);
 	}
+	
+	static public function date($time, Language $t) {
+		if (date('Ymd', $time) == date('Ymd', time())) {
+			return date($t->t('date/today'), $time);
+		}
+		if (date('Ymd', $time) == date('Ymd', time() - 86400)) {
+			return date($t->t('date/yesterday'), $time);
+		}
+	
+		return date($t->t('main/date'), $time);
+	}
+	
+	static public function time($time, Language $t) {
+		if ($time > time() - 60) {
+			return $t->t('main/now');
+		}
+		if ($time > time() - 3600) {
+			return sprintf($t->t('main/minutes'), round((time() - $time) / 60));
+		}
+		
+		return date($t->t('main/time'), $time);
+	}
 
 }

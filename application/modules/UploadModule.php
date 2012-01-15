@@ -187,6 +187,21 @@ class UploadModule extends Module
 				'ppid' => $r->ppid > 0 ? (int)$r->ppid : new Database_Expression('NULL'),
 		));
 		$pid = $this->_db->lastInsertId();
+		
+		if ($r->ppid) {
+			$post = $posts->find($pid);
+			$thread = $posts->find($r->ppid);
+			$rowset = $posts->findChilds($thread->pid);
+			
+			$comments = array();
+			while (($row = $rowset->fetch_object()) != null) {
+				$comments[] = $row;
+			}
+			
+			// insert notifications
+			$module = Module::init('Notifications', $this);
+			$module->add($post, $thread, $comments);
+		}
 	
 		foreach ($arrmedia as $media) {
 			$media = unserialize($media);

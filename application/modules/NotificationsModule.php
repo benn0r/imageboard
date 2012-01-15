@@ -93,6 +93,29 @@ class NotificationsModule extends Module
 			// notifaction (html, javascript, everything is allowed)
 			$nobj->text = $notification->text;
 			
+			$posts = new Posts();
+			$post = $posts->find($notification->pid);
+			$rowset = $posts->fetchMedia($notification->thread);
+			
+			// load module for generating thumbnails
+			$thumb = Module::init('Thumb', $this);
+			
+			$allmedia = array();
+			while (($c = $rowset->fetch_object()) != null) {
+				$media = new Media();
+			
+				$media->mid = $c->mid;
+				$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
+			
+				$media->thumbnail = $thumb->getThumbnail($media, 50, 50);
+			
+				$allmedia[] = $media;
+			}
+			
+			$nobj->thread = $this->view()->baseUrl() . 'thread/' . $notification->thread;
+			$nobj->thumbnail = $this->view()->baseUrl() . $allmedia[0]->thumbnail;
+			$nobj->content = strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content;
+			
 			$r[] = $nobj;
 		}
 		
@@ -122,6 +145,55 @@ class NotificationsModule extends Module
 		}
 		
 		return $r;
+	}
+	
+	public function add($post, $thread, $comments) {
+		$table = new Notifications();
+		$t = $this->getLanguage();
+		$u = $this->view()->baseurl();
+		
+		$informed = array();
+		
+		if ($post->uid != $thread->uid) {
+			// thread owner
+			$table->insert(array(
+					'uid' => $thread->uid,
+					'status' => 1,
+					'pid' => $post->pid,
+					'thread' => $thread->pid,
+					'text' => sprintf($t->t('notification/yourthread'), $u . 'user/' . $post->uid, $post->username, $u . 'thread/' . $thread->pid),
+			));
+		}
+		
+		$informed[] = $thread->uid;
+		
+		foreach ($comments as $comment) {
+			if (!in_array($comment->uid, $informed) && $post->uid != $comment->uid) {
+				if ($thread->uid == $post->uid) {
+					$text = sprintf($t->t('notification/histhread'),
+							$u . 'user/' . $post->uid,
+							$post->username,
+							$u . 'thread/' . $thread->pid);
+				} else {
+					$text = sprintf($t->t('notification/thread'),
+							$u . 'user/' . $post->uid,
+							$post->username,
+							$u . 'user/' . $thread->uid,
+							$thread->username,
+							$u . 'thread/' . $thread->pid);
+				}
+				
+				$table->insert(array(
+						'uid' => $comment->uid,
+						'status' => 1,
+						'pid' => $post->pid,
+						'thread' => $thread->pid,
+						'text' => $text,
+				));
+				
+				$informed[] = $comment->uid;
+			}
+		}
 	}
 	
 	/**

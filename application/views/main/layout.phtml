@@ -99,6 +99,35 @@
 					}
 				}
 
+				for (var i = 0; i < data.notifications.length; i++) {
+					var n = data.notifications[i];
+
+					$('.notifications-container .today').removeClass('hide');
+
+					var html = $('<p>' + n.text + ' <small>' + n.inserttime + '</small></p>');
+					if (n.unread) {
+						html.addClass('unread');
+					}
+
+					var html2 = $('<p class="media-grid pull-left"><a href="' + n.thread + '" onclick="return loadpage(this)"><img src="' + n.thumbnail + '" /></a></p>');
+					var html3 = $('<p class="span5 pull-left" style="margin-left:10px">' + n.content + '</p>');
+					var html4 = $('<div style="clear:both"></div>');
+					
+					$('.notifications-container .today').after(html4);
+					$('.notifications-container .today').after(html3);
+					$('.notifications-container .today').after(html2);
+					$('.notifications-container .today').after(html);
+					html.fadeIn('fast');
+				}
+
+				var unread = $('.notifications-container .unread').size();
+				if (unread > 0) {
+					$('.notifications .label').addClass('important');
+				} else {
+					$('.notifications .label').removeClass('important');
+				}
+				$('.notifications .label').html(unread);
+
 				for (var i = 0; i < data.news.length; i++) {
 					var n = data.news[i];
 
@@ -378,6 +407,73 @@
 				
 			</div>
 		</form>
+		
+		<?php if (isset($_SESSION['user']['uid'])): ?>
+		
+		<?php
+		$table = new Notifications();
+		$posts = new Posts();
+
+		$notifications = $table->fetchAll($_SESSION['user']['uid']);
+		
+		$date = '';
+		$html = '';
+		$unread = 0;
+		
+		while (($n = $notifications->fetch_object()) != null) {
+			if ($date != date('dmY', strtotime($n->inserttime))) {
+				$classname = date('dmY') == date('dmY', strtotime($n->inserttime)) ? ' class="today"' : '';
+				
+				if (!$classname && $date == '') {
+					$html .= '<h6 class="today hide">' . Printdate::date(time(), $this->t) . '</h6>';
+				}
+				
+				$html .= '<h6' . $classname . '>' . Printdate::date(strtotime($n->inserttime), $this->t) . '</h6>';
+				$date = date('dmY', strtotime($n->inserttime));
+			}
+			
+			$classname = $n->readtime == '0000-00-00 00:00:00' ? ' class="unread"' : '';
+			if ($classname) {
+				$unread++;
+			}
+			
+			$post = $posts->find($n->pid);
+			$rowset = $posts->fetchMedia($n->thread);
+			
+			// load module for generating thumbnails
+			$thumb = Module::init('Thumb', $this->ctrl);
+			
+			$allmedia = array();
+			while (($c = $rowset->fetch_object()) != null) {
+				$media = new Media();
+			
+				$media->mid = $c->mid;
+				$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
+			
+				$media->thumbnail = $thumb->getThumbnail($media, 50, 50);
+			
+				$allmedia[] = $media;
+			}
+			
+			$html .= '<p' . $classname . '>' . $n->text . ' <small>' . Printdate::time(strtotime($n->inserttime), $this->t) . '</small></p>';
+			$html .= '<p class="media-grid pull-left">
+			<a href="' . $this->baseUrl() . 'thread/' . $n->thread . '" onclick="return loadpage(this)">
+			<img src="' . $this->baseUrl() . $allmedia[0]->thumbnail . '" />
+			</a>
+			</p><p class="span5 pull-left" style="margin-left:10px">' . (strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content) . '</p>
+			<div style="clear:both"></div>';
+		}
+		?>
+		
+		<div class="notifications pull-right notifications-active">
+			<?php echo $this->t->t('notifications/header') ?>
+			<span class="label<?php echo $unread > 0 ? ' important' : '' ?>"><?php echo $unread ?></span>
+			<div class="shadowfix"></div>
+		</div>
+		<div class="notifications-container">
+			<?php echo $html ?>
+		</div>
+		<?php endif; ?>
 	</div>
 	
 	<div class="loading hide">
@@ -443,7 +539,7 @@
 				<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'upload' ?>" class="icon-upload"><?php echo $this->t->t('navi/upload') ?></a></li>
 				<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" class="icon-profile"><?php echo $this->t->t('navi/profile') ?></a></li>
 				<li><a href="<?php echo $this->baseUrl() . 'notifications' ?>" class="icon-notifications"><?php echo $this->t->t('navi/notifications') ?></a></li>
-				<li><a href="<?php echo $this->baseUrl() . 'settings' ?>" class="icon-settings"><?php echo $this->t->t('navi/settings') ?></a></li>
+				<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'settings' ?>" class="icon-settings"><?php echo $this->t->t('navi/settings') ?></a></li>
 				<li><a href="<?php echo $this->baseUrl() . 'logout' ?>" class="icon-logout"><?php echo $this->t->t('navi/logout') ?></a></li>
 			</ul>
 			<div class="mainpage-users-container">
