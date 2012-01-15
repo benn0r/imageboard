@@ -34,7 +34,7 @@ $user = $this->user;
 		</div>
 		
 		<div class="mediainfo">
-			<button class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/sharedescr') ?>"><?php echo $this->t->t('thread/share') ?></button>
+			<!-- <button class="btn" rel="twipsy" title="<?php echo $this->t->t('thread/sharedescr') ?>"><?php echo $this->t->t('thread/share') ?></button> -->
 			<?php if($user['uid'] == $this->thread->uid || $user['grade'] >= 8): ?>
 				<?php if($user['grade'] >= 8 && $this->thread->astatus == 0): ?>
 				<a href="" onclick="return postlink('<?php echo $this->baseUrl() ?>delete/', 'pid=<?php echo $this->thread->pid ?>&restore=1')" class="icon icon-restore"><?php echo $this->t->t('thread/restore') ?></a>
