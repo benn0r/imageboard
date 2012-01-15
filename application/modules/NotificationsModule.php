@@ -74,15 +74,17 @@ class NotificationsModule extends Module
 	 * 
 	 * @param Notifications $n Notifications model
 	 * @param int $uid userid
-	 * @param int $time timestamp
+	 * @param int $nid last notification id
 	 * @param int $limit how many entries
 	 */
-	protected function notifications(Notifications $n, $uid, $time, $limit = 10) {
+	protected function notifications(Notifications $n, $uid, $nid, $limit = 10) {
 		$r = array();
 		
-		$result = $n->fetchAfter($uid, $time, $limit);
+		$result = $n->fetchAfter($uid, $nid, $limit);
 		while (($notification = $result->fetch_object()) != null) {
 			$nobj = new stdClass();
+			
+			$nobj->nid = $notification->nid;
 			
 			// if the readtime is empty the notifcations is unread
 			$nobj->unread = $notification->readtime == '0000-00-00 00:00:00' ? 1 : 0;
@@ -212,7 +214,7 @@ class NotificationsModule extends Module
 		$news = new News();
 		
 		// i don't get this
-		$time = $this->getRequest()->time - 10;
+		$time = $this->getRequest()->nid;
 		
 		if (!is_array($user) || $user['grade'] < 1) {
 			// user is not logged (anonymous)
@@ -224,13 +226,14 @@ class NotificationsModule extends Module
 		$obj = new stdClass();
 		
 		$obj->notifications = $this->notifications($notifications, $user['uid'], $time);
-		$obj->news = $this->news($news, $time);
+		//$obj->news = $this->news($news, $time);
 		$obj->users = $this->users($users);
 		
 		// i don't get this again, but it really seems to work!!
 		$obj->next = time() - 10;
 		
 		$obj->time = date('Y-m-d H:i:s', $time);
+		$obj->lastn = $obj->notifications[count($obj->notifications) - 1]->nid;
 		
 		// generate json and send to client
 		echo json_encode($obj);
