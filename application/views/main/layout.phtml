@@ -305,7 +305,8 @@
 		function stoptimer(img) {
 			clearTimeout(timeout);
 		}
-		function board() {
+
+		function loadboard() {
 			if(document.getElementById('imageboard')) {
 				var board = new Imageboard('imageboard', 'spacer');
 				var rightheight = null;
@@ -323,12 +324,13 @@
 					document.getElementById(this.spacerid).style.height = this.rheight + this.unit;
 				}
 				resize = function() {
+					// needed bugfix (old version worked without this crap?)
+					$('#imageboard').css('width', 'auto');
 					board.resize();
 				}
 				resize();
 				
 				document.getElementById('imageboard').style.visibility = '';
-				window.onresize = resize;
 			}
 		}
 	</script>
@@ -413,6 +415,10 @@
 		}, 100);
 
 		//search();
+	});
+
+	$(window).resize(function() {
+		resize();
 	});
 	</script>
 </head>

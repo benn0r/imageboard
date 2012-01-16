@@ -67,7 +67,7 @@ function Imageboard(str_boardid, str_spacerid)
 	this.resize = function()
 	{
 		this.reset();
-		var board = document.getElementById(this.boardid);
+		var board = document.getElementById(this.boardid);		
 		var bwidth = board.offsetWidth - this.bufferright; // boardwith - buffer = width for images
 		var diff = bwidth % this.fwidth;
 		if(bwidth - diff >= this.minwidth * this.fwidth) {
