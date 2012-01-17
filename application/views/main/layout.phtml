@@ -162,8 +162,8 @@
 		function submitlogin(form) {
 			var form = $(form);
 
-			if (form.find('input[value=]').size() > 0) {
-				form.find('input[value=]').first().select();
+			if (form.find('input[type=text][value=]').size() > 0) {
+				form.find('input[type=text][value=]').first().select();
 				return false;
 			}
 
@@ -458,7 +458,10 @@
 			<form method="post" class="login" action="<?php echo $this->baseUrl() ?>login" onsubmit="return submitlogin(this)">
 				<input type="text" class="span3" name="username" placeholder="<?php echo $this->t->t('login/username') ?>" />
 				<input type="password" class="span3" name="password" placeholder="<?php echo $this->t->t('login/password') ?>" />
+				
 				<button class="btn primary" data-loading-text="Loading..." name="login"><?php echo $this->t->t('login/send') ?></button>
+				<label rel="twipsy" title="<?php echo $this->t->t('login/rememberdescr') ?>"><input type="checkbox" name="rememberme" value="1" /><?php echo $this->t->t('login/remember') ?></label>
+				<div style="clear:both"></div>
 			</form>
 			
 			

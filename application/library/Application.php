@@ -50,6 +50,21 @@ class Application
 		$module = $this->findModule($args);
 		$classname = $module . 'Module';
 		
+		// !isset($_SESSION['user']) && 
+		if (isset($_COOKIE['remember'])) {
+			// check rememberme cookie
+			$users = new Users();
+			
+			$rowset = $users->findByCookie($_COOKIE['remember'], $this->_config->security->salt);
+			if ($rowset->num_rows > 0) {
+				// set user session
+				$_SESSION['user'] = $rowset->fetch_array();
+				
+				// reload session
+				$this->_request->reloadSession($_SESSION);
+			}
+		}
+		
 		$view = new View($this->_request, $this->_config);
 		
 		$obj = new $classname($this->_request, $this->_db, $this->_lang, $view, $this->_config);

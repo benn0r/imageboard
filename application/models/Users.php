@@ -46,6 +46,14 @@ class Users extends Model {
 		');
 	}
 	
+	public function findByCookie($cookie, $salt) {
+		return $this->_db->select('
+			SELECT *
+			FROM board_users
+			WHERE MD5(CONCAT(uid, "' . $salt . '", username, `password`)) = "' . $this->_db->escape($cookie) . '"
+		');
+	}
+	
 	public function updatePassword($uid, $password) {
 		$this->update(array('password' => md5($password)), 'uid = ' . (int)$uid);
 	}

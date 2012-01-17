@@ -83,6 +83,13 @@ class Request
 		return $this->_session;
 	}
 	
+	/**
+	 * Reload Session (needed after rememberme cookie)
+	 */
+	public function reloadSession($session) {
+		$this->_session = $session;
+	}
+	
 	public function isPost() {
 		return count($this->_post) > 0;
 	}

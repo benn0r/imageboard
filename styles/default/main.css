@@ -35,6 +35,16 @@
 	margin: 0px 0px 10px 0px;
 	width: 190px;
 }
+.login label, .login .btn {
+	float: left;
+}
+.login label {
+	width: auto;
+}
+.login label input {
+	margin-right: 5px;
+	margin-left: 10px;
+}
 .container {
 	width: 820px;
 }

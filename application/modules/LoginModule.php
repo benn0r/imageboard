@@ -42,6 +42,15 @@ class LoginModule extends Module
 			if ($user->num_rows > 0) {
 				$_SESSION['user'] = $user->fetch_array();
 				
+				if ($r->rememberme) {
+					// rememberme cookie
+					$expire = time() + 3600 * 24 * 60; // 60 days until expiration
+					setcookie('remember', md5($_SESSION['user']['uid'] . 
+							$this->getConfig()->security->salt . 
+							$_SESSION['user']['username'] . 
+							$_SESSION['user']['password']), $expire, '/');
+				}
+				
 				echo '1';
 				return;
 				

@@ -38,6 +38,8 @@ class LogoutModule extends Module
 		// kill the session!
 		session_destroy();
 		
+		setcookie('remember', '', 0, '/');
+		
 		// forward to homepage
 		header('Location: ' . $this->view()->baseUrl());
 		exit;
