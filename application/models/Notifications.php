@@ -25,6 +25,10 @@ class Notifications extends Model {
 		
 	}
 	
+	public function read($where) {
+		$this->update(array('readtime' => new Database_Expression('NOW()')), $where);
+	}
+	
 	public function fetchAll($uid, $limit = 30) {
 		$where = 'uid = ' . $uid . ' AND status > 0';
 	

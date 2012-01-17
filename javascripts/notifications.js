@@ -50,17 +50,7 @@ var notificationsTimer = setInterval(notifications = function notifications() {
 		}
 		
 		notificationRenderer();
-
-		var unread = $('.notifications-container .unread').size();
-		if (unread > 0) {
-			$(document).title('reset');
-			$(document).title('prepend', '(' + unread + ') ');
-			$('.notifications .label').addClass('important');
-		} else {
-			$(document).title('reset');
-			$('.notifications .label').removeClass('important');
-		}
-		$('.notifications .label').html(unread);
+		updateNotificationsCount();
 
 		/*for (var i = 0; i < data.news.length; i++) {
 			var n = data.news[i];
@@ -74,6 +64,19 @@ var notificationsTimer = setInterval(notifications = function notifications() {
 		lastn = data.lastn;
 	});
 }, 10000);
+
+function updateNotificationsCount() {
+	var unread = $('.notifications-container .unread').size();
+	if (unread > 0) {
+		$(document).title('reset');
+		$(document).title('prepend', '(' + unread + ') ');
+		$('.notifications .label').addClass('important');
+	} else {
+		$(document).title('reset');
+		$('.notifications .label').removeClass('important');
+	}
+	$('.notifications .label').html(unread);
+}
 
 /**
  * renders notifications container (remove notifications
@@ -107,5 +110,10 @@ function shownotifications() {
 	} else {
 		$('.notifications').removeClass('notifications-active');
 		 $('.notifications-container').hide();
+		 
+		 $('.notifications-container .unread').removeClass('unread');
+		 $.get(BASE_URL + 'notifications/?read=1');
+		 updateNotificationsCount();
+		 
 	}
 }

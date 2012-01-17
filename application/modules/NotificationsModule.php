@@ -224,6 +224,11 @@ class NotificationsModule extends Module
 			return;
 		}
 		
+		if ($this->getRequest()->read) {
+			$notifications->read('uid = ' . $user['uid']);
+			return;
+		}
+		
 		// object for json
 		$obj = new stdClass();
 		
