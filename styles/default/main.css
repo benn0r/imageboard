@@ -299,6 +299,7 @@ textarea {
 	left: 320px;
 	right: 10px;
 }
+
 .boardimage {
 	position: absolute;
 }
@@ -518,6 +519,7 @@ body {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
 	
 	overflow: auto;
+	display: none;
 }
 .notifications-container h6 {
 	/*line-height: 20px;*/

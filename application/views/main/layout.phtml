@@ -29,6 +29,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/notifications.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/davis.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/buttons.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/modal.js"></script>
@@ -81,92 +82,6 @@
 			}
 			observeLink();
 		}*/
-
-		var activetime = 0;
-		var notificationsTimer = setInterval(notifications = function notifications() {
-			$.getJSON(BASE_URL + 'notifications/?nid=' + activetime, function(data) {
-
-				if (data.users.length == 0) {
-					$('.mainpage-users-container').hide();
-				} else {
-					$('.mainpage-users-container').show();
-					$('.mainpage-users').html('');
-					
-					for (var i = 0; i < data.users.length; i++) {
-						var u = data.users[i];
-						
-						$('.mainpage-users').append('<a onclick="return loadpage(this)" title="' + u.username + '" href="' + BASE_URL + 'user/' + u.uid + '/"><img src="' + u.avatar + '"</a>');
-					}
-				}
-
-				for (var i = 0; i < data.notifications.length; i++) {
-					var n = data.notifications[i];
-
-					$('.notifications-container .today').removeClass('hide');
-
-					var html = $('<p>' + n.text + ' <small>' + n.inserttime + '</small></p>');
-					if (n.unread) {
-						html.addClass('unread');
-					}
-
-					var html2 = $('<p class="media-grid pull-left"><a href="' + n.thread + '" onclick="return loadpage(this)"><img src="' + n.thumbnail + '" /></a></p>');
-					var html3 = $('<p class="span5 pull-left" style="margin-left:10px">' + n.content + '</p>');
-					var html4 = $('<div style="clear:both"></div>');
-
-					var parent = $('<div class="notification"></div>');
-					parent.append(html);
-					parent.append(html2);
-					parent.append(html3);
-					parent.append(html4);
-
-					$('.notifications-container .today').after(parent);
-					parent.hide();
-					parent.fadeIn();
-
-					notificationRenderer();
-
-				}
-
-				var unread = $('.notifications-container .unread').size();
-				if (unread > 0) {
-					$('.notifications .label').addClass('important');
-				} else {
-					$('.notifications .label').removeClass('important');
-				}
-				$('.notifications .label').html(unread);
-
-				/*for (var i = 0; i < data.news.length; i++) {
-					var n = data.news[i];
-
-					var elem = $('<li><h5>' + n.inserttime + '</h5>' + n.text + '</li>');
-					elem.hide();
-					$('.mainpage-news').prepend(elem);
-					elem.fadeIn('slow');
-				}*/
-
-				activetime = data.lastn;
-			});
-		}, 10000);
-
-		function notificationRenderer() {
-			var height = $(window).height() - 50 - $('.notifications-container').offset().top;
-
-			var elemheight = 0;
-			$('.notifications-container .notification, .notifications-container h6').each(function() {
-				if ($(this).height() + elemheight > height) {
-					if ($(this).find('.unread').size() == 0) {
-						$(this).hide();
-					}
-				} else {
-					elemheight += $(this).height();
-				}
-			});
-
-			$('.notifications-container').css('height', elemheight);
-		}
-
-		// update notifications
-		//notifications();
 
 		function loadpage(link) {
 			var elem = $(link);
@@ -505,10 +420,11 @@
 		?>
 		
 		<script type="text/javascript">
-			activetime = <?php echo $last ?>;
+			// update last notification id
+			lastn = <?php echo $last ?>;
 		</script>
 		
-		<div class="notifications pull-right notifications-active">
+		<div class="notifications pull-right" onclick="shownotifications()">
 			<?php echo $this->t->t('notifications/header') ?>
 			<span class="label<?php echo $unread > 0 ? ' important' : '' ?>"><?php echo $unread ?></span>
 			<div class="shadowfix"></div>

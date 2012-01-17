@@ -218,7 +218,7 @@ class NotificationsModule extends Module
 		
 		if (!is_array($user) || $user['grade'] < 1) {
 			// user is not logged (anonymous)
-			echo json_encode($this->error($this->t->t('error/pleaselogin')));
+			echo json_encode($this->error($this->getLanguage()->t('error/pleaselogin')));
 			return;
 		}
 		
