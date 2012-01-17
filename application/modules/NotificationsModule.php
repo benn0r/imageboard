@@ -204,6 +204,8 @@ class NotificationsModule extends Module
 	 * @param array $args not very interesting in this module
 	 */
 	public function run(array $args) {
+		header('Content-Type: text/plain');
+		
 		// random stuff
 		$user = $this->getUser();
 		$db = $this->getDb();
