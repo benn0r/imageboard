@@ -53,8 +53,11 @@ var notificationsTimer = setInterval(notifications = function notifications() {
 
 		var unread = $('.notifications-container .unread').size();
 		if (unread > 0) {
+			$(document).title('reset');
+			$(document).title('prepend', '(' + unread + ') ');
 			$('.notifications .label').addClass('important');
 		} else {
+			$(document).title('reset');
 			$('.notifications .label').removeClass('important');
 		}
 		$('.notifications .label').html(unread);

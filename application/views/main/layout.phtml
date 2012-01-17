@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php echo time() ?></title>
+	<title><?php echo $this->getConfig()->contact->websitetitle ?></title>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
@@ -30,6 +30,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/notifications.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.title.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery/davis.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/buttons.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/modal.js"></script>
@@ -328,13 +329,13 @@
 		setTimeout(function() {
 			notificationRenderer();
 		}, 100);
-
-		//search();
 	});
 
 	$(window).resize(function() {
 		resize();
 	});
+
+	$(document).title('init');
 	</script>
 </head>
 <body>
@@ -420,6 +421,9 @@
 		?>
 		
 		<script type="text/javascript">
+			<?php if ($unread > 0): ?>
+			$(document).title('prepend', '(<?php echo $unread ?>) ');
+			<?php endif; ?>
 			// update last notification id
 			lastn = <?php echo $last ?>;
 		</script>
