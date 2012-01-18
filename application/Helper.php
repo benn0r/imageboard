@@ -30,7 +30,7 @@ class Helper extends Application_Helper
 	/**
 	 * @param string $module
 	 */
-	public function getModule($module) {		
+	public function getModule($module) {
 		switch ($module) {
 			case 'language':
 				return 'Language';

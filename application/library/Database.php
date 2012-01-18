@@ -41,7 +41,9 @@ class Database
 		if ($mysqli->connect_error) {
 			throw new Database_Exception($mysqli->connect_error);
 		}
+		
 		$this->_mysqli = $mysqli;
+		//$this->_mysqli->query('SET NAMES "UTF8"');
 	}
 	
 	/**
