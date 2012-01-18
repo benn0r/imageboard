@@ -549,6 +549,11 @@ body {
 	height: 50px;
 }
 
+.mainpage-users-container img {
+	width: 30px;
+	height: 30px;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;
