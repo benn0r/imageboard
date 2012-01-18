@@ -8,7 +8,7 @@
 </div>
 <?php endif; ?>
 
-<div class="user-header" style="background-image: url(<?php echo $this->baseUrl() . $this->getConfig()->paths->headers . '/' . $this->u->uid . '.' . $this->u->header ?>);">
+<div class="user-header" style="<?php echo $this->u->header ? 'background-image: url(' . $this->baseUrl() . $this->getConfig()->paths->headers . '/' . $this->u->uid . '.' . $this->u->header . ');' : '' ?>">
 	<div class="media-grid avatar-profile">
 		<a href="">
 			<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $this->u->uid . '.' . $this->u->avatar ?>" />
