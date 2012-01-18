@@ -42,7 +42,7 @@
 
 <div class="user-infobars">
 	<?php foreach ($this->activity as $i): ?>
-		<div rel="twipsy" title="<?php echo sprintf($this->t->t('profile/points'), $i['points'], $i['total']) ?>" class="activitybar" style="height: <?php echo $i['percent'] * 0.5 ?>px; margin-top: <?php echo 98 - ($i['percent'] * 0.5) ?>px;">
+		<div rel="twipsy" title="<?php echo sprintf($this->t->t('profile/points'), $i['points'], $i['total']) ?>" class="activitybar" style="height: <?php echo ceil($i['percent'] * 0.5) ?>px; margin-top: <?php echo floor(98 - ($i['percent'] * 0.5)) ?>px;">
 			
 		</div>
 	<?php endforeach; ?>
@@ -99,3 +99,7 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$('*[rel=twipsy]').twipsy();
+</script>
