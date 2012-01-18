@@ -131,6 +131,13 @@ class RegisterModule extends Module
 					'status' => 1,
 				));
 				
+				$uid = $this->getDb()->lastInsertId();
+				$default = $this->getConfig()->register->defaultavatar;
+				$filetype = end(explode('.', $default));
+				
+				// copy default avatar
+				copy($default, $this->getConfig()->paths->avatars . '/' . $uid . '.' . $filetype);
+				
 				$this->layout('register', 'success');
 				return;
 			}

@@ -55,6 +55,10 @@
 .avatar-profile a {
 	background: #ffffff;
 }
+.avatar-profile img {
+	width: 100px;
+	height: 100px;
+}
 .userbox .username, .userbox .media-grid {
 	float: left;
 	line-height: 56px;
