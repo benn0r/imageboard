@@ -240,7 +240,9 @@ class NotificationsModule extends Module
 		$obj->next = time() - 10;
 		
 		$obj->time = date('Y-m-d H:i:s', $time);
-		$obj->lastn = $obj->notifications[count($obj->notifications) - 1]->nid;
+		if (count($obj->notifications) > 0) {
+			$obj->lastn = $obj->notifications[count($obj->notifications) - 1]->nid;
+		}
 		
 		// generate json and send to client
 		echo json_encode($obj);
