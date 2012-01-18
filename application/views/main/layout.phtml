@@ -335,6 +335,19 @@
 		resize();
 	});
 
+	function testBoard() {
+		$.get(BASE_URL + '2/?board', function(result) {
+			
+			$('#imageboard').animate({'top': $('#spacer').height() * -1 }, 200, function() {
+				$('#imageboard').html(result);
+				resize();
+
+				$('#imageboard').css('top', $(window).height());
+				$('#imageboard').animate({'top': 100 }, 200);
+			});
+		});
+	}
+
 	$(document).title('init');
 	</script>
 </head>

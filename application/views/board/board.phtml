@@ -1,5 +1,5 @@
 <div class="alert-message info">
-	<p><?php echo sprintf($this->t->t('register/message'), $this->baseUrl() . 'register') ?></p>
+	<p><button class="btn success" onclick="testBoard()">test</button><?php echo sprintf($this->t->t('register/message'), $this->baseUrl() . 'register') ?></p>
 </div>
 
 <div class="imageboard-navigation">
@@ -17,32 +17,7 @@
 	</ul>
 </div>-->
 <div id="imageboard">
-	<?php foreach ($this->posts as $post): ?>
-	<div class="boardimage<?php echo $post->status == 0 ? ' board-image-deleted' : '' ?>" id="<?php echo $post->mid ?>" style="width: <?php echo $post->width ?>px; height: <?php echo $post->height ?>px;">
-		<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $post->ppid ? $post->ppid . '/?goto=' . $post->pid : $post->pid . '/' ?>" onclick="return loadpage(this)" onmouseover="timer(this)" onmouseout="stoptimer(this)">
-			<div class="image-small"
-				style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;
-					background: url(<?php echo $post->thumbnail ?>)"></div>
-			<!-- width: 142px; height: 206px;  -->
-			<div class="image-large"
-				style="width: 142px; height: 206px;
-					background: url(<?php echo $post->lthumbnail ?>)"></div>
-			<!-- <div class="image-play"></div> -->
-			<div class="panel">
-				<?php if ($post->username): ?>
-				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $post->uid . '.' . $post->avatar ?>" class="panel-avatar" />
-				<span class="panel-username"><?php echo $post->username ?><br />
-				<?php else: ?>
-				<img src="<?php echo $this->baseUrl() . 'images/avatar.png' ?>" class="panel-avatar" />
-				<span class="panel-username"><?php echo $this->t->t('thread/anonymous') ?><br />
-				<?php endif; ?>
-				
-				<span class="panel-datetime"><?php echo Printdate::get(strtotime($post->updatetime), $this->t) ?></span></span>
-				<div style="clear: both"></div>
-			</div>
-		</a>
-	</div>
-	<?php endforeach; ?>
+	<?php echo $this->render('board', 'imageboard') ?>
 </div>
 <div id="spacer"></div>
 <div class="imageboard-navigation">

@@ -135,7 +135,9 @@ class IndexModule extends Module
 		$endtime = microtime(true);
 		$this->view()->time = $endtime - $starttime;
 		
-		if (isset($_GET['ajax'])) {
+		if (isset($_GET['board'])) {
+			$this->render('board', 'imageboard');
+		} elseif (isset($_GET['ajax'])) {
 			$this->render('board', 'board');
 		} else {
 			$this->layout('board', 'board');

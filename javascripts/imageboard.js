@@ -87,15 +87,23 @@ function Imageboard(str_boardid, str_spacerid)
 				// position image
 				image.style.top = next[0] * this.fheight + this.unit;
 				image.style.left = next[1] * this.fwidth + this.unit;
-				var startcoord = next;
-				var endcoord = new Array();
-				// calculate endcoordinates for block-function
-				endcoord[0] = ((parseInt(image.style.top) + parseInt(image.style.height)) / this.fheight) - 1;
-				endcoord[1] = ((parseInt(image.style.left) + parseInt(image.style.width)) / this.fwidth) - 1;
-				if(this.dispatchAfterImage != null) {
-					this.dispatchAfterImage(image, startcoord, endcoord);
-				}
-				this.block(startcoord, endcoord);
+				
+//				if ($('.header').height() + parseInt(board.offsetTop) + parseInt(image.style.top) + 
+//						parseInt(image.style.height) >= $(window).height()) {
+//					image.style.display = 'none';
+//				} else {
+//					image.style.display = '';
+					
+					var startcoord = next;
+					var endcoord = new Array();
+					// calculate endcoordinates for block-function
+					endcoord[0] = ((parseInt(image.style.top) + parseInt(image.style.height)) / this.fheight) - 1;
+					endcoord[1] = ((parseInt(image.style.left) + parseInt(image.style.width)) / this.fwidth) - 1;
+					if(this.dispatchAfterImage != null) {
+						this.dispatchAfterImage(image, startcoord, endcoord);
+					}
+					this.block(startcoord, endcoord);
+//				}
 			}
 			rheight = parseInt(image.style.top) + parseInt(image.style.height); // calculate realheight from actual image
 			if(rheight > this.rheight) {
