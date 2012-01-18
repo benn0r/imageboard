@@ -8,8 +8,29 @@
 	$(".alert-message").alert();
 </script>
 <?php endif; ?>
-<form action="<?php echo $this->baseUrl() . 'settings/profile/?ajax=1' ?>" method="post" onsubmit="return settingsform(this)">
+<form class="avatarform" action="<?php echo $this->baseUrl() . 'settings/profile' ?>" method="post" enctype="multipart/form-data">
 	<fieldset>
+		<div class="clearfix">
+			<label for="username"><?php echo $this->t->t('settings/yourheader') ?></label>
+			<div class="input">
+				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->headers . '/' . $this->user['uid'] . '.' . $this->user['header'] . '?' . time() ?>" style="width:273px;height:73px;padding:5px" />
+			</div>
+		</div>
+	
+		<div class="clearfix">
+			<label for="file"><?php echo $this->t->t('settings/newheader') ?></label>
+			<div class="input">
+				<input type="file" name="header" id="file" />
+				
+				<script type="text/javascript">
+				if (navigator.userAgent.search(/Firefox/) > -1) {
+					$('#file').after('<button class="btn" data-loading-text="<?php echo $this->t->t('upload/uploading') ?>" id="filebutton" onclick="$(\'#file\').click(); return false;"><?php echo $this->t->t('upload/nofile') ?></button>');
+					$('#file').hide();
+				}
+				</script>
+			</div>
+		</div>
+	
 		<div class="clearfix">
 			<label for="homepage"><?php echo $this->t->t('settings/homepage') ?></label>
 			<div class="input">

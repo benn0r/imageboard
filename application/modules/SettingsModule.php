@@ -121,6 +121,36 @@ class SettingsModule extends Module
 							'sex' => (int)$r->sex,
 							'birthday' => $r->birthday ? date('Y-m-d', strtotime($r->birthday)) : '0000-00-00',
 					), 'uid = ' . $user['uid']);
+					
+					if (isset($_FILES) && isset($_FILES['header'])) {
+						if (!$_FILES['header']['tmp_name']) {
+							$view->error = true;
+						} else {
+							if (exif_imagetype($_FILES['header']['tmp_name']) != IMAGETYPE_GIF &&
+									exif_imagetype($_FILES['header']['tmp_name']) != IMAGETYPE_PNG &&
+									exif_imagetype($_FILES['header']['tmp_name']) != IMAGETYPE_JPEG) {
+								$view->error = true;
+							}
+					
+							$filetype = explode('.', $_FILES['header']['name']);
+							$filetype = strtolower($filetype[count($filetype) - 1]);
+					
+							if (!$view->error) {
+								@unlink($this->view()->getConfig()->paths->headers . '/' . $user['uid'] . '.' . $user['header']);
+					
+								move_uploaded_file($_FILES['header']['tmp_name'],
+										$this->view()->getConfig()->paths->headers . '/' . $user['uid'] . '.' . $filetype);
+					
+								$users->update(array(
+										'header' => $filetype,
+								), 'uid = ' . $user['uid']);
+					
+								// reload session
+								$_SESSION['user']['header'] = $filetype;
+								$view->user = $_SESSION['user'];
+							}
+						}
+					}
 				}
 			
 				$view->profile = $users->find($user['uid']);
