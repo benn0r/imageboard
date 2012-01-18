@@ -32,8 +32,14 @@ class ImportModule extends Module
 	
 	public function run(array $args) {
 		$db = $this->getDb();
-		
 		$dbold = new Database('localhost', 'root', '', 'board32');
+		
+		$users = array('1125', '1126', '1127', '1128');
+		
+		for ($i = 0; $i < 100; $i++) {
+			$date = '2011-12-0' . mt_rand(1, 9) . ' 00:00:00';
+			$db->insert('board_posts', array('uid' => $users[mt_rand(0, 3)], 'content' => 'test', 'ppid' => 77, 'updatetime' => $date));
+		}
 		
 		/*
 		// ALT USERS
@@ -67,59 +73,59 @@ class ImportModule extends Module
 		*/
 		
 		// ALT POSTS
-		$posts = $dbold->select('
-			SELECT * FROM board_posts
-		');
+// 		$posts = $dbold->select('
+// 			SELECT * FROM board_posts
+// 		');
 		
 		// NEU POSTS
-		while (($p = $posts->fetch_object()) != null) {
-			$media = $dbold->select('
-				SELECT b.* FROM board_media2posts AS a
-				LEFT JOIN board_media AS b ON a.mid = b.mid
-				WHERE a.pid = ' . $p->pid . '
-			');
+// 		while (($p = $posts->fetch_object()) != null) {
+// 			$media = $dbold->select('
+// 				SELECT b.* FROM board_media2posts AS a
+// 				LEFT JOIN board_media AS b ON a.mid = b.mid
+// 				WHERE a.pid = ' . $p->pid . '
+// 			');
 			
-			try {
-				$db->insert('board_posts', array(
-					'pid' => $p->pid,
-					'ppid' => $p->ppid == 0 ? new Database_Expression('NULL') : $p->ppid,
-					'replyto' => $p->replyto,
-					'bid' => $p->bid,
-					'uid' => $p->uid,
-					'status' => $p->status,
-					'updatetime' => $p->updatetime,
-					'content' => $p->content,
-				));
-			} catch (Exception $ex) {
-				echo 'pid:' . $p->pid;
-			}
+// 			try {
+// 				$db->insert('board_posts', array(
+// 					'pid' => $p->pid,
+// 					'ppid' => $p->ppid == 0 ? new Database_Expression('NULL') : $p->ppid,
+// 					'replyto' => $p->replyto,
+// 					'bid' => $p->bid,
+// 					'uid' => $p->uid,
+// 					'status' => $p->status,
+// 					'updatetime' => $p->updatetime,
+// 					'content' => $p->content,
+// 				));
+// 			} catch (Exception $ex) {
+// 				echo 'pid:' . $p->pid;
+// 			}
 			
-			while (($m = $media->fetch_object()) != null) {
-				try {
-					$db->insert('board_media', array(
-						'pid' => $p->pid,
-						'mid' => $m->mid,
-						'status' => $m->status,
-						'image' => $m->media,
-						'inserttime' => $p->updatetime,
-						'filename' => $m->type == 1 ? $m->media_1 : '',
-						'extid' => $m->type == 2 ? $m->media_1 : '',
-					));
-				} catch (Exception $ex) {
-					echo 'mid:' . $m->mid;
-				}
+// 			while (($m = $media->fetch_object()) != null) {
+// 				try {
+// 					$db->insert('board_media', array(
+// 						'pid' => $p->pid,
+// 						'mid' => $m->mid,
+// 						'status' => $m->status,
+// 						'image' => $m->media,
+// 						'inserttime' => $p->updatetime,
+// 						'filename' => $m->type == 1 ? $m->media_1 : '',
+// 						'extid' => $m->type == 2 ? $m->media_1 : '',
+// 					));
+// 				} catch (Exception $ex) {
+// 					echo 'mid:' . $m->mid;
+// 				}
 				
-				if (!is_dir('uploads/' . date('Ymd', strtotime($p->updatetime)))) {
-					mkdir('uploads/' . date('Ymd', strtotime($p->updatetime)));
-				}
+// 				if (!is_dir('uploads/' . date('Ymd', strtotime($p->updatetime)))) {
+// 					mkdir('uploads/' . date('Ymd', strtotime($p->updatetime)));
+// 				}
 				
-				$folder = 'uploads/' . date('Ymd', strtotime($p->updatetime)) . '/' . $m->mid . '.' . $m->media;
+// 				$folder = 'uploads/' . date('Ymd', strtotime($p->updatetime)) . '/' . $m->mid . '.' . $m->media;
 				
-				if (file_exists('../board32/uploads/' . md5('im_' . $m->mid) . '.' . $m->media)) {
-					copy('../board32/uploads/' . md5('im_' . $m->mid) . '.' . $m->media, $folder);
-				}
-			}
-		}
+// 				if (file_exists('../board32/uploads/' . md5('im_' . $m->mid) . '.' . $m->media)) {
+// 					copy('../board32/uploads/' . md5('im_' . $m->mid) . '.' . $m->media, $folder);
+// 				}
+// 			}
+// 		}
 		
 		
 		/*$thumb = Module::init('Thumb', $this);
