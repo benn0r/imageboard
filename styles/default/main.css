@@ -554,6 +554,10 @@ body {
 	height: 30px;
 }
 
+.board-image-deleted {
+	opacity: .5;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;
