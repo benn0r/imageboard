@@ -61,7 +61,9 @@ var notificationsTimer = setInterval(notifications = function notifications() {
 			elem.fadeIn('slow');
 		}*/
 
-		lastn = data.lastn;
+		if (data.lastn > 0) {
+			lastn = data.lastn;
+		}
 	});
 }, 10000);
 
