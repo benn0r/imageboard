@@ -10,12 +10,14 @@
 <?php endif; ?>
 <form class="avatarform" action="<?php echo $this->baseUrl() . 'settings/profile' ?>" method="post" enctype="multipart/form-data">
 	<fieldset>
+		<?php if ($this->user['header']): ?>
 		<div class="clearfix">
 			<label for="username"><?php echo $this->t->t('settings/yourheader') ?></label>
 			<div class="input">
 				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->headers . '/' . $this->user['uid'] . '.' . $this->user['header'] . '?' . time() ?>" style="width:273px;height:73px;padding:5px" />
 			</div>
 		</div>
+		<?php endif; ?>
 	
 		<div class="clearfix">
 			<label for="file"><?php echo $this->t->t('settings/newheader') ?></label>
