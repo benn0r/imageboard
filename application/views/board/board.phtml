@@ -1,10 +1,7 @@
-<div class="alert-message info">
-	<p><button class="btn success" onclick="testBoard()">test</button><?php echo sprintf($this->t->t('register/message'), $this->baseUrl() . 'register') ?></p>
-</div>
+<!-- <div class="alert-message info">
+	<p><?php echo sprintf($this->t->t('register/message'), $this->baseUrl() . 'register') ?></p>
+</div> -->
 
-<div class="imageboard-navigation">
-	<?php echo $this->navigation->normaloutput() ?>
-</div>
 <!--<div class="imageboard-filter">
 	<div class="filter-selected"><?php echo $this->t->t('board/filter') ?> Hot Chicks</div>
 	<ul class="filter-list filter-show">
@@ -17,11 +14,15 @@
 	</ul>
 </div>-->
 <div id="imageboard">
+	<div class="pagination pagination-top">
+		<?php echo $this->navigation->normaloutput() ?>
+	</div>
+
 	<?php echo $this->render('board', 'imageboard') ?>
-</div>
-<div id="spacer"></div>
-<div class="imageboard-navigation">
-	<?php echo $this->navigation->normaloutput() ?>
+	
+	<div class="pagination pagination-bottom">
+		<?php echo $this->navigation->normaloutput() ?>
+	</div>
 </div>
 <script type="text/javascript">loadboard();</script>
 <!-- gentime:<?php echo $this->time ?> -->

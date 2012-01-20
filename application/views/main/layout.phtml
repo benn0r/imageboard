@@ -27,7 +27,7 @@
 	
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>language"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.autoresize.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.history.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/notifications.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/jquery.title.js"></script>
@@ -52,36 +52,6 @@
 					document.location.href.length
 			);
 			document.location.href = BASE_URL + redirect;
-		}
-
-		if (typeof history.pushState != 'undefined') {
-			window.onpopstate = function(e) {
-				if (location.href.replace.('#!').search('#') <= 0) {
-					var link = document.location.href.replace(BASE_URL, '');
-					loadlink(BASE_URL + link);
-				}
-			};
-		} else {
-			var lastlink = null;
-			
-			function observeLink() {
-				if (lastlink != null) {
-					if(document.location.href.replace('#!', '') != document.location.href) {
-						redirect = document.location.href.substring(
-								document.location.href.search('#!') + 2,
-								document.location.href.length
-						);
-					} else {
-						redirect = document.location.href.replace(BASE_URL, '');
-					}
-					
-					if (redirect != lastlink) {
-						loadLink(redirect, false);
-					}
-				}
-				setTimeout('observeLink()', 300);
-			}
-			observeLink();
 		}*/
 
 		function loadpage(link) {
@@ -91,26 +61,8 @@
 		}
 		function loadlink(uri) {
 			$('.loading').fadeIn('fast');
-			var link = uri.replace(BASE_URL, '');
 
-			lastlink = link;
-
-			if (typeof history.pushState != 'undefined') {
-				history.pushState({foo: 'bar'}, uri, uri);
-			} else {
-				document.location.href = '#!' + link;
-			}
-
-			if (uri.indexOf('?') > 0) {
-				uri = uri + '&ajax=1';
-			} else {
-				uri = uri + '/?ajax=1';
-			}
-
-			$.get(uri, function(result) {
-				$('.content .container').html(result);
-				$('.loading').hide();
-			});
+			History.pushState({rand: Math.random()}, uri, uri);
 
 			<?php if (!$this->user): ?>
 			// update login-forward
@@ -237,7 +189,7 @@
 					return false;
 				}
 				board.dispatchAfterImages = function() {
-					document.getElementById(this.spacerid).style.height = this.rheight + this.unit;
+					//document.getElementById(this.spacerid).style.height = this.rheight + this.unit;
 				}
 				resize = function() {
 					// needed bugfix (old version worked without this crap?)
@@ -329,24 +281,36 @@
 		setTimeout(function() {
 			notificationRenderer();
 		}, 100);
+
+		var History = window.History, State = History.getState();
+
+		// log initial state
+		History.log('initial:', State.data, State.title, State.url);
+
+		History.Adapter.bind(window,'statechange', function() {
+			var State = History.getState();
+			History.log('statechange:', State.data, State.title, State.url);
+
+			var uri = State.url;
+			
+			console.log(uri);
+
+			if (uri.indexOf('?') > 0) {
+				uri = uri + '&ajax=1';
+			} else {
+				uri = uri + '/?ajax=1';
+			}
+
+			$.get(uri, function(result) {
+				$('.content .container').html(result);
+				$('.loading').hide();
+			});
+		});
 	});
 
 	$(window).resize(function() {
 		resize();
 	});
-
-	function testBoard() {
-		$.get(BASE_URL + '2/?board', function(result) {
-			
-			$('#imageboard').animate({'top': $('#spacer').height() * -1 }, 200, function() {
-				$('#imageboard').html(result);
-				resize();
-
-				$('#imageboard').css('top', $(window).height());
-				$('#imageboard').animate({'top': 100 }, 200);
-			});
-		});
-	}
 
 	$(document).title('init');
 	</script>

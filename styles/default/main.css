@@ -130,9 +130,18 @@ textarea {
 
 .loading {
 	position: absolute;
-	top: 62px; right: 0px; left: 290px;
+	top: 63px; right: 0px; left: 290px;
 	text-align: center;
 	z-index: 100;
+	
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	
+	cursor: default;
 }
 .loading p {
 	width: auto;
@@ -151,6 +160,11 @@ textarea {
   	border-radius: 0px 0px 4px 4px;
   	
   	background: #d0d0d0 url(../../images/ajax-loader-d0d0d0.gif) no-repeat 20px center;
+  	font-weight: bold;
+  	
+  	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
 .image {
@@ -556,6 +570,15 @@ body {
 
 .board-image-deleted {
 	opacity: .5;
+}
+
+.pagination-bottom {
+	position: absolute;
+	bottom: -70px;
+}
+.pagination-top {
+	position: absolute;
+	top: -70px;
 }
 
 /* icons */

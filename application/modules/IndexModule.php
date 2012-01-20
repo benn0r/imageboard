@@ -123,7 +123,7 @@ class IndexModule extends Module
 		$pager->setlink("$$$");
 		$pager->setamount($perpage);
 		$pager->setcontent($postsTable->countAll());
-		$pager->setjump(true);
+		$pager->setjump(false);
 		$pager->setroot(true);
 		$pager->setpage($page);
 		$pager->setstyle("class","pagination3");

@@ -103,6 +103,8 @@ function Imageboard(str_boardid, str_spacerid)
 						this.dispatchAfterImage(image, startcoord, endcoord);
 					}
 					this.block(startcoord, endcoord);
+					
+					board.style.height = parseInt(image.style.top) + parseInt(image.style.height) + 'px';
 //				}
 			}
 			rheight = parseInt(image.style.top) + parseInt(image.style.height); // calculate realheight from actual image

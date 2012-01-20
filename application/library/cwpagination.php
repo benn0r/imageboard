@@ -126,17 +126,17 @@
 						} else {
 							$link = $_SERVER['PHP_SELF'];
 						}
-						echo '<li class="previous"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="First Page">&laquo First Page</a></li>';
+						echo '<li class="prev"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="First Page">&laquo First Page</a></li>';
 					} else {
-						echo '<li class="previous"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="First Page">&laquo First Page</a></li>';
+						echo '<li class="prev"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="First Page">&laquo First Page</a></li>';
 					}
 				}
-				echo '<li class="previous"><a href="'.str_replace("\$\$\$",($c['current']-1),$c['link']).'" title="Previous Page">&laquo Previous</a></li>';
+				echo '<li class="previous"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",($c['current']-1),$c['link']).'" title="Previous Page">&laquo Previous</a></li>';
 			} else {
 				if($c['jump']) {
 					//echo '<li class="previous-off"><span class="off">&laquo First Page</span></li>';
 				}
-				//echo '<li class="previous-off"><span class="off">&laquo; Previous</span></li>';
+				echo '<li class="prev disabled"><a href="" onclick="return false;" title="Previous Page">&laquo Previous</a></li>';
 			}
 			
 			if($c['pages'] > 10) {
@@ -160,7 +160,7 @@
 			for($i=$x;$i<$max;$i++) {
 				
 				if($c['current'] == $i) {
-					echo '<li class="active"><span>'.$i.'</span></li>';	
+					echo '<li class="active"><span><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="Page '.$i.'">'.$i.'</a></span></li>';	
 				} else {
 					if($c['root'] && $i==1) {
 						if($c['rootaddress']) {
@@ -184,9 +184,9 @@
 				}
 			} else {
 				
-				//echo '<li class="next-off"><span class="off">Next &raquo;</span></li>';
+				echo '<li class="next disabled"><a href="" onclick="return false;" title="Next Page">Next &raquo;</a></li>';
 				if($c['jump']) {
-					//echo '<li class="next-off"><span class="off">Last Page &raquo;</span></li>';
+					//echo '<li class="next-off"><span class="off">Last Page </span></li>';
 				}
 			}
 			echo "</ul>";
