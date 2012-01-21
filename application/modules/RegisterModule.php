@@ -127,7 +127,8 @@ class RegisterModule extends Module
 					'password' => md5($r->password),
 					'email' => htmlspecialchars($r->email, ENT_QUOTES),
 						
-					'grade' => 1,
+					'grade' => $this->getConfig()->register->defaultgrade,
+					'sid' => $this->getConfig()->register->defaultstyle,
 					'status' => 1,
 				));
 				
