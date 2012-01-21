@@ -229,7 +229,7 @@ class UploadModule extends Module
 					'source_name' => $media->source ? $media->source->name : '',
 					'source_uri' => $media->source ? $media->source->uri : '',
 					'type' => $media->getPlugin()->id(),
-					'filename' => $media->filename,
+					'filename' => isset($media->filename) ? $media->filename : '',
 					'default' => isset($media->default) && $media->default === true ? 1 : 0,
 			));
 	

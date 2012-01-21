@@ -15,6 +15,9 @@ function loadpage(link) {
  * @returns false
  */
 function loadlink(uri) {
+	// hide all twipsy elements
+	$('*[rel=twipsy]').twipsy('hide');
+	
 	History.pushState({rand: Math.random()}, $(document).attr('title'), uri);
 	return false;
 }

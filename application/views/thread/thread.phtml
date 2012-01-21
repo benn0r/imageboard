@@ -30,9 +30,15 @@ $user = $this->user;
 	</ul>
 	<?php endif; ?>
 
-	<div style="clear:both" class="image<?php echo $this->thread->astatus == 0 ? ' thread-image-deleted' : '' ?>"><a href="<?php echo $this->baseUrl() . $this->media->image ?>" title="<?php echo $this->t->t('thread/original') ?>" target="_blank">
-		<img src="<?php echo $this->baseUrl() . $this->media->image ?>" <?php if ($size[0] > 820) { echo 'style="width: 820px"'; } ?> />
-	</a></div>
+	<div style="clear:both" class="image<?php echo $this->thread->astatus == 0 ? ' thread-image-deleted' : '' ?>">
+		<?php if ($this->media->type == 4): ?>
+			<iframe width="820" height="477" src="http://www.youtube.com/embed/<?php echo $this->media->extid ?>?rel=0" frameborder="0" allowfullscreen></iframe>
+		<?php else: ?>
+			<a href="<?php echo $this->baseUrl() . $this->media->image ?>" title="<?php echo $this->t->t('thread/original') ?>" target="_blank">
+				<img src="<?php echo $this->baseUrl() . $this->media->image ?>" <?php if ($size[0] > 820) { echo 'style="width: 820px"'; } ?> />
+			</a>
+		<?php endif; ?>
+	</div>
 	
 	<?php if (isset($_SESSION['user'])): ?>
 	<div class="info actions">
