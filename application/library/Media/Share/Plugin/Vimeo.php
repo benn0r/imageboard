@@ -15,7 +15,7 @@ class Media_Share_Plugin_Vimeo implements Media_Share_Plugin
 	);
 	
 	public function id() {
-		3;
+		return 3;
 	}
 	
 	public function name() {
@@ -52,6 +52,8 @@ class Media_Share_Plugin_Vimeo implements Media_Share_Plugin
 		}
 		
 		$media->image = $arr[1];
+		
+		$media->extid = $id;
 		
 		$arr = array();
 		preg_match('/<title>(.*)<\/title>/', $vimeo, $arr);
