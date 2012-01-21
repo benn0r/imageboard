@@ -5,8 +5,20 @@ $user = $this->user;
 
 ?>
 <div class="thread">
+	<?php if($this->next): ?>
+	<a id="next" href="<?php echo $this->baseUrl() . 'thread/' . $this->next ?>" onclick="return loadpage(this)">
+		<?php echo $this->t->t('thread/next') ?>
+	</a>
+	<?php endif; ?>
+	
+	<?php if($this->prev): ?>
+	<a id="prev" href="<?php echo $this->baseUrl() . 'thread/' . $this->prev ?>" onclick="return loadpage(this)">
+		<?php echo $this->t->t('thread/prev') ?>
+	</a>
+	<?php endif; ?>
+
 	<?php if (count($this->mediaset) > 1): ?>
-	<ul class="media-grid">
+	<ul class="media-grid" style="clear:both">
 		<?php foreach ($this->mediaset as $media): ?>
 		<li<?php echo $media->mid == $this->mid ? ' class="active"' : '' ?>>
 			<a href="<?php echo $this->baseUrl() . 'thread/' . $this->pid . ($media->default == 1 ? '/' : '/' . $media->mid) ?>" onclick="return loadpage(this)">
@@ -18,7 +30,7 @@ $user = $this->user;
 	</ul>
 	<?php endif; ?>
 
-	<div class="image<?php echo $this->thread->astatus == 0 ? ' thread-image-deleted' : '' ?>"><a href="<?php echo $this->baseUrl() . $this->media->image ?>" title="<?php echo $this->t->t('thread/original') ?>" target="_blank">
+	<div style="clear:both" class="image<?php echo $this->thread->astatus == 0 ? ' thread-image-deleted' : '' ?>"><a href="<?php echo $this->baseUrl() . $this->media->image ?>" title="<?php echo $this->t->t('thread/original') ?>" target="_blank">
 		<img src="<?php echo $this->baseUrl() . $this->media->image ?>" <?php if ($size[0] > 820) { echo 'style="width: 820px"'; } ?> />
 	</a></div>
 	
@@ -137,47 +149,6 @@ $user = $this->user;
 		</div>-->
 	
 	</div>
-	
-	<?php /*<div class="thread-content">
-		<div class="thread-info">
-			<!-- <div class="thread-buttons">
-				<div class="rate-up">
-					<a href=""><?php echo $this->t->t('thread/rateup') ?></a>
-				</div>
-				<div class="rate-down">
-					<a href=""></a>
-				</div>
-				<div style="clear: both"></div>
-			</div> -->
-			<?php if ($this->thread->astatus != 0): ?>
-			<div class="thread-share">
-				<img src="<?php echo $this->baseUrl() ?>images/facebook.png" />
-				<img src="<?php echo $this->baseUrl() ?>images/twitter.png" />
-				<img src="<?php echo $this->baseUrl() ?>images/reddit.png" />
-				<img src="<?php echo $this->baseUrl() ?>images/furl.png" />
-				<img src="<?php echo $this->baseUrl() ?>images/delicious.png" />
-			</div>
-			<?php endif; ?>
-		</div>
-		<?php if ($this->thread->astatus != 0): ?>
-		<div class="comment">
-			<div class="thread-user">
-			</div>
-			<div class="thread-text comment-form-disabled" id="comment-form">
-				<?php
-				
-				$this->comment = true;
-				$this->ppid = $this->thread->pid;
-				
-				//echo $this->render('upload', 'form');
-
-				?>
-			</div>
-			<div style="clear: both"></div>
-		</div>
-		<?php endif; ?>
-		
-	</div>*/ ?>
 </div>
 <script type="text/javascript">
 $('.rating button').click(function() {
@@ -242,6 +213,14 @@ function loadComments() {
 
 $('.alert-message').alert();
 $('*[rel=twipsy]').twipsy();
+
+$(document).unbind('keyup');
+$(document).keyup(function(event) {
+	if(!$('.commentform').is(':visible')) switch (event.which) {
+		case 37: $('#next').click(); return false;
+		case 39: $('#prev').click(); return false;
+	}
+});
 </script>
 <?php if (isset($_GET['goto'])): ?>
 <script type="text/javascript">	

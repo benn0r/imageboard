@@ -3,11 +3,11 @@
 	<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $post->ppid ? $post->ppid . '/?goto=' . $post->pid : $post->pid . '/' ?>" onclick="return loadpage(this)" onmouseover="timer(this)" onmouseout="stoptimer(this)">
 		<div class="image-small"
 			style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;
-				background: url(<?php echo $post->thumbnail ?>)"></div>
+				background: url(<?php echo $this->baseUrl() . $post->thumbnail ?>)"></div>
 		<!-- width: 142px; height: 206px;  -->
 		<div class="image-large"
 			style="width: 142px; height: 206px;
-				background: url(<?php echo $post->lthumbnail ?>)"></div>
+				background: url(<?php echo $this->baseUrl() . $post->lthumbnail ?>)"></div>
 		<!-- <div class="image-play"></div> -->
 		<div class="panel">
 			<?php if ($post->username): ?>

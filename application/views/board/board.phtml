@@ -1,22 +1,28 @@
 <!-- <div class="alert-message info">
 	<p><?php echo sprintf($this->t->t('register/message'), $this->baseUrl() . 'register') ?></p>
 </div> -->
-
-<!--<div class="imageboard-filter">
-	<div class="filter-selected"><?php echo $this->t->t('board/filter') ?> Hot Chicks</div>
-	<ul class="filter-list filter-show">
-		<?php foreach ($this->boards as $board): ?>
-		<li class="filter-title"><?php echo $board->name ?></li>
-			<?php foreach ($board->data as $board): ?>
-				<li><a href=""><?php echo $board->name ?></a></li>
-			<?php endforeach; ?>
-		<?php endforeach; ?>
-	</ul>
-</div>-->
+		
 <div id="imageboard">
 	<div class="pagination pagination-top">
 		<?php echo $this->navigation->normaloutput() ?>
 	</div>
+	<div class="filter">
+		<select name="categorie" id="categorie" rel="twipsy" title="<?php echo $this->t->t('board/filterdescr') ?>" data-placement="left">
+			<option value="0"><?php echo $this->t->t('board/filterall') ?></option>
+			<?php
+				while (($tag = $this->tags->fetch_object()) != null) {
+					echo '<option' . (isset($_SESSION['filter']) && $_SESSION['filter'] == $tag->tid ? ' selected="selected"' : '') . 
+							' value="' . $tag->tid . '">' . $tag->value . '</option>';
+				}
+			?>
+		</select>
+	</div>
+	
+	<?php if (count($this->posts) == 0): ?>
+	<div class="alert-message block-message">
+		<p><?php echo sprintf($this->t->t('board/empty'), $this->baseUrl() . '1/?filter=0') ?></p>
+	</div>
+	<?php endif; ?>
 
 	<?php echo $this->render('board', 'imageboard') ?>
 	
@@ -24,5 +30,11 @@
 		<?php echo $this->navigation->normaloutput() ?>
 	</div>
 </div>
-<script type="text/javascript">loadboard();</script>
+<script type="text/javascript">
+	loadboard();
+
+	$('#categorie').change(function() {
+		loadlink(BASE_URL + '<?php echo $this->page ?>/?filter=' + $('#categorie').val());
+	});
+</script>
 <!-- gentime:<?php echo $this->time ?> -->

@@ -581,6 +581,26 @@ body {
 	top: -70px;
 }
 
+.filter {
+	position: absolute;
+	right: 0px;
+	top: -70px;
+	
+	height: 36px;
+  	margin: 18px 0;
+}
+
+#next, #prev {
+	position: relative;
+	margin: 0px 0px 10px 0px;
+}
+#next {
+	float: left;
+}
+#prev {
+	float: right;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;

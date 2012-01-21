@@ -224,6 +224,9 @@ class ThreadModule extends Module
 			$visits->insert($data);
 		}
 		
+		$view->next = $posts->next($pid, isset($_SESSION['filter']) ? $_SESSION['filter'] : 0);
+		$view->prev = $posts->prev($pid, isset($_SESSION['filter']) ? $_SESSION['filter'] : 0);
+		
 		/**
 		 * library for captcha
 		 */

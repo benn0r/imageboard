@@ -31,6 +31,40 @@ class Posts extends Model {
 		')->fetch_object();
 	}
 	
+	public function next($pid, $tag = 0) {
+		$rowset = $this->_db->select('
+			SELECT a.pid FROM board_posts AS a
+			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid' : '') . '
+			WHERE a.pid > ' . (int)$pid . ' AND a.ppid IS NULL
+			' . ($tag ? ' AND d.tid = ' . $tag : '') . '
+			ORDER BY a.pid ASC
+			LIMIT 0,1
+		');
+		
+		if ($rowset->num_rows > 0) {
+			return $rowset->fetch_object()->pid;
+		}
+		
+		return null;
+	}
+	
+	public function prev($pid, $tag = 0) {
+		$rowset = $this->_db->select('
+			SELECT a.pid FROM board_posts AS a
+			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid' : '') . '
+			WHERE a.pid < ' . (int)$pid . ' AND a.ppid IS NULL
+			' . ($tag ? ' AND d.tid = ' . $tag : '') . '
+			ORDER BY a.pid DESC
+			LIMIT 0,1
+		');
+	
+		if ($rowset->num_rows > 0) {
+			return $rowset->fetch_object()->pid;
+		}
+	
+		return null;
+	}
+	
 	public function fetchMedia($pid, $admin = false) {
 		return $this->_db->select('
 			SELECT * FROM board_media AS a
@@ -52,8 +86,16 @@ class Posts extends Model {
 		')->fetch_object()->cthreads;
 	}
 	
-	public function countAll() {		
-		$result = $this->_db->exec('SELECT COUNT(*) AS posts FROM board_media WHERE status = 1');
+	public function countAll($admin = false, $tag = 0) {		
+		$result = $this->_db->exec('
+			SELECT COUNT(*) AS posts 
+			FROM board_media AS a
+			LEFT JOIN board_posts AS b ON a.pid = b.pid
+			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON b.pid = d.pid' : '') . '
+			WHERE a.status = 1
+			' . ($tag ? ' AND d.tid = ' . $tag : '') . '
+		');
+		
 		$row = $result->fetch_object();
 		
 		return $row->posts;
@@ -66,12 +108,16 @@ class Posts extends Model {
 		return false;
 	}
 	
-	public function fetch($from, $to, $admin = false) {
+	public function fetch($from, $to, $admin = false, $tag = 0) {
 		return $this->_db->select('
-			SELECT *,a.status AS astatus FROM board_posts AS a
+			SELECT a.*,b.*,c.*,a.status AS astatus FROM board_posts AS a
 			LEFT JOIN board_media AS b ON a.pid = b.pid
 			LEFT JOIN board_users AS c ON a.uid = c.uid
+			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid 
+					LEFT JOIN board_posts2tags AS e ON a.ppid = e.pid' : '') . '
 			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . 'b.status = 1
+			' . ($tag ? ' AND (d.tid = ' . $tag . ' OR e.tid = ' . $tag . ')' : '') . '
+			GROUP BY b.mid
 			ORDER BY a.pid DESC
 			LIMIT ' . $from . ', ' . $to . '
 		');

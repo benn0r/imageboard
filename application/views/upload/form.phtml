@@ -173,7 +173,23 @@ $(document).ready(function() {
 			</div>
 		</div>
 		
+		<?php if (!$this->comment): ?>
 		<div class="clearfix">
+			<label for="categorie"><?php echo $this->t->t('upload/categorie') ?></label>
+			<div class="input">
+				<select name="categorie" id="categorie">
+					<?php
+						while (($tag = $this->tags->fetch_object()) != null) {
+							echo '<option' . ($tag->default ? ' selected="selected"' : '') . ' value="' . 
+									$tag->tid . '">' . $tag->value . '</option>';
+						}
+					?>
+				</select>
+			</div>
+		</div>
+		<?php endif; ?>
+		
+		<?php /* <div class="clearfix">
 			<label><?php echo $this->t->t('upload/options') ?></label>
 			<div class="input">
 				<ul class="inputs-list">
@@ -193,7 +209,7 @@ $(document).ready(function() {
 	                <?php endif; ?>
 	        	</ul>
 			</div>
-		</div>
+		</div> */ ?>
 		
 		<?php if ($this->getConfig()->upload->captcha && !isset($_SESSION['user']) && !isset($_SESSION['proved_as_a_human'])): ?>
 		<div class="clearfix">

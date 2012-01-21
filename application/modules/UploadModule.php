@@ -163,6 +163,7 @@ class UploadModule extends Module
 		$r = $this->getRequest();
 		$posts = new Posts();
 		$pmedia = new PostsMedia();
+		$tags = new Tags();
 	
 		if (isset($_SESSION['media'])) {
 			// take media from session
@@ -187,6 +188,15 @@ class UploadModule extends Module
 				'ppid' => $r->ppid > 0 ? (int)$r->ppid : new Database_Expression('NULL'),
 		));
 		$pid = $this->_db->lastInsertId();
+		
+		if ($r->categorie) {
+			// add categorie
+			$tags->connect(array(
+					'pid' => $pid,
+					'tid' => (int)$r->categorie, // TODO: validate categorie
+					'uid' => $user ? $user['uid'] : new Database_Expression('NULL'),
+			));
+		}
 		
 		if ($r->ppid) {
 			$post = $posts->find($pid);
@@ -425,6 +435,10 @@ class UploadModule extends Module
 			$this->layout('upload', 'anonerror');
 			return;
 		}
+		
+		// tags
+		$tags = new Tags();
+		$view->tags = $tags->fetchCategories();
 		
 		if (isset($_GET['ajax'])) {
 			$this->render('upload', 'form');

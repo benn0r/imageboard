@@ -37,6 +37,8 @@ class IndexModule extends Module
 		$boardsTable = new Boards();
 		$user = $this->getUser();
 		
+		$r = $this->getRequest();
+		
 		if (intval($args[0]) > 0) {
 			$page = intval($args[0]);
 		} else {
@@ -45,8 +47,13 @@ class IndexModule extends Module
 		}
 		$perpage = 100;
 		
+		if (isset($_GET['filter'])) {
+			$_SESSION['filter'] = (int)$r->filter;
+		}
+		
 		// lets load all posts for this page (if user is admin lets load the deleted posts too)
-		$posts = $postsTable->fetch(($page - 1) * $perpage, $perpage, $user['grade'] >= 8 ? true : false);
+		$posts = $postsTable->fetch(($page - 1) * $perpage, $perpage, 
+				$user['grade'] >= 8 ? true : false, isset($_SESSION['filter']) ? $_SESSION['filter'] : 0);
 		
 		// update useractivity if user is loggedin
 		if (is_array($user = $this->getUser()) && $user['grade'] > 0) {
@@ -120,9 +127,10 @@ class IndexModule extends Module
 		
 		$pager = new cwpagination();
 		$pager->newpagination();
-		$pager->setlink("$$$");
+		$pager->setlink($this->view()->baseUrl() . "$$$");
 		$pager->setamount($perpage);
-		$pager->setcontent($postsTable->countAll());
+		$pager->setcontent($postsTable->countAll($user['grade'] >= 8 ? true : false, 
+				isset($_SESSION['filter']) ? $_SESSION['filter'] : 0));
 		$pager->setjump(false);
 		$pager->setroot(true);
 		$pager->setpage($page);
@@ -131,9 +139,13 @@ class IndexModule extends Module
 		
 		$this->view()->posts = $threads;
 		$this->view()->boards = $boardsTable->fetchAll();
+		$this->view()->page = $page;
 		
 		$endtime = microtime(true);
 		$this->view()->time = $endtime - $starttime;
+		
+		$tags = new Tags();
+		$this->view()->tags = $tags->fetchCategories();
 		
 		if (isset($_GET['board'])) {
 			$this->render('board', 'imageboard');
