@@ -394,18 +394,25 @@ class UploadModule extends Module
 				} else if (is_uploaded_file($_FILES['file']['tmp_name'])) {
 					// Check the upload
 					if (!isset($_FILES['file']) || !is_uploaded_file($_FILES['file']['tmp_name']) || $_FILES['file']['error'] != 0) {
-						$view->error = $this->getLanguage()->t('upload/errorrepeat');
-						$this->render('upload', 'error');
-						
+						echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/errorrepeat') . '\');</script>';
+						return;
+					}
+					
+					if (filesize($_FILES['file']['tmp_name']) > $this->getConfig()->upload->maxsize * 1024) {
+						echo '<script type="text/javascript">parent.adderror(\'' . sprintf($this->getLanguage()->t('upload/errorfilesize'), $this->getConfig()->upload->maxsize) . '\');</script>';
+						return;
+					}
+					
+					$size = getimagesize($_FILES['file']['tmp_name']);
+					if ($size[0] > $this->getConfig()->upload->maxwidth || $size[0] > $this->getConfig()->upload->maxheight) {
+						echo '<script type="text/javascript">parent.adderror(\'' . sprintf($this->getLanguage()->t('upload/errordimension'), $this->getConfig()->upload->maxwidth, $this->getConfig()->upload->maxheight) . '\');</script>';
 						return;
 					}
 					
 					if (exif_imagetype($_FILES['file']['tmp_name']) != IMAGETYPE_GIF &&
 						exif_imagetype($_FILES['file']['tmp_name']) != IMAGETYPE_PNG &&
 						exif_imagetype($_FILES['file']['tmp_name']) != IMAGETYPE_JPEG) {
-						$view->error = $this->getLanguage()->t('upload/errorfile');
-						$this->render('upload', 'error');
-						
+						echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/errorfile') . '\');</script>';
 						return;
 					}
 					
