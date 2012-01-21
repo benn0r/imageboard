@@ -64,6 +64,18 @@
 					<dd><?php echo floor((time() - strtotime($this->u->birthday)) / (3600 * 24 * 365)) ?></dd>
 					<?php endif; ?>
 					
+					<?php if ($this->u->sex > 0): ?>
+					<dt><?php echo $this->t->t('settings/sex') ?></dt>
+					<dd>
+					<?php
+						switch ($this->u->sex) {
+							case 2: echo $this->t->t('settings/female'); break;
+							case 1: echo $this->t->t('settings/male'); break;
+						}
+					?>
+					</dd>
+					<?php endif; ?>
+					
 					<dt><?php echo $this->t->t('profile/registered') ?></dt>
 					<dd><?php echo Printdate::get(strtotime($this->u->regtime), $this->t) ?></dd>
 					
