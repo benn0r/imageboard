@@ -34,7 +34,7 @@ function __autoload($classname) {
 	require_once str_replace('_', '/', $classname) . '.php';
 }
 
-header('Content-Type: text/html; charset=utf-8');
+//header('Content-Type: text/html; charset=utf-8');
 
 $application = new Application();
 $application->bootstrap()

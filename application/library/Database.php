@@ -3,7 +3,7 @@
 /**
  * Request
  * 
- * Ersatz für die superglobalen von PHP
+ * Ersatz fï¿½r die superglobalen von PHP
  * 
  * @author benn0r <benjamin@benn0r.ch>
  * @since 29102011
@@ -43,7 +43,9 @@ class Database
 		}
 		
 		$this->_mysqli = $mysqli;
-		//$this->_mysqli->query('SET NAMES "UTF8"');
+		
+		//$this->_mysqli->query('SET NAMES "utf8" COLLATE "utf8_general_ci"');
+		//$this->_mysqli->query('SET CHARACTER SET "UTF8"');
 	}
 	
 	/**

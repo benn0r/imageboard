@@ -54,7 +54,7 @@ function postlink(uri, data) {
 }
 function submitform(form, target) {
 	var form = $(form);
-
+	
 	if (form.attr('method') == 'post') {
 		$.post(form.attr('action'), form.serialize(), function(result) {
 			target.html(result);
