@@ -96,27 +96,40 @@ class NotificationsModule extends Module
 			$nobj->text = $notification->text;
 			
 			$posts = new Posts();
-			$post = $posts->find($notification->pid);
-			$rowset = $posts->fetchMedia($notification->thread);
-			
-			// load module for generating thumbnails
-			$thumb = Module::init('Thumb', $this);
-			
-			$allmedia = array();
-			while (($c = $rowset->fetch_object()) != null) {
-				$media = new Media();
-			
-				$media->mid = $c->mid;
-				$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
-			
-				$media->thumbnail = $thumb->getThumbnail($media, 50, 50);
-			
-				$allmedia[] = $media;
+			if ($notification->pid) {
+				$post = $posts->find($notification->pid);
 			}
 			
-			$nobj->thread = $this->view()->baseUrl() . 'thread/' . $notification->thread;
-			$nobj->thumbnail = $this->view()->baseUrl() . $allmedia[0]->thumbnail;
-			$nobj->content = strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content;
+			if ($notification->thread) {
+				$rowset = $posts->fetchMedia($notification->thread);
+			
+				// load module for generating thumbnails
+				$thumb = Module::init('Thumb', $this);
+			
+				$allmedia = array();
+				while (($c = $rowset->fetch_object()) != null) {
+					$media = new Media();
+				
+					$media->mid = $c->mid;
+					$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
+				
+					$media->thumbnail = $thumb->getThumbnail($media, 50, 50);
+				
+					$allmedia[] = $media;
+				}
+				
+				$nobj->thread = $this->view()->baseUrl() . 'thread/' . $notification->thread;
+				$nobj->thumbnail = $this->view()->baseUrl() . $allmedia[0]->thumbnail;
+			} else {
+				$nobj->thread = '';
+				$nobj->thumbnail = '';
+			}
+			
+			if (isset($post)) {
+				$nobj->content = strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content;
+			} else {
+				$nobj->content = '';
+			}
 			
 			$r[] = $nobj;
 		}
@@ -147,6 +160,20 @@ class NotificationsModule extends Module
 		}
 		
 		return $r;
+	}
+	
+	public function guestbook($entry, $uid) {
+		$table = new Notifications();
+		$t = $this->getLanguage();
+		$u = $this->view()->baseurl();
+		
+		if ($entry->uid != $uid) {
+			$table->insert(array(
+					'uid' => $uid,
+					'status' => 1,
+					'text' => sprintf($t->t('notification/guestbook'), $u . 'user/' . $entry->uid, $entry->username, $u . 'user/' . $uid),
+			));
+		}
 	}
 	
 	public function add($post, $thread, $comments) {

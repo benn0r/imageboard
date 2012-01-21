@@ -72,10 +72,29 @@ class UserModule extends Module
 		
 		if (isset($_POST['text'])) {
 			$view->newcid = $comments->add($uid, $view->user['uid'], $_POST);
-			$view->comments = $comments->fetchAll($uid, $view->user['uid'], $view->user['grade'] >= 8 ? true : false);
+			$view->comments = $comments->fetchAll($uid, $view->user['grade'] >= 8 ? true : false);
+			
+			$notifications = Module::init('Notifications', $this);
+			$notifications->guestbook($comments->find($view->newcid), $uid);
+			
+			$total = $comments->count($uid, isset($_SESSION['user']) && $_SESSION['user']['grade'] >= 8 ? true : false);
+			$view->total = $total;
+			$view->active = 5 * 1 + 5;
 			
 			$this->render('user', 'form');
 			return;
+		}
+		
+		if (isset($_GET['load'])) {
+			$view = $this->view();
+								
+			$view->comments = $comments->fetchAll($uid, (isset($_SESSION['user']) && $_SESSION['user']['grade'] >= 8 ? true : false), 5 * (int)$_GET['load'], 5);
+			$total = $comments->count($uid, isset($_SESSION['user']) && $_SESSION['user']['grade'] >= 8 ? true : false);
+			$view->total = $total;
+			$view->active = 5 * ($_GET['load']) + 5;
+		
+			$this->render('user', 'comments');
+			exit;
 		}
 		
 		if (isset($_GET['delcomment'])) {
@@ -99,7 +118,11 @@ class UserModule extends Module
 		$view->ccomments = $posts->countComments($uid);
 		
 		// Kommentare laden
-		$view->comments = $comments->fetchAll($uid, $view->user['uid'], $view->user['grade'] >= 8 ? true : false);
+		$view->comments = $comments->fetchAll($uid, $view->user['grade'] >= 8 ? true : false);
+		
+		$total = $comments->count($uid, isset($_SESSION['user']) && $_SESSION['user']['grade'] >= 8 ? true : false);
+		$view->total = $total;
+		$view->active = 5 * 1 + 5;
 		
 		while (($post = $medias->fetch_object()) != null) {
 			$width = 63 * 2;
@@ -169,6 +192,7 @@ class UserModule extends Module
 			$media->ppid = $post->ppid;
 			$media->status = $post->status;
 			$media->default = $post->default;
+			$media->time = $post->time;
 		
 			$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
 			$media->lthumbnail = $thumb->getThumbnail($media, 142, 206);

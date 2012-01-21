@@ -19,18 +19,27 @@
 
 		return false;
 	}
+
+	var page = 0;
+	function loadComments() {
+		page = page + 1;
+
+		$('.commentloader button').button('loading');
+		
+		$.get(BASE_URL + 'user/<?php echo $this->u->uid ?>/?load=' + page, function(result) {
+			$('.commentloader').hide();
+
+			var container = $('<div>' + result + '</div>');
+
+			$('.comments').append(container);
+
+			$('html, body').animate({
+			    scrollTop: $(container.find('.comment').first()).offset().top  - 30
+			}, 500);
+		});
+	}
 	
 	</script>
 </form>
-<?php while(($c = $this->comments->fetch_object()) != null): ?>
-<div class="usercomment<?php echo $c->astatus == 0 ? ' usercomment-deleted' : '' ?>" <?php if ($this->newcid == $c->cid) { echo 'style="display: none" id="newcid"'; } ?>>
-	<h4>
-		<a href="<?php echo $this->baseUrl() . 'user/' . $c->uid . '/' ?>"><?php echo $c->username ?></a> <?php echo $c->private == 1 ? '<img src="' . $this->baseUrl() . 'images/lock.png" title="' . $this->t->t('profile/private') . '" />' : '' ?>
-		<small><?php echo Printdate::get(strtotime($c->inserttime), $this->t) ?></small>
-	</h4>
-	<?php /*if($c->astatus == 1 && ($c->uid == $this->user['uid'] || $c->ownerid == $this->user['uid'])) echo '<a onclick="if(confirm(\'' . $this->t->t('profile/delcommentconfirm') . '\')) { return loadpage(this); } else { return false; }" href="' . $this->baseUrl() . 'user/' . $this->u->uid . '/?delcomment=' . $c->cid . '" class="icon icon-cancel" title="' . $this->t->t('profile/delcomment') . '"></a>'; ?>
-	<?php if($c->astatus == 0 && $this->user['grade'] >= 8) echo '<a onclick="return loadpage(this);" href="' . $this->baseUrl() . 'user/' . $this->u->uid . '/?restorecomment=' . $c->cid . '" class="icon icon-restore" title="' . $this->t->t('profile/restorecomment') . '"></a>'; */ ?>
-	<p><?php echo nl2br(htmlentities($c->text, ENT_QUOTES)) ?></p>
-</div>
-<?php endwhile; ?>
-<script type="text/javascript">$('#newcid').fadeIn('slow');</script>
+
+<?php $this->render('user', 'comments') ?>

@@ -487,11 +487,18 @@ textarea {
 .likes {
 	border-top: 1px solid #dddddd;
 	margin-top: 40px;
-	height: 98px;
 	background: #f5f5f5;
 }
 .likes .media-grid {
 	margin: 0px 20px 0px 20px;
+}
+.likes h4 {
+	margin: 10px 40px 0px 40px;
+}
+
+.guestbook .commentloader {
+	padding: 0px;
+	text-align: center;
 }
 
 .error-message {

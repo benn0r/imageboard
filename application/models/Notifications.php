@@ -29,7 +29,7 @@ class Notifications extends Model {
 		$this->update(array('readtime' => new Database_Expression('NOW()')), $where);
 	}
 	
-	public function fetchAll($uid, $limit = 30) {
+	public function fetchAll($uid, $limit = 40) {
 		$where = 'uid = ' . $uid . ' AND status > 0';
 	
 		$result = $this->_db->select('

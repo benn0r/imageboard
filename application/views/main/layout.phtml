@@ -202,6 +202,9 @@
 		
 		History.Adapter.bind(window,'statechange', function() {
 			$('.loading').fadeIn('fast');
+
+			// hide all twipsy elements
+			$('*[rel=twipsy]').twipsy('hide');
 			
 			var State = History.getState();
 
@@ -283,31 +286,45 @@
 				$unread++;
 			}
 			
-			$post = $posts->find($n->pid);
-			$rowset = $posts->fetchMedia($n->thread);
+			if ($n->pid) {
+				$post = $posts->find($n->pid);
+			}
 			
-			// load module for generating thumbnails
-			$thumb = Module::init('Thumb', $this->ctrl);
+			if ($n->thread) {
+				$rowset = $posts->fetchMedia($n->thread);
+			}
 			
-			$allmedia = array();
-			while (($c = $rowset->fetch_object()) != null) {
-				$media = new Media();
-			
-				$media->mid = $c->mid;
-				$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
-			
-				$media->thumbnail = $thumb->getThumbnail($media, 50, 50);
-			
-				$allmedia[] = $media;
+			if (isset($rowset)) {
+				// load module for generating thumbnails
+				$thumb = Module::init('Thumb', $this->ctrl);
+				
+				$allmedia = array();
+				while (($c = $rowset->fetch_object()) != null) {
+					$media = new Media();
+				
+					$media->mid = $c->mid;
+					$media->image = 'uploads/' . date('Ymd', strtotime($c->inserttime)) . '/' . $c->mid . '.' . $c->image;
+				
+					$media->thumbnail = $thumb->getThumbnail($media, 50, 50);
+				
+					$allmedia[] = $media;
+				}
 			}
 			
 			$html .= '<div class="notification"><p' . $classname . '>' . $n->text . ' <small>' . Printdate::time(strtotime($n->inserttime), $this->t) . '</small></p>';
-			$html .= '<p class="media-grid pull-left">
-			<a href="' . $this->baseUrl() . 'thread/' . $n->thread . '" onclick="return loadpage(this)">
-			<img src="' . $this->baseUrl() . $allmedia[0]->thumbnail . '" />
-			</a>
-			</p><p class="span5 pull-left" style="margin-left:10px">' . (strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content) . '</p>
-			<div style="clear:both"></div></div>';
+			
+			if (isset($rowset)) {
+				$html .= '<p class="media-grid pull-left">
+				<a href="' . $this->baseUrl() . 'thread/' . $n->thread . '" onclick="return loadpage(this)">
+				<img src="' . $this->baseUrl() . $allmedia[0]->thumbnail . '" />
+				</a></p>';
+			}
+			
+			if (isset($post)) {
+				$html .= '<p class="span5 pull-left" style="margin-left:10px">' . (strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content) . '</p>';
+			}
+			
+			$html .= '<div style="clear:both"></div></div>';
 		}
 		?>
 		

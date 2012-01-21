@@ -42,8 +42,12 @@ var notificationsTimer = setInterval(notifications = function notifications() {
 
 			var parent = $('<div class="notification"></div>');
 			parent.append(html);
-			parent.append(html2);
-			parent.append(html3);
+			if (n.thread) {
+				parent.append(html2);
+			}
+			if (n.content) {
+				parent.append(html3);
+			}
 			parent.append(html4);
 
 			$('.notifications-container .today').after(parent);
@@ -93,17 +97,17 @@ function notificationRenderer() {
 	
 	// count height from all elements in container
 	$('.notifications-container .notification, .notifications-container h6').each(function() {
-		if ($(this).height() + elemheight > height) {
-			if ($(this).find('.unread').size() == 0) {
+		if ($(this).height() + parseInt($(this).css('margin-bottom')) + elemheight > height) {
+			if (!$(this).hasClass('unread') && $(this).find('.unread').size() == 0) {
 				// hide element which has no place
 				$(this).hide();
 			}
 		} else {
 			// element fits to container
-			elemheight += $(this).height();
+			elemheight += $(this).height() + 9;
 		}
 	});
-	
+		
 	// fix height
 	$('.notifications-container').css('height', elemheight);
 }

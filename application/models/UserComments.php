@@ -22,8 +22,13 @@ class UserComments extends Model {
 	protected $_table = 'board_usercomments';
 	
 	
-	public function find($uid) {
-		
+	public function find($cid) {
+		return $this->getDb()->select('
+				SELECT * 
+				FROM board_usercomments AS a 
+				LEFT JOIN board_users AS b ON a.uid = b.uid
+				WHERE cid = ' . (int)$cid
+		)->fetch_object();
 	}
 	
 	public function add($ownerid, $uid, array $data) {
@@ -45,15 +50,26 @@ class UserComments extends Model {
 		$this->update(array('status' => 1), 'cid = ' . (int)$cid);
 	}
 	
-	public function fetchAll($ownerid, $uid, $admin = false) {
+	public function fetchAll($ownerid, $admin = false, $from = 0, $to = 5) {		
 		return $this->_db->select('
 			SELECT *, a.status AS astatus
 			FROM board_usercomments AS a
 			LEFT JOIN board_users AS b ON a.uid = b.uid
 			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . ' 
-				ownerid = ' . (int)$ownerid . ' ' . ($ownerid == $uid ? '' : 'AND (a.private = 0 OR a.uid = ' . $uid . ')') . '
+				ownerid = ' . (int)$ownerid . '
 			ORDER BY a.cid DESC
+			LIMIT ' . $from . ', ' . $to . '
 		');
+	}
+	
+	public function count($ownerid, $admin = false) {
+		return $this->_db->select('
+			SELECT COUNT(*) AS comments
+			FROM board_usercomments AS a
+			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . '
+			ownerid = ' . (int)$ownerid . '
+			ORDER BY a.cid DESC
+		')->fetch_object()->comments;
 	}
 	
 }
