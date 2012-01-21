@@ -85,6 +85,11 @@
 			</div>
 			<div class="span3">
 				<dl>
+					<?php if($this->u->homepage): ?>
+					<dt><?php echo $this->t->t('settings/homepage') ?></dt>
+					<dd><?php echo '<a href="' . htmlentities($this->u->homepage, ENT_QUOTES) . '" target="_blank">' . htmlentities($this->u->homepage, ENT_QUOTES) . '</a>' ?></dd>
+					<?php endif; ?>
+				
 					<dt><?php echo $this->t->t('profile/threads') ?></dt>
 					<dd><?php echo $this->cthreads ?></dd>
 					
