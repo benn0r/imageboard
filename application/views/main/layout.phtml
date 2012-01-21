@@ -374,9 +374,9 @@
 				
 			
 			<h5><?php echo $this->t->t('navi/title') ?></h5>
-			<ul class="mainpage-links">
+			<ul class="links">
 				<li><a href="<?php echo $this->baseUrl() ?>register" class="icon-register"><?php echo $this->t->t('register/link') ?></a></li>
-				<li><a href="<?php echo $this->baseUrl() ?>password" class="icon-register"><?php echo $this->t->t('login/passwordforgot') ?></a></li>
+				<li><a href="<?php echo $this->baseUrl() ?>password" class="icon-password"><?php echo $this->t->t('login/passwordforgot') ?></a></li>
 			</ul>
 			<?php else: ?>
 			<div class="userbox">
@@ -391,11 +391,10 @@
 				
 				<div style="clear: both"></div>
 			</div>
-			<h5><?php echo $this->t->t('navi/title') ?></h5>
-			<ul class="mainpage-links">
+			<ul class="links">
 				<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'upload' ?>" class="icon-upload"><?php echo $this->t->t('navi/upload') ?></a></li>
 				<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'user/' . $this->user['uid'] ?>" class="icon-profile"><?php echo $this->t->t('navi/profile') ?></a></li>
-				<li><a href="<?php echo $this->baseUrl() . 'notifications' ?>" class="icon-notifications"><?php echo $this->t->t('navi/notifications') ?></a></li>
+				<li><a href="" onclick="shownotifications(); return false" class="icon-notifications"><?php echo $this->t->t('navi/notifications') ?></a></li>
 				<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'settings' ?>" class="icon-settings"><?php echo $this->t->t('navi/settings') ?></a></li>
 				<li><a href="<?php echo $this->baseUrl() . 'logout' ?>" class="icon-logout"><?php echo $this->t->t('navi/logout') ?></a></li>
 			</ul>

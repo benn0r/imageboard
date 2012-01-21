@@ -484,6 +484,16 @@ textarea {
 	display: none;
 }
 
+.likes {
+	border-top: 1px solid #dddddd;
+	margin-top: 40px;
+	height: 98px;
+	background: #f5f5f5;
+}
+.likes .media-grid {
+	margin: 0px 20px 0px 20px;
+}
+
 .error-message {
 	font-family: Lucida Console;
 	background-color: #0001ab;
@@ -601,6 +611,23 @@ body {
 	float: right;
 }
 
+.links {
+	margin: 0px 0px 20px 0px;
+	padding: 0;
+	list-style: none;
+}
+.links a {
+	display: block;
+	height: 26px;
+	line-height: 26px;
+	margin-left: -10px;
+	padding-left: 30px;
+}
+.links a:hover {
+	text-decoration: none;
+	background-color: #d0d0d0;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;
@@ -612,3 +639,18 @@ body {
 .icon-delete { background-image: url(../../images/delete.png); }
 .icon-favorite { background-image: url(../../images/heart.png); }
 .icon-time { background-image: url(../../images/time.png); }
+
+.icon-logout {			background: url(../../images/logout.png) no-repeat 10px center; }
+.icon-logout:hover {	background: url(../../images/logouthover.png) no-repeat 10px center; }
+.icon-settings {		background: url(../../images/settings.png) no-repeat 10px center; }
+.icon-settings:hover {	background: url(../../images/settingshover.png) no-repeat 10px center; }
+.icon-profile {			background: url(../../images/profile.png) no-repeat 10px center;}
+.icon-profile:hover {	background: url(../../images/profilehover.png) no-repeat 10px center; }
+.icon-upload {			background: url(../../images/upload.png) no-repeat 10px center; }
+.icon-upload:hover {	background: url(../../images/uploadhover.png) no-repeat 10px center;}
+.icon-notifications {	background: url(../../images/world.png) no-repeat 10px center; }
+.icon-notifications:hover {	background: url(../../images/worldhover.png) no-repeat 10px center;}
+.icon-register {		background: url(../../images/register.png) no-repeat 10px center; font-weight: bold; }
+.icon-register:hover {	background: url(../../images/registerhover.png) no-repeat 10px center; font-weight: bold; }
+.icon-password {		background: url(../../images/register.png) no-repeat 10px center; }
+.icon-password:hover {	background: url(../../images/registerhover.png) no-repeat 10px center; }

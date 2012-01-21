@@ -150,6 +150,33 @@ class UserModule extends Module
 		}
 		$view->activity = $percent;
 		
+		$likes = $users->likes($uid);
+		
+		$likesarr = array();
+		while (($post = $likes->fetch_object()) != null) {
+			$width = 63 * 2;
+			$height = 95;
+		
+			$media = new Media();
+			$media->mid = $post->mid;
+			$media->image = $this->_config->paths->uploads . '/' . date('Ymd', strtotime($post->inserttime)) . '/' . $post->mid . '.' . $post->image;
+		
+			$media->width = $width;
+			$media->height = $height;
+			$media->uid = $post->uid;
+			$media->updatetime = $post->updatetime;
+			$media->pid = $post->pid;
+			$media->ppid = $post->ppid;
+			$media->status = $post->status;
+			$media->default = $post->default;
+		
+			$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
+			$media->lthumbnail = $thumb->getThumbnail($media, 142, 206);
+		
+			$likesarr[] = $media;
+		}
+		$view->likes = $likesarr;
+		
 		if (isset($_GET['ajax'])) {
 			$this->render('user', 'show');
 		} else {

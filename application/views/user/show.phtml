@@ -99,7 +99,7 @@
 			</div>
 		</div>
 		
-		<ul class="media-grid">
+		<!-- <ul class="media-grid">
 			<?php foreach ($this->threads as $t): ?>
 				<li>
 					<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a>
@@ -113,7 +113,20 @@
 			<div class="topvisits-box">
 				<?php foreach ($this->threads as $t): ?><a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . '/?goto=' . $t->pid : $t->pid . '/' ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a><?php endforeach; ?>
 			</div>
-		</div>
+		</div> -->
+	</div>
+</div>
+
+<div class="row">
+	<div class="span14 likes">
+		<h4>benn0r mag</h4>
+		<ul class="media-grid">
+			<?php foreach ($this->likes as $t): ?>
+				<li>
+					<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $t->ppid ? $t->ppid . (!$t->default ? $t->mid . '/' : '') . '/?goto=' . $t->pid : $t->pid . '/' . (!$t->default ? $t->mid . '/' : '') ?>" onclick="return loadpage(this)"><img src="<?php echo $this->baseUrl() . $t->thumbnail ?>" style="width: 122px; height: 91px" /></a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
 	</div>
 </div>
 
