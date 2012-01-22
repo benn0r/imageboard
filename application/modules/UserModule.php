@@ -70,7 +70,7 @@ class UserModule extends Module
 		$view->u->days = $this->daysLeftForBirthday($view->u->birthday);
 		$view->user = $this->getUser(); // Eingeloggter User
 		
-		if (isset($_POST['text'])) {
+		if (isset($_POST['text']) && isset($_SESSION['user'])) {
 			$view->newcid = $comments->add($uid, $view->user['uid'], $_POST);
 			$view->comments = $comments->fetchAll($uid, $view->user['grade'] >= 8 ? true : false);
 			

@@ -1,45 +1,47 @@
+<?php if (isset($_SESSION['user'])): ?>
 <form action="" id="commentform" method="post" onsubmit="return sendcomment()">
 	<p><textarea name="text" class="span8" placeholder="<?php echo $this->t->t('profile/writecomment') ?>"></textarea></p>
 	
 	<p>
 		<button class="btn primary" name="save"><?php echo $this->t->t('profile/sendcomment') ?></button>
 	</p>
+</form>
+<?php endif; ?>
 
-	<script type="text/javascript">
-	
-	function sendcomment() {
-		if ($("#commentform").find('textarea').val() == '') {
-			$("#commentform").find('textarea').focus();
-			return false;
-		}
-		
-		$.post(BASE_URL + 'user/<?php echo $this->u->uid ?>/', $("#commentform").serialize(), function(result) {
-			$('.comments').html(result);
-		});
+<script type="text/javascript">
 
+function sendcomment() {
+	if ($("#commentform").find('textarea').val() == '') {
+		$("#commentform").find('textarea').focus();
 		return false;
 	}
-
-	var page = 0;
-	function loadComments() {
-		page = page + 1;
-
-		$('.commentloader button').button('loading');
-		
-		$.get(BASE_URL + 'user/<?php echo $this->u->uid ?>/?load=' + page, function(result) {
-			$('.commentloader').hide();
-
-			var container = $('<div>' + result + '</div>');
-
-			$('.comments').append(container);
-
-			$('html, body').animate({
-			    scrollTop: $(container.find('.comment').first()).offset().top  - 30
-			}, 500);
-		});
-	}
 	
-	</script>
-</form>
+	$.post(BASE_URL + 'user/<?php echo $this->u->uid ?>/', $("#commentform").serialize(), function(result) {
+		$('.comments').html(result);
+	});
+
+	return false;
+}
+
+var page = 0;
+function loadComments() {
+	page = page + 1;
+
+	$('.commentloader button').button('loading');
+	
+	$.get(BASE_URL + 'user/<?php echo $this->u->uid ?>/?load=' + page, function(result) {
+		$('.commentloader').hide();
+
+		var container = $('<div>' + result + '</div>');
+
+		$('.comments').append(container);
+
+		$('html, body').animate({
+		    scrollTop: $(container.find('.comment').first()).offset().top  - 30
+		}, 500);
+	});
+}
+
+</script>
 
 <?php $this->render('user', 'comments') ?>
