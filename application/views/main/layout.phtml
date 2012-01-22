@@ -48,13 +48,13 @@
 		var NTIME = '<?php echo time() - 10 ?>';
 		var TIME = '<?php echo time() ?>';
 
-		/*if(document.location.href.replace('#!', '') != document.location.href) {
+		if(document.location.href.replace('#', '') != document.location.href) {
 			redirect = document.location.href.substring(
-					document.location.href.search('#!') + 2,
+					document.location.href.search('#') + 1,
 					document.location.href.length
 			);
-			document.location.href = BASE_URL + redirect;
-		}*/
+			document.location.href = redirect;
+		}
 
 		var timeout = null;
 		function timer(img) {
