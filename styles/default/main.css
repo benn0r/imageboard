@@ -637,6 +637,12 @@ body {
 	background-color: #d0d0d0;
 }
 
+.visits {
+	text-align: right;
+	font-size: 20px;
+	line-height: 30px;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;

@@ -66,7 +66,10 @@ $user = $this->user;
 			<?php endif; ?>
 		</div>
 		
-		<!-- <p rel="twipsy" title="<?php echo sprintf($this->t->t($this->visits == 1 ? 'thread/visits' : 'thread/visitsplural'), $this->visits) ?>"><?php echo $this->visits ?></p> -->
+		<p class="visits">
+			<?php echo $this->media->filename ? $this->media->filename . '  &bull; ' : '' ?>
+			<?php echo sprintf($this->t->t($this->visits == 1 ? 'thread/visits' : 'thread/visitsplural'), $this->visits) ?>
+		</p>
 	
 		<!-- <div class="buttons">
 			<img src="<?php echo $this->baseUrl() ?>images/facebook.png" />

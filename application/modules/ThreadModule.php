@@ -64,6 +64,7 @@ class ThreadModule extends Module
 			$media->type = $c->type;
 			$media->extid = $c->extid;
 			$media->default = $c->default;
+			$media->filename = $c->filename;
 			
 			$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
 			
