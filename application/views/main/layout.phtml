@@ -23,7 +23,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>lib/bootstrap/bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/classic/main.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/main.css" />
 	
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>language"></script>
 	
@@ -32,6 +32,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/jquery/jquery.history.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/imageboard.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/notifications.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/shoutbox.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/jquery/jquery.title.js"></script>
 	
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/buttons.js"></script>
@@ -442,6 +443,18 @@
 			</div>
 		</div>
 	</div>
+	
+	<?php if(!isset($_COOKIE['hidechat'])): ?>
+	<div class="shoutbox">
+		<a href="" onclick="$('.shoutbox').addClass('sb-extended'); return false;" class="sb-title">
+			<h3><?php echo $this->t->t('shoutbox/title') ?></h3>
+		</a>
+		<a href="" onclick="return shoutbox_close()" rel="twipsy" data-placement="left" title="<?php echo $this->t->t('shoutbox/close') ?>" class="close">&times;</a>
+		<a href="" onclick="$('.shoutbox').removeClass('sb-extended'); return false;" rel="twipsy" data-placement="left" title="<?php echo $this->t->t('shoutbox/min') ?>" class="close">&ndash;</a>
+		<iframe name="" src="http://server.benn0r.ch/client.html?u=<?php echo $this->user['username'] ?>">
+		</iframe>
+	</div>
+	<?php endif; ?>
 
 </body>
 </html>

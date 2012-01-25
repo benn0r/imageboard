@@ -643,6 +643,55 @@ body {
 	line-height: 30px;
 }
 
+.shoutbox {
+	position: fixed;
+	border: 1px solid #ccc;
+	bottom: 0px;
+	height: 30px;
+	right: 20px;
+	left: 310px;
+	background: #f00;
+	z-index: 30;
+	
+	border: 1px solid #ffffff;
+	color: #ffffff;
+  	
+  	background: #d0d0d0;
+  	
+  	-webkit-border-radius: 4px 4px 0px 0px;
+  	-moz-border-radius: 4px 4px 0px 0px;
+  	border-radius: 4px 4px 0px 0px;
+}
+.shoutbox h3 {
+	line-height: 30px;
+	font-size: 12px;
+	padding: 0px 0px 0px 10px;
+	float: left;
+}
+.sb-title, .sb-title:hover {
+	display: block;
+	text-decoration: none;
+}
+.sb-extended {
+	height: 300px;
+}
+.shoutbox iframe {
+	display: none;
+}
+.sb-extended iframe {
+	display: block;
+	width: 100%;
+	border: none;
+	height: 270px;
+}
+.shoutbox .close {
+	margin: 9px 9px 0px 0px;
+}
+
+.content {
+	padding-bottom: 330px;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;
