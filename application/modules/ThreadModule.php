@@ -92,7 +92,7 @@ class ThreadModule extends Module
 				$view->media = $allmedia[0];
 			}
 		}
-		
+				
 		if ($view->media && isset($_SESSION['user'])) {
 			// load rating
 			$ratings = new MediaRatings();
@@ -173,7 +173,8 @@ class ThreadModule extends Module
 		$view->total = $total;
 		$view->active = 5 * (isset($_GET['load'])) + 5;
 		
-		$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false);
+		$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false, 0, 10,
+				(isset($_GET['goto']) ? $_GET['goto'] : null));
 		$arr = array();
 		
 		while(($c = $comments->fetch_object()) != null) {

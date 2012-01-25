@@ -123,7 +123,7 @@ class Posts extends Model {
 		');
 	}
 	
-	public function findChilds($pid, $admin = false, $from = 0, $to = 10) {		
+	public function findChilds($pid, $admin = false, $from = 0, $to = 10, $find = null) {
 		return $this->_db->select('
 			SELECT a.*,c.*,d.*,a.status AS astatus, f.username as pusername FROM board_posts AS a
 			LEFT JOIN board_users AS c ON a.uid = c.uid
@@ -131,8 +131,9 @@ class Posts extends Model {
 			LEFT JOIN board_posts AS e ON a.replyto = e.pid
 			LEFT JOIN board_users AS f ON e.uid = f.uid
 			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . 'a.ppid = ' . (int)$pid . '
+				' . ($find ? ' AND a.pid >= ' . $find . ' ' : '') . '
 			ORDER BY a.pid DESC
-			LIMIT ' . $from . ', ' . $to . '
+			' . ($find ? '' : 'LIMIT ' . $from . ', ' . $to) . '
 		');
 	}
 	

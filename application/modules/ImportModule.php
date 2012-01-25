@@ -34,12 +34,55 @@ class ImportModule extends Module
 		$db = $this->getDb();
 		$dbold = new Database('localhost', 'root', '', 'board32');
 		
-		$users = array('1125', '1126', '1127', '1128');
+		$handle = opendir($dirname = 'I:\Downloads\Stephanie_-_TotalSuperCuties\Stephanie - TotalSuperCuties\\');
 		
-		for ($i = 0; $i < 100; $i++) {
-			$date = '2011-12-0' . mt_rand(1, 9) . ' 00:00:00';
-			$db->insert('board_posts', array('uid' => $users[mt_rand(0, 3)], 'content' => 'test', 'ppid' => 77, 'updatetime' => $date));
+		while ($file = readdir($handle)) {
+			if (is_file($dirname . $file)) {
+				try {
+					$db->insert('board_posts', array(
+							'uid' => 1,
+							'ppid' => 496,
+							'status' => 1,
+							'content' => '',
+					));
+				} catch (Exception $ex) {
+					echo 'error';
+					print_r($ex);
+				}
+				
+				$pid = $db->lastInsertId();
+				$split = explode('.', $file);
+				
+				try {
+					$db->insert('board_media', array(
+							'pid' => $pid,
+							'status' => 1,
+							'image' => $filetype = array_pop($split),
+							'filename' => $file,
+					));
+				} catch (Exception $ex) {
+					echo 'mid:' . $m->mid;
+				}
+				
+				$mid = $db->lastInsertId();
+			
+				if (!is_dir('uploads/' . date('Ymd'))) {
+					mkdir('uploads/' . date('Ymd'));
+				}
+			
+				$folder = 'uploads/' . date('Ymd') . '/' . $mid . '.' . $filetype;
+			
+				copy($dirname . $file, $folder);
+			}
 		}
+		closedir($handle);
+		
+// 		$users = array('1125', '1126', '1127', '1128');
+		
+// 		for ($i = 0; $i < 100; $i++) {
+// 			$date = '2011-12-0' . mt_rand(1, 9) . ' 00:00:00';
+// 			$db->insert('board_posts', array('uid' => $users[mt_rand(0, 3)], 'content' => 'test', 'ppid' => 77, 'updatetime' => $date));
+// 		}
 		
 		/*
 		// ALT USERS

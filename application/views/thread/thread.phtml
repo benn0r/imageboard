@@ -235,8 +235,10 @@ $(document).keyup(function(event) {
 </script>
 <?php if (isset($_GET['goto'])): ?>
 <script type="text/javascript">	
-$('html, body').animate({
-    scrollTop: $('#post<?php echo $_GET['goto'] ?>').offset().top
-}, 500);
+setTimeout(function() {
+	$('html, body').animate({
+	    scrollTop: $('#post<?php echo $_GET['goto'] ?>').offset().top
+	}, 500);
+}, 200);
 </script>
 <?php endif; ?>

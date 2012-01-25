@@ -441,20 +441,20 @@
 			<div class="container">
 				<?php $this->render($this->module, $this->action) ?>
 			</div>
+			
+			<?php if(!isset($_COOKIE['hidechat']) && isset($_SESSION['user'])): ?>
+			<div class="shoutbox">
+				<a href="" onclick="$('.content').addClass('sb-extended'); return false;" class="sb-title">
+					<h3><?php echo $this->t->t('shoutbox/title') ?></h3>
+				</a>
+				<a href="" onclick="return shoutbox_close()" rel="twipsy" data-placement="left" title="<?php echo $this->t->t('shoutbox/close') ?>" class="close">&times;</a>
+				<a href="" onclick="$('.content').removeClass('sb-extended'); return false;" rel="twipsy" data-placement="left" title="<?php echo $this->t->t('shoutbox/min') ?>" class="close">&ndash;</a>
+				<iframe name="" src="http://server.benn0r.ch/client.html?u=<?php echo $this->user['username'] ?>">
+				</iframe>
+			</div>
+			<?php endif; ?>
 		</div>
 	</div>
-	
-	<?php if(!isset($_COOKIE['hidechat'])): ?>
-	<div class="shoutbox">
-		<a href="" onclick="$('.shoutbox').addClass('sb-extended'); return false;" class="sb-title">
-			<h3><?php echo $this->t->t('shoutbox/title') ?></h3>
-		</a>
-		<a href="" onclick="return shoutbox_close()" rel="twipsy" data-placement="left" title="<?php echo $this->t->t('shoutbox/close') ?>" class="close">&times;</a>
-		<a href="" onclick="$('.shoutbox').removeClass('sb-extended'); return false;" rel="twipsy" data-placement="left" title="<?php echo $this->t->t('shoutbox/min') ?>" class="close">&ndash;</a>
-		<iframe name="" src="http://server.benn0r.ch/client.html?u=<?php echo $this->user['username'] ?>">
-		</iframe>
-	</div>
-	<?php endif; ?>
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php foreach ($this->posts as $post): ?>
 <div class="boardimage<?php echo $post->status == 0 ? ' board-image-deleted' : '' ?>" id="<?php echo $post->mid ?>" style="width: <?php echo $post->width ?>px; height: <?php echo $post->height ?>px;">
-	<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $post->ppid ? $post->ppid . '/' . $post->mid . '/?goto=' . $post->pid : $post->pid . '/' . $post->mid . '/' ?>" onclick="return loadpage(this)" onmouseover="timer(this)" onmouseout="stoptimer(this)">
+	<a href="<?php echo $this->baseUrl() ?>thread/<?php echo $post->ppid ? $post->ppid . '/?goto=' . $post->pid : $post->pid . '/' . $post->mid . '/' ?>" onclick="return loadpage(this)" onmouseover="timer(this)" onmouseout="stoptimer(this)">
 		<div class="image-small"
 			style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;
 				background: url(<?php echo $this->baseUrl() . $post->thumbnail ?>)"></div>
