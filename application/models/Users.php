@@ -170,7 +170,7 @@ class Users extends Model {
 			FROM board_mediaratings AS a
 			LEFT JOIN board_media AS b ON a.mid = b.mid
 			LEFT JOIN board_posts AS c ON b.pid = c.pid
-			WHERE rating = 1 AND a.uid = ' . (int)$uid . '
+			WHERE rating = 1 AND a.uid = ' . (int)$uid . ' AND c.pid IS NOT NULL
 			ORDER BY a.updatetime DESC
 			LIMIT 0,20
 		');

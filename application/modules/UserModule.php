@@ -124,7 +124,7 @@ class UserModule extends Module
 		$view->total = $total;
 		$view->active = 5 * 1 + 5;
 		
-		while (($post = $medias->fetch_object()) != null) {
+		while (($post = $medias->fetch_object()) != null) {			
 			$width = 63 * 2;
 			$height = 95;
 			
