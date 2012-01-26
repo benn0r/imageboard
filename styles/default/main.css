@@ -695,6 +695,21 @@ body {
 	padding-bottom: 300px;
 }
 
+.birthday {
+	background: url(../../images/birthday.png) no-repeat;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: -2px; left: -2px;
+}
+.promotion {
+	background: url(../../images/promotion.png) no-repeat;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: -2px; left: -2px;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;

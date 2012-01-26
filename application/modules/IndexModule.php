@@ -113,6 +113,7 @@ class IndexModule extends Module
 			$media->pid = $post->pid;
 			$media->ppid = $post->ppid;
 			$media->status = $post->astatus;
+			$media->birthday = $post->birthday;
 			
 			// load thumbnail
 			$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
