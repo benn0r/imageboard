@@ -15,7 +15,7 @@
 	height: 60px;
 	margin: 0px 20px 0px 70px;
 	width: 220px;
-	background: url(../../images/logo2.png) no-repeat left center;
+	background: url(../../images/logo_classic.png) no-repeat left center;
 	float: left;
 }
 .logo a {
@@ -694,6 +694,73 @@ fieldset legend {
 
 .pagination .active a {
 	background: #3f3f3f;
+}
+
+.shoutbox {
+	position: fixed;
+	border: 1px solid #ccc;
+	bottom: 0px;
+	height: 30px;
+	right: 20px;
+	left: 310px;
+	background: #f00;
+	z-index: 30;
+	
+	border: 1px solid #2f2f2f;
+	color: #ffffff;
+  	
+  	background: #3f3f3f;
+  	
+  	-webkit-border-radius: 4px 4px 0px 0px;
+  	-moz-border-radius: 4px 4px 0px 0px;
+  	border-radius: 4px 4px 0px 0px;
+}
+.shoutbox h3 {
+	line-height: 30px;
+	font-size: 12px;
+	padding: 0px 0px 0px 10px;
+	float: left;
+}
+.sb-title, .sb-title:hover {
+	display: block;
+	text-decoration: none;
+}
+.sb-extended .shoutbox {
+	height: 300px;
+}
+.shoutbox iframe {
+	display: none;
+}
+.sb-extended .shoutbox iframe {
+	display: block;
+	width: 100%;
+	border: none;
+	height: 270px;
+}
+.shoutbox .close {
+	margin: 9px 9px 0px 0px;
+}
+
+.content {
+	padding-bottom: 30px;
+}
+.sb-extended {
+	padding-bottom: 300px;
+}
+
+.birthday {
+	background: url(../../images/birthday.png) no-repeat;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: -2px; left: -2px;
+}
+.promotion {
+	background: url(../../images/promotion.png) no-repeat;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: -2px; left: -2px;
 }
 
 /* icons */
