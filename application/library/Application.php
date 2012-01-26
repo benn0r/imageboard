@@ -44,8 +44,12 @@ class Application
 		
 		$this->_lang = new Language('de', $config->language->names->de, $config->language->files->de);
 		
-		$url = ($this->_config->urlrewrite->base != '/' ? $this->_config->urlrewrite->base : '');
-		$args = explode('/', substr(str_replace($url, '', $this->_request->getServer('REQUEST_URI')), 1, strlen($url)));
+		$url = $this->_request->getServer('REQUEST_URI');
+		$args = explode('/', substr(str_replace(
+			$this->_config->urlrewrite->base != '/' ? $this->_config->urlrewrite->base : '', '', $url), 1, strlen($url)));
+		
+		echo $url;
+		print_r($args);
 
 		$module = $this->findModule($args);
 		$classname = $module . 'Module';
