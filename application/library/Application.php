@@ -44,7 +44,7 @@ class Application
 		
 		$this->_lang = new Language('de', $config->language->names->de, $config->language->files->de);
 		
-		$args = explode('/', str_replace($this->_config->urlrewrite->base, '',
+		$args = explode('/', str_replace($this->_config->urlrewrite->base != '/' ? $this->_config->urlrewrite->base : '', '',
 			$this->_request->getServer('REQUEST_URI')));
 		
 		$module = $this->findModule($args);

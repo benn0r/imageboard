@@ -29,7 +29,7 @@ class Request
 	}
 	
 	public function url(Config $config) {
-		$url = str_replace($config->urlrewrite->base, '', $this->get('REQUEST_URI'));
+		$url = str_replace($config->urlrewrite->base != '/' ? $config->urlrewrite->base : '', '', $this->get('REQUEST_URI'));
 		$parts = explode('/', $url);
 		
 		return $parts;
