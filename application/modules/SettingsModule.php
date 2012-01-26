@@ -121,6 +121,18 @@ class SettingsModule extends Module
 				
 				$view->design = $users->find($user['uid']);
 				break;
+			case 'language':
+				if ($r->isPost()) {
+					$users->update(array(
+							'language' => $r->language,
+					), 'uid = ' . $user['uid']);
+				
+					$_SESSION['user']['language'] = $r->language;
+				}
+				
+				$view->lang = $users->find($user['uid']);
+				break;
+				break;
 			case 'profile':
 			default:
 				$view->a = 'profile';

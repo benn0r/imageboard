@@ -1,0 +1,34 @@
+<?php if ($this->r->isPost() && !$this->error): ?>
+<div class="alert-message block-message hide success" id="alert-message-settings">
+	<a class="close" href="">&times;</a>
+	<p><?php echo $this->t->t('settings/saved') ?></p>
+</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+	$('#alert-message-settings').fadeIn('fast');
+	$(".alert-message").alert();
+</script>
+
+<form action="<?php echo $this->baseUrl() . 'settings/language' ?>" method="post">
+	<fieldset>
+		<div class="clearfix">
+			<label><?php echo $this->t->t('settings/language') ?></label>
+			<div class="input">
+				 <ul class="inputs-list">
+				 	<li>
+				 		<label>
+				 			<input type="radio" name="language" value="de"<?php echo $this->lang->language == 'de' ? ' checked="checked"' : '' ?> />
+				 			<span><?php echo $this->t->t('settings/german') ?></span>
+				 		</label>
+				 	</li>
+				 </ul>
+				
+			</div>
+		</div>
+		
+		<div class="actions">
+			<button name="save" class="btn primary" data-loading-text="<?php echo $this->t->t('settings/saving') ?>"><?php echo $this->t->t('settings/save') ?></button>
+		</div>
+	</fieldset>
+</form>
