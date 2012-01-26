@@ -67,26 +67,9 @@ class Helper extends Application_Helper
 			case 'report':
 				return 'Report';
 			default:
-				if ($this->isBoard($module)) {
-					return 'Board';
-				}
 				return 'Index';
 				
 		}
-	}
-	
-	public function isBoard($module) {
-		$db = $this->_application->getDb();
-		
-		$result = $db->select('SELECT * FROM board_boards
-			WHERE pbid > 0 AND url_alias = "' . $db->escape($module) . '"');
-		
-		if ($result->num_rows > 0) {
-			return true;
-		}
-		
-		// Kein Board
-		return false;
 	}
 	
 }
