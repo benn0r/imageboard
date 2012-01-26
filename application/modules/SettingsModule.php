@@ -110,6 +110,17 @@ class SettingsModule extends Module
 				
 				$view->notifications = $users->find($user['uid']);
 				break;
+			case 'design':
+				if ($r->isPost() && ($r->design == 'default' || $r->design == 'classic')) {
+					$users->update(array(
+							'design' => $r->design,
+					), 'uid = ' . $user['uid']);
+					
+					$_SESSION['user']['design'] = $r->design;
+				}
+				
+				$view->design = $users->find($user['uid']);
+				break;
 			case 'profile':
 			default:
 				$view->a = 'profile';

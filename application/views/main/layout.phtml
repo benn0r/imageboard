@@ -23,7 +23,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>lib/bootstrap/bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/default/main.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl() ?>styles/<?php echo isset($_SESSION['user']) ? $_SESSION['user']['design'] : 'default' ?>/main.css" />
 	
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>language"></script>
 	

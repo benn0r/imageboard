@@ -75,14 +75,14 @@ class Posts extends Model {
 	public function countThreads($uid) {
 		return $this->_db->select('
 			SELECT COUNT(*) AS cthreads FROM board_posts AS a
-			WHERE a.ppid IS NULL AND a.status = 1 AND a.uid = ' . $uid . '
+			WHERE a.ppid IS NULL AND a.status = 1 AND a.uid = ' . (int)$uid . '
 		')->fetch_object()->cthreads;
 	}
 	
 	public function countComments($uid) {
 		return $this->_db->select('
 			SELECT COUNT(*) AS cthreads FROM board_posts AS a
-			WHERE a.ppid IS NOT NULL AND a.status = 1 AND a.uid = ' . $uid . '
+			WHERE a.ppid IS NOT NULL AND a.status = 1 AND a.uid = ' . (int)$uid . '
 		')->fetch_object()->cthreads;
 	}
 	
