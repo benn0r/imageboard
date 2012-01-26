@@ -47,9 +47,6 @@ class Application
 		$url = $this->_request->getServer('REQUEST_URI');
 		$args = explode('/', substr(str_replace(
 			$this->_config->urlrewrite->base != '/' ? $this->_config->urlrewrite->base : '', '', $url), 1, strlen($url)));
-		
-		echo $url;
-		print_r($args);
 
 		$module = $this->findModule($args);
 		$classname = $module . 'Module';
