@@ -34,7 +34,6 @@ class IndexModule extends Module
 		
 		// init needed modules
 		$postsTable = new Posts();
-		$boardsTable = new Boards();
 		$user = $this->getUser();
 		
 		$r = $this->getRequest();
@@ -139,7 +138,6 @@ class IndexModule extends Module
 		$this->view()->navigation = $pager;
 		
 		$this->view()->posts = $threads;
-		$this->view()->boards = $boardsTable->fetchAll();
 		$this->view()->page = $page;
 		
 		$endtime = microtime(true);
