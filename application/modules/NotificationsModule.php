@@ -190,7 +190,7 @@ class NotificationsModule extends Module
 					'status' => 1,
 					'pid' => $post->pid,
 					'thread' => $thread->pid,
-					'text' => sprintf($t->t('notification/yourthread'), $u . 'user/' . $post->uid, $post->username, $u . 'thread/' . $thread->pid),
+					'text' => sprintf($t->t('notification/yourthread'), $u . 'user/' . $post->uid, $post->username, $u . 'thread/' . $thread->pid . '/?goto=' . $post->pid),
 			));
 		}
 		
@@ -202,14 +202,14 @@ class NotificationsModule extends Module
 					$text = sprintf($t->t('notification/histhread'),
 							$u . 'user/' . $post->uid,
 							$post->username,
-							$u . 'thread/' . $thread->pid);
+							$u . 'thread/' . $thread->pid . '/?goto=' . $post->pid);
 				} else {
 					$text = sprintf($t->t('notification/thread'),
 							$u . 'user/' . $post->uid,
 							$post->username,
 							$u . 'user/' . $thread->uid,
 							$thread->username,
-							$u . 'thread/' . $thread->pid);
+							$u . 'thread/' . $thread->pid . '/?goto=' . $post->pid);
 				}
 				
 				$table->insert(array(
