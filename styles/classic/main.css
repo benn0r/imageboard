@@ -467,11 +467,13 @@ textarea {
 	left: 140px;
 	bottom: -35px;
 	font-size: 20px;
+	color: #fff;
 }
 .user-header .header-lastactivity {
 	position: absolute;
 	right: 20px;
 	bottom: -35px;
+	color: #fff;
 }
 .userinfo {
 	/*border: 1px solid #dddddd;
@@ -761,6 +763,22 @@ fieldset legend {
 	height: 100px;
 	position: absolute;
 	top: -2px; left: -2px;
+}
+
+input, textarea {
+	background: #3f3f3f;
+}
+input[disabled] {
+	background: #4f4f4f;
+	color: #fff;
+}
+
+h4 {
+	color: #fff;
+}
+
+.modal p, .modal h3 {
+	color: #000;
 }
 
 /* icons */
