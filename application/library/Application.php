@@ -48,7 +48,7 @@ class Application
 		if ($this->_config->urlrewrite->base != '/') {
 			$args = explode('/', str_replace($this->_config->urlrewrite->base, '', $url));
 		} else {
-			$args = explode('/', substr(str_replace($this->_config->urlrewrite->base, '', $url), 1, strlen($url)));
+			$args = explode('/', substr($url, 1, strlen($url)));
 		}
 
 		$module = $this->findModule($args);
