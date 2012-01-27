@@ -91,7 +91,7 @@ class PasswordModule extends Module
 	public function run(array $args) {
 		$r = $this->getRequest();
 
-		if ($_SESSION['user']) {
+		if (isset($_SESSION['user'])) {
 			header('Location: ' . $this->view()->baseUrl());
 			exit;
 		}
