@@ -289,6 +289,8 @@
 			
 			if ($n->pid) {
 				$post = $posts->find($n->pid);
+			} else {
+				$post = null;
 			}
 			
 			if ($n->thread) {
@@ -314,7 +316,7 @@
 			
 			$html .= '<div class="notification"><p' . $classname . '>' . $n->text . ' <small>' . Printdate::time(strtotime($n->inserttime), $this->t) . '</small></p>';
 			
-			if (isset($rowset)) {
+			if (isset($rowset) && isset($allmedia) && count($allmedia) > 0) {
 				$html .= '<p class="media-grid pull-left">
 				<a href="' . $this->baseUrl() . 'thread/' . $n->thread . '" onclick="return loadpage(this)">
 				<img src="' . $this->baseUrl() . $allmedia[0]->thumbnail . '" />
@@ -322,7 +324,7 @@
 			}
 			
 			if (isset($post)) {
-				$html .= '<p class="span5 pull-left" style="margin-left:10px">' . (strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content) . '</p>';
+				$html .= '<p class="span5 pull-left" style="margin-left:10px">' . utf8_encode(strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content) . '</p>';
 			}
 			
 			$html .= '<div style="clear:both"></div></div>';
