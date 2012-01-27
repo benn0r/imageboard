@@ -6,7 +6,7 @@
 	</h4>
 	<?php /*if($c->astatus == 1 && ($c->uid == $this->user['uid'] || $c->ownerid == $this->user['uid'])) echo '<a onclick="if(confirm(\'' . $this->t->t('profile/delcommentconfirm') . '\')) { return loadpage(this); } else { return false; }" href="' . $this->baseUrl() . 'user/' . $this->u->uid . '/?delcomment=' . $c->cid . '" class="icon icon-cancel" title="' . $this->t->t('profile/delcomment') . '"></a>'; ?>
 	<?php if($c->astatus == 0 && $this->user['grade'] >= 8) echo '<a onclick="return loadpage(this);" href="' . $this->baseUrl() . 'user/' . $this->u->uid . '/?restorecomment=' . $c->cid . '" class="icon icon-restore" title="' . $this->t->t('profile/restorecomment') . '"></a>'; */ ?>
-	<p><?php echo nl2br(htmlentities($c->text, ENT_QUOTES)) ?></p>
+	<p><?php echo Printspecial::wrap(nl2br(htmlentities($c->text, ENT_QUOTES))) ?></p>
 </div>
 <?php endwhile; ?>
 <script type="text/javascript">$('#newcid').fadeIn('slow');</script>

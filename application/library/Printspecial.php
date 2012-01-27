@@ -87,5 +87,15 @@ class Printspecial
 		}
 		return $post->content;
 	}
+	
+	static public function wrap($content) {
+		$words = explode(' ', $content);
+		$new = '';
+		foreach ($words as $word) {
+			$new .= wordwrap($word, 68, '<br />', true) . ' ';
+		}
+		
+		return $new;
+	}
 
 }
