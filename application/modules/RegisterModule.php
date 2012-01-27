@@ -121,6 +121,9 @@ class RegisterModule extends Module
 			}
 			
 			if (count($error) == 0) {
+				$default = $this->getConfig()->register->defaultavatar;
+				$filetype = array_pop(explode('.', $default));
+				
 				// everything okay
 				$table->insert(array(
 					'username' => htmlspecialchars($r->username, ENT_QUOTES),
@@ -130,11 +133,10 @@ class RegisterModule extends Module
 					'grade' => $this->getConfig()->register->defaultgrade,
 					'sid' => $this->getConfig()->register->defaultstyle,
 					'status' => 1,
+					'avatar' => $filetype,
 				));
 				
 				$uid = $this->getDb()->lastInsertId();
-				$default = $this->getConfig()->register->defaultavatar;
-				$filetype = end(explode('.', $default));
 				
 				// copy default avatar
 				copy($default, $this->getConfig()->paths->avatars . '/' . $uid . '.' . $filetype);
