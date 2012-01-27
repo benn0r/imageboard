@@ -102,7 +102,7 @@ class Users extends Model {
 		return $obj;
 	}
 	
-	public function active($limit = 10) {
+	public function active($limit = 20) {
 		// $dbadapter->exec('UPDATE board_users SET last_activity = NOW(),online=1,remote_addr="'.$_SERVER['REMOTE_ADDR'].'" WHERE uid="'.(int)$_SESSION['user']->uid.'"');
 		
 		// Alle Nutzer die mehr als 15 Minuten inaktiv waren werden auf offline gesetzt
@@ -112,7 +112,7 @@ class Users extends Model {
 			SELECT *
 			FROM board_users AS a
 			WHERE online = 1
-			ORDER BY last_activity DESC
+			ORDER BY username ASC
 			LIMIT 0,' . $limit . ' 
 		');
 	}
