@@ -41,6 +41,8 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/popover.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/alert.js"></script>
 	
+	<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+	
 	<link rel="icon" href="<?php echo $this->baseUrl() ?>images/favicon.ico" type="image/x-icon" />
 
 	<script type="text/javascript">
@@ -395,6 +397,7 @@
 			
 			<h5><?php echo $this->t->t('navi/title') ?></h5>
 			<ul class="links">
+				<li><a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'upload' ?>" class="icon-upload"><?php echo $this->t->t('navi/upload') ?></a></li>
 				<li><a href="<?php echo $this->baseUrl() ?>register" class="icon-register"><?php echo $this->t->t('register/link') ?></a></li>
 				<li><a href="<?php echo $this->baseUrl() ?>password" class="icon-password"><?php echo $this->t->t('login/passwordforgot') ?></a></li>
 			</ul>

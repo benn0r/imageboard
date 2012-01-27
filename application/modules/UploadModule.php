@@ -304,7 +304,7 @@ class UploadModule extends Module
 					echo json_encode($return); return;
 				}
 				
-				if (!$_SESSION['user'] && !$config->upload->anonenabled) {
+				if (!isset($_SESSION['user']) && !$config->upload->anonenabled) {
 					$return->error = $this->getLanguage()->t('upload/noaccess');
 					echo json_encode($return); return;
 				}

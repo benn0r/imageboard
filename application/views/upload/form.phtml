@@ -108,8 +108,14 @@ if ($this->comment) {
 		$('*[rel=twipsy]').twipsy();
 	}
 </script>
-
 <script type="text/javascript">
+function showRecaptcha(element) {
+	Recaptcha.create("<?php echo $this->getConfig()->captcha->publickey ?>", element, {
+		theme: "red",
+		callback: Recaptcha.focus_response_field}
+	);
+}
+
 $(document).ready(function() {
 
 	// if file changes, submit form instantly
@@ -214,8 +220,8 @@ $(document).ready(function() {
 		<?php if ($this->getConfig()->upload->captcha && !isset($_SESSION['user']) && !isset($_SESSION['proved_as_a_human'])): ?>
 		<div class="clearfix">
 			<label><?php echo $this->t->t('register/captcha') ?></label>
-			<div class="input">
-				<?php echo recaptcha_get_html($this->getConfig()->captcha->publickey) ?>
+			<div class="input" id="recaptcha">
+				<?php //echo recaptcha_get_html($this->getConfig()->captcha->publickey) ?>
 			</div>
 		</div>
 		<?php endif; ?>
@@ -240,4 +246,5 @@ $(document).ready(function() {
 
 <script type="text/javascript">	
 $('*[rel=twipsy]').twipsy();
+showRecaptcha('recaptcha');
 </script>
