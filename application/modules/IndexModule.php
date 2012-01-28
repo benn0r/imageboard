@@ -86,23 +86,25 @@ class IndexModule extends Module
 				
 				$promo = $ads->fetch_object();
 				
-				$media->mid = $promo->id;
-				$media->promo = true;
+				if ($promo) {
+					$media->mid = $promo->id;
+					$media->promo = true;
+					
+					$media->username = $promo->username;
+					$media->link = $promo->link;
+					$media->image = $promo->image;
+					
+					$media->width = $width;
+					$media->height = $height;
+					
+					$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
+					$media->lthumbnail = $thumb->getThumbnail($media, 142, 206);
 				
-				$media->username = $promo->username;
-				$media->link = $promo->link;
-				$media->image = $promo->image;
-				
-				$media->width = $width;
-				$media->height = $height;
-				
-				$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
-				$media->lthumbnail = $thumb->getThumbnail($media, 142, 206);
-			
-				$threads[] = $media;
-				$count++;
-				
-				list($width, $height) = $this->getSize($sizearr, $count);
+					$threads[] = $media;
+					$count++;
+					
+					list($width, $height) = $this->getSize($sizearr, $count);
+				}
 			}
 			
 			
