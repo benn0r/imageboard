@@ -66,6 +66,8 @@ class Helper extends Application_Helper
 				return 'Delete';
 			case 'report':
 				return 'Report';
+			case 'affiliate':
+				return 'Affiliate';
 			default:
 				return 'Index';
 				

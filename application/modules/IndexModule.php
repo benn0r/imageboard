@@ -35,6 +35,7 @@ class IndexModule extends Module
 		// init needed modules
 		$postsTable = new Posts();
 		$user = $this->getUser();
+		$affiliate = new Affiliate_Privatamateure();
 		
 		$r = $this->getRequest();
 		
@@ -54,6 +55,9 @@ class IndexModule extends Module
 		$posts = $postsTable->fetch(($page - 1) * $perpage, $perpage, 
 				$user['grade'] >= 8 ? true : false, isset($_SESSION['filter']) ? $_SESSION['filter'] : 0);
 		
+		// load affiliate images
+		$ads = $affiliate->fetchAll();
+		
 		// update useractivity if user is loggedin
 		if (is_array($user = $this->getUser()) && $user['grade'] > 0) {
 			if ($page == 1) {
@@ -68,7 +72,6 @@ class IndexModule extends Module
 		
 		$thumb = Module::init('Thumb', $this);
 		
-		// default width and height
 		$dwidth = 63;
 		$dheight = 95;
 		
@@ -76,30 +79,39 @@ class IndexModule extends Module
 		$sizearr = $this->getSizeConfig($dwidth, $dheight);
 		
 		while (($post = $posts->fetch_object()) != null) {
-			$width = $dwidth; // reset default with
-			$height = $dheight; // reset default height
+			list($width, $height) = $this->getSize($sizearr, $count);
+			
+			if ($count != 0 && $count % 8 == 0) {
+				$media = new Media();
+				
+				$promo = $ads->fetch_object();
+				
+				$media->mid = $promo->id;
+				$media->promo = true;
+				
+				$media->username = $promo->username;
+				$media->link = $promo->link;
+				$media->image = $promo->image;
+				
+				$media->width = $width;
+				$media->height = $height;
+				
+				$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
+				$media->lthumbnail = $thumb->getThumbnail($media, 142, 206);
+			
+				$threads[] = $media;
+				$count++;
+				
+				list($width, $height) = $this->getSize($sizearr, $count);
+			}
+			
 			
 			$media = new Media();
 			$media->mid = $post->mid;
 			
 			// @todo make this somewhere else global useable
-			$media->image = $this->_config->paths->uploads . '/' . 
-				date('Ymd', strtotime($post->inserttime)) . '/' . $post->mid . '.' . $post->image;
-			
-			foreach ($sizearr as $size) {
-				switch ($size['coord']) {
-					case 'x':
-						if (in_array($count, $size['images'])) {
-							$width = $size['val'];
-						}
-						break;
-					case 'y':
-						if (in_array($count, $size['images'])) {
-							$height = $size['val'];
-						}
-						break;
-				}
-			}
+			$media->image = $this->_config->paths->uploads . '/' .
+					date('Ymd', strtotime($post->inserttime)) . '/' . $post->mid . '.' . $post->image;
 			
 			$media->width = $width;
 			$media->height = $height;
@@ -153,6 +165,29 @@ class IndexModule extends Module
 		} else {
 			$this->layout('board', 'board');
 		}
+	}
+	
+	public function getSize($sizearr, $count) {
+		// default width and height
+		$width = 63;
+		$height = 95;
+		
+		foreach ($sizearr as $size) {
+			switch ($size['coord']) {
+				case 'x':
+					if (in_array($count, $size['images'])) {
+						$width = $size['val'];
+					}
+					break;
+				case 'y':
+					if (in_array($count, $size['images'])) {
+						$height = $size['val'];
+					}
+					break;
+			}
+		}
+		
+		return array($width, $height);
 	}
 	
 	/**

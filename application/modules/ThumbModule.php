@@ -62,6 +62,13 @@ class ThumbModule extends Module
 			
 			// Pfad zurückgeben
 			return $filename;
+		} elseif(isset($media->promo)) {
+			if (!is_dir($this->_config->paths->thumbs . '/promo/' . $media->mid)) {
+				// Existiert noch kein Ordner für dieses Bild legen wir den mal an
+				mkdir($this->_config->paths->thumbs . '/promo/' . $media->mid);
+			}
+			
+			return $this->_config->paths->thumbs . '/promo/' . $media->mid . '/' . md5($media->mid . $w . $h) . '.' . $type[count($type) - 1];
 		} else {
 			if (!is_dir($this->_config->paths->thumbs . '/' . $media->mid)) {
 				// Existiert noch kein Ordner für dieses Bild legen wir den mal an
