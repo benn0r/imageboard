@@ -69,7 +69,7 @@ class AffiliateModule extends Module
 		    for ($i = 0; $i < 100; $i++) {
 		    	$data = fgetcsv($handle, 1000, ";");
 		    	
-		    	if ($data[2] == 'w' && $data[3] < 24 && !strstr($data[7], 'keinevorschaubig')) {
+		    	if ($data[2] == 'w' && $data[3] <= 20 && !strstr($data[7], 'keinevorschaubig')) {
 		    		print_r($data);
 		    		
 		    		$model->insert(array(
