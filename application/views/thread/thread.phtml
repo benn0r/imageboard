@@ -99,7 +99,7 @@ $user = $this->user;
 					</ul>
 				</div>
 				<div class="span11 commentcontent">
-					<p><?php echo nl2br(htmlentities($this->thread->content, ENT_QUOTES)) ?>
+					<p><?php echo Printspecial::wrap(nl2br(htmlentities($this->thread->content, ENT_QUOTES)), $this->baseUrl()) ?>
 					<?php if($this->thread->content) echo '<br />' ?><small><nobr><?php echo Printdate::get(strtotime($this->thread->updatetime), $this->t) ?></nobr></small></p>
 				</div>
 			</div>

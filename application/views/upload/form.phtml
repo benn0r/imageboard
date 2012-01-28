@@ -44,26 +44,30 @@ if ($this->comment) {
 			$('#relax-message').fadeIn();
 		}, 1000);
 		
-		$.post(form.attr('action'), form.serialize(), function(result) {
-			clearTimeout(warning);
-			
-			var response = jQuery.parseJSON(result);
+		form.find('textarea.mention').mentionsInput('val', function(result) {
+			$('textarea[name=content]').val(result);
 
-			if (response.error) {
-				$('#modalerror .modal-body p').html(response.error);
-				$('#modalerror').modal('show');
+			$.post(form.attr('action'), form.serialize(), function(result) {
+				clearTimeout(warning);
+				
+				var response = jQuery.parseJSON(result);
 
-				$('#relax-message').hide();
-				form.find('button[name=save]').button('reset');
-				form.find('button[name=cancel]').removeAttr('disabled');
+				if (response.error) {
+					$('#modalerror .modal-body p').html(response.error);
+					$('#modalerror').modal('show');
 
-				// if we have an error, reload captcha
-				Recaptcha.reload();
-			}
+					$('#relax-message').hide();
+					form.find('button[name=save]').button('reset');
+					form.find('button[name=cancel]').removeAttr('disabled');
 
-			if (response.forward) {
-				loadlink(response.forward);
-			}
+					// if we have an error, reload captcha
+					Recaptcha.reload();
+				}
+
+				if (response.forward) {
+					loadlink(response.forward);
+				}
+			});
 		});
 
 		// cancle regular form submit
@@ -134,6 +138,24 @@ $(document).ready(function() {
 
 	$('#media a').click(mediaclick);
 	$('#media a .delete').click(deleteclick);
+
+	$('textarea.mention').mentionsInput({
+	  onDataRequest:function (mode, query, callback) {
+	    var data = [
+	        <?php
+	        $first = true;
+	 		while(($user = $this->users->fetch_object()) != null) {
+	 			echo (!$first ? ',' : '') . '{id:' . $user->uid . ', name:"' . $user->username . '", avatar:"' . $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $user->uid . '.' . $user->avatar . '"}';
+	 			$first = false;
+	 		}
+	 		?>
+	    ];
+	
+	    data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+	
+	    callback.call(this, data);
+	  }
+	});
 });
 </script>
 
@@ -175,7 +197,8 @@ $(document).ready(function() {
 		<div class="clearfix">
 			<label for="comment"><?php echo $this->t->t('upload/writecomment') ?></label>
 			<div class="input">
-				<textarea id="comment" name="comment" rows="5" class="span6"></textarea>
+				<textarea name="comment" rows="5" class="span6 mention"></textarea>
+				<textarea name="content" style="display:none"></textarea>
 			</div>
 		</div>
 		
@@ -222,6 +245,9 @@ $(document).ready(function() {
 			<label><?php echo $this->t->t('register/captcha') ?></label>
 			<div class="input" id="recaptcha">
 				<?php //echo recaptcha_get_html($this->getConfig()->captcha->publickey) ?>
+				<script type="text/javascript">	
+				showRecaptcha('recaptcha');
+				</script>
 			</div>
 		</div>
 		<?php endif; ?>
@@ -246,5 +272,4 @@ $(document).ready(function() {
 
 <script type="text/javascript">	
 $('*[rel=twipsy]').twipsy();
-showRecaptcha('recaptcha');
 </script>

@@ -179,7 +179,7 @@ class UploadModule extends Module
 		
 		// insert entity in posts
 		$posts->insert(array(
-				'content' => utf8_decode($r->comment),
+				'content' => utf8_decode($r->content),
 						
 				// NULL if anonymous
 				'uid' => $user ? $user['uid'] : new Database_Expression('NULL'),
@@ -329,13 +329,13 @@ class UploadModule extends Module
 				} elseif (!$r->ppid && count($_SESSION['media']) == 0) {
 					$return->error = $this->getLanguage()->t('upload/errornomedia');
 					echo json_encode($return); return;
-				} elseif ($r->ppid && count($_SESSION['media']) == 0 && !$r->comment) {
+				} elseif ($r->ppid && count($_SESSION['media']) == 0 && !$r->content) {
 					$return->error = $this->getLanguage()->t('upload/errornothing');
 					echo json_encode($return); return;
 				}
 				
 				
-				if ($r->comment !== null && is_array($_SESSION['media'])) {
+				if ($r->content !== null && is_array($_SESSION['media'])) {
 					$this->createThread();
 				}
 				
@@ -446,6 +446,9 @@ class UploadModule extends Module
 		// tags
 		$tags = new Tags();
 		$view->tags = $tags->fetchCategories();
+		
+		$users = new Users();
+		$view->users = $users->fetchAll();
 		
 		if (isset($_GET['ajax'])) {
 			$this->render('upload', 'form');

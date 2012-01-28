@@ -32,6 +32,7 @@ class ThreadModule extends Module
 		$posts = new Posts();
 		$visits = new PostsVisits();
 		$tags = new PostsTags();
+		$users = new Users();
 		$user = $this->getUser();
 		$view = $this->view();
 		
@@ -166,6 +167,7 @@ class ThreadModule extends Module
 		$view->thread = $thread;
 		$view->visits = $visits->count($pid);
 		$view->tags = $tags->fetchAll($pid);
+		$view->users = $users->fetchAll();
 		
 		// Kommentare zählen, brauchen wir für den Link unten an den Kommentaren
 		// Wenn es keine Kommentare mehr gibt wollen wir den Link nicht sehen

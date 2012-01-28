@@ -34,6 +34,9 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/notifications.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>javascripts/shoutbox.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/jquery/jquery.title.js"></script>
+	<script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/jquery/jquery.mentions.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/jquery/jquery.elastic.js"></script>
 	
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/buttons.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl() ?>lib/bootstrap/modal.js"></script>
@@ -327,7 +330,7 @@
 			}
 			
 			if (isset($post)) {
-				$html .= '<p class="span5 pull-left" style="margin-left:10px">' . utf8_encode(strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content) . '</p>';
+				$html .= '<p class="span5 pull-left" style="margin-left:10px">' . utf8_encode(Printspecial::wrap(strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content, $this->baseUrl())) . '</p>';
 			}
 			
 			$html .= '<div style="clear:both"></div></div>';

@@ -38,6 +38,13 @@ class Users extends Model {
 		');
 	}
 	
+	public function fetchAll() {
+		return $this->_db->select('
+				SELECT *
+				FROM board_users
+		');
+	}
+	
 	public function findUserByName($name) {
 		return $this->_db->select('
 			SELECT *
