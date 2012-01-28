@@ -95,6 +95,7 @@ class Printspecial
 			$new .= wordwrap($word, 68, '<br />', true) . ' ';
 		}
 		
+		$new = preg_replace('#http://(.*?)\s#i', '<a href="http://$1" rel="nofollow" target="_blank">$1</a>', $new);
 		return preg_replace('/\@\[(.*?)\:(.*?)\]/', '<a href="' . $url . 'user/$1" onclick="return loadpage(this)">$2</a>', $new);
 	}
 
