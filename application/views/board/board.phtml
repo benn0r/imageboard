@@ -1,6 +1,42 @@
-<!-- <div class="alert-message info">
-	<p><?php echo sprintf($this->t->t('register/message'), $this->baseUrl() . 'register') ?></p>
-</div> -->
+<?php if (isset($_SESSION['user']) && $this->getConfig()->upload->quickupload == 1 && $this->page == 1): ?>
+<script type="text/javascript">
+function adderror(msg) {
+	$('#modalerror .modal-body p').html(msg);
+	$('#modalerror').modal('show');
+
+	// reset localfile button
+	$('#quickuploadform').find('.btn').button('reset');
+}
+function addmedia(html) {
+	$.post('<?php echo $this->baseUrl() . 'upload/create' ?>', 'content=&quickupload=1', function(result) {
+		var response = jQuery.parseJSON(result);
+
+		if (response.error) {
+			$('#modalerror .modal-body p').html(response.error);
+			$('#modalerror').modal('show');
+
+			$('#quickuploadform').find('.btn').button('reset');
+		}
+
+		if (response.forward) {
+			loadlink(response.forward);
+		}
+	});
+}
+</script>
+
+<div id="modalerror" class="modal hide fade">
+	<div class="modal-header">
+		<h3><?php echo $this->t->t('upload/errortitle') ?></h3>
+	</div>
+  	<div class="modal-body">
+       	<p></p>
+ 	</div>
+ 	<div class="modal-footer">
+		<a href="#" onclick="$(this).parent().parent().modal('hide'); return false;" class="btn primary"><?php echo $this->t->t('login/closeerror') ?></a>
+ 	</div>
+</div>
+<?php endif; ?>
 		
 <div id="imageboard">
 	<div class="pagination pagination-top">
@@ -21,6 +57,22 @@
 	<?php if (count($this->posts) == 0): ?>
 	<div class="alert-message block-message">
 		<p><?php echo sprintf($this->t->t('board/empty'), $this->baseUrl() . '1/?filter=0') ?></p>
+	</div>
+	<?php endif; ?>
+	
+	<?php if (isset($_SESSION['user']) && $this->getConfig()->upload->quickupload == 1 && $this->page == 1): ?>
+	<div class="boardimage" id="0" style="width: 189px; height: 285px; top: 0px; left: 0px;">
+		<div class="quickupload">
+			<iframe name="quickupload-iframe" class="upload-iframe"></iframe>
+		
+			<form method="post" action="<?php echo $this->baseUrl() ?>upload/upload" onsubmit="return true" enctype="multipart/form-data" target="quickupload-iframe" id="quickuploadform">
+				<img src="<?php echo $this->baseUrl() ?>images/quickupload.png" />
+				<button name="" class="btn" data-loading-text="<?php echo $this->t->t('quickupload/uploading') ?>"><?php echo $this->t->t('quickupload/button') ?></button>
+				<input type="file" onchange="$('#quickuploadform').find('.btn').button('loading'); $(this).parent().submit()" name="file" id="quickfile" class="file" />
+				
+				<a onclick="return loadpage(this)" href="<?php echo $this->baseUrl() . 'upload' ?>"><?php echo $this->t->t('quickupload/extended') ?></a>
+			</form>
+		</div>
 	</div>
 	<?php endif; ?>
 

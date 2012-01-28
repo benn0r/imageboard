@@ -260,7 +260,9 @@ class UploadModule extends Module
 		$this->removeDir($this->_config->paths->cache . '/' . session_id(), true);
 		unset($_SESSION['media']);
 		
-		if ($r->ppid) {
+		if ($r->quickupload) {
+			$return->forward = $this->view()->baseUrl();
+		} elseif ($r->ppid) {
 			// @todo load only comments new
 			$return->forward = $this->view()->baseUrl() . 'thread/' . $r->ppid . '/';
 		} else {
