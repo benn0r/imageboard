@@ -29,4 +29,8 @@ class Affiliate_Privatamateure extends Model {
 		return $this->_db->exec('SELECT * FROM board_privatamateure ORDER BY RAND()');
 	}
 	
+	public function fetchAllRemote() {
+		return $this->_db->exec('SELECT * FROM board_privatamateure WHERE image NOT LIKE "uploads%"');
+	}
+	
 }

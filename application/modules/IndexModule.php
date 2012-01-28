@@ -81,7 +81,7 @@ class IndexModule extends Module
 		while (($post = $posts->fetch_object()) != null) {
 			list($width, $height) = $this->getSize($sizearr, $count);
 			
-			if ($count != 0 && $count % 8 == 0) {
+			if ($count != 0 && $count % 7 == 0) {
 				$media = new Media();
 				
 				$promo = $ads->fetch_object();

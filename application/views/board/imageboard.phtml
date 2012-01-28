@@ -17,7 +17,7 @@
 		<div class="panel">
 			<span class="panel-username"><?php echo $post->username ?><br />
 			
-			<span class="panel-datetime"><?php echo Printdate::get(time(), $this->t) ?></span></span>
+			<span class="panel-datetime"><?php echo Printdate::get(time() - mt_rand(0, 5000), $this->t) ?></span></span>
 			<div style="clear: both"></div>
 		</div>
 	</a>

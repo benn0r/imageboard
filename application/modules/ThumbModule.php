@@ -102,7 +102,7 @@ class ThumbModule extends Module
 		
 		$file = $media->image;
 
-		$imagesize = getimagesize($file);
+		$imagesize = @getimagesize($file);
 		
 		// wir machen das ganze ein bisschen leserlicher
 		$imagewidth = $imagesize[0];
@@ -113,7 +113,7 @@ class ThumbModule extends Module
 			case 1: $image = imagecreatefromgif($file); break;
 			case 2: $image = imagecreatefromjpeg($file); break;
 			case 3: $image = imagecreatefrompng($file); break;
-			default: $this->error();
+			default: $image = imagecreatefrompng('images/avatar.png'); break;
 		}
 		
 		// Maximalausmaße

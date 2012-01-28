@@ -35,7 +35,7 @@ class AffiliateModule extends Module
 		if (isset($_GET['thumbnails'])) {
 			$thumb = Module::init('Thumb', $this);
 			
-			$ads = $model->fetchAll();
+			$ads = $model->fetchAllRemote();
 			while (($promo = $ads->fetch_object()) != null) {
 				$media = new Media();
 								
