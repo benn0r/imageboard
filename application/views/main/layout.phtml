@@ -51,6 +51,7 @@
 	<script type="text/javascript">
 
 		var BASE_URL = '<?php echo $this->baseUrl() ?>';
+		var BASE_DIR = '<?php echo $this->getConfig()->urlrewrite->base ?>';
 		var NTIME = '<?php echo time() - 10 ?>';
 		var TIME = '<?php echo time() ?>';
 
@@ -206,7 +207,7 @@
 
 		var History = window.History, State = History.getState();
 		
-		History.Adapter.bind(window,'statechange', function() {
+		History.Adapter.bind(window, 'statechange', function() {
 			$('.loading').fadeIn('fast');
 
 			// hide all twipsy elements
@@ -218,6 +219,10 @@
 			var uri = State.url;
 			
 			console.log(uri);
+
+			<?php if($this->getConfig()->google->analyticsenabled): ?>
+			_gaq.push(['_trackPageview', BASE_DIR + uri.replace(BASE_URL, '')]);
+			<?php endif; ?>
 
 			if (uri.indexOf('?') > 0) {
 				uri = uri + '&ajax=1';
@@ -238,6 +243,22 @@
 
 	$(document).title('init');
 	</script>
+	
+	<?php if($this->getConfig()->google->analyticsenabled): ?>
+	<script type="text/javascript">
+	
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', '<?php echo $this->getConfig()->google->account ?>']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	<?php endif; ?>
 </head>
 <body>
 	<div class="header">
