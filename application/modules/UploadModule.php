@@ -406,7 +406,7 @@ class UploadModule extends Module
 					}
 					
 					$size = getimagesize($_FILES['file']['tmp_name']);
-					if ($size[0] > $this->getConfig()->upload->maxwidth || $size[0] > $this->getConfig()->upload->maxheight) {
+					if ($size[0] > $this->getConfig()->upload->maxwidth || $size[1] > $this->getConfig()->upload->maxheight) {
 						echo '<script type="text/javascript">parent.adderror(\'' . sprintf($this->getLanguage()->t('upload/errordimension'), $this->getConfig()->upload->maxwidth, $this->getConfig()->upload->maxheight) . '\');</script>';
 						return;
 					}
