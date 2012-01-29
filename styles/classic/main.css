@@ -123,6 +123,7 @@ textarea {
 
 .media-grid li a {
 	position: relative;
+	border: 1px solid #2f2f2f;
 }
 .delete {
 	position: absolute;
@@ -658,6 +659,7 @@ body {
 	line-height: 26px;
 	margin-left: -10px;
 	padding-left: 30px;
+	color: #fff;
 }
 .links a:hover {
 	text-decoration: none;
@@ -765,14 +767,6 @@ fieldset legend {
 	top: -2px; left: -2px;
 }
 
-input, textarea {
-	background: #3f3f3f;
-}
-input[disabled] {
-	background: #4f4f4f;
-	color: #fff;
-}
-
 h4 {
 	color: #fff;
 }
@@ -783,8 +777,8 @@ h4 {
 
 .quickupload {
 	text-align: center;
-	border: 1px solid #c9c9c9;
-	background: #e7e7e7;
+	border: 1px solid #2f2f2f;
+	background: #3f3f3f;
 	margin: 2px;
 	height: 279px;
 	
@@ -829,6 +823,27 @@ h4 {
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
+}
+
+.btn {
+	background: #5f5f5f;
+	color: #fff;
+	border: 1px solid #2f2f2f;
+	text-shadow: none;
+}
+
+a:hover {
+	color: #0069D6;
+}
+
+input, textarea {
+	background: #3f3f3f;
+	border: 1px solid #2f2f2f;
+}
+input[disabled] {
+	background: #4f4f4f;
+	color: #fff;
+	border: 1px solid #2f2f2f;
 }
 
 /* icons */
