@@ -29,7 +29,9 @@
 			style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;
 				background: url(<?php echo $this->baseUrl() . $post->thumbnail ?>)">
 			
-			<?php if(date('dm', strtotime($post->birthday)) == date('dm')): ?>
+			<?php if(isset($post->pinned) && $post->pinned == 1): ?>
+			<div class="pinned"></div>
+			<?php elseif(date('dm', strtotime($post->birthday)) == date('dm')): ?>
 			<div class="birthday"></div>
 			<?php endif; ?>
 				

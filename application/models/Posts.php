@@ -118,7 +118,7 @@ class Posts extends Model {
 			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . 'b.status = 1
 			' . ($tag ? ' AND (d.tid = ' . $tag . ' OR e.tid = ' . $tag . ')' : '') . '
 			GROUP BY b.mid
-			ORDER BY a.pid DESC
+			ORDER BY a.pinned DESC,a.pid DESC
 			LIMIT ' . $from . ', ' . $to . '
 		');
 	}

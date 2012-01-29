@@ -766,6 +766,13 @@ fieldset legend {
 	position: absolute;
 	top: -2px; left: -2px;
 }
+.pinned {
+	background: url(../../images/pinned.png) no-repeat;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: -2px; left: -2px;
+}
 
 h4 {
 	color: #fff;
