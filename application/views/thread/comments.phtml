@@ -10,6 +10,7 @@ foreach ($this->comments as $c):
 ?>
 <div class="row comment" id="post<?php echo $c->pid ?>">
 	<div class="span3 commentinfo">
+		<?php if($c->uid): ?>
 		<a href="<?php echo $this->baseUrl() ?>user/<?php echo $c->uid ?>/" class="username" style="<?php echo $c->namestyle ?>" onclick="return loadpage(this)"><?php echo $c->username ?></a>
 		<img class="userstatus" src="<?php echo $this->baseUrl() . '/images/' . ($c->online == 1 ? 'online' : 'offline') . '.png' ?>" title="<?php echo $c->online == 1 ? sprintf($this->t->t('thread/online'), $c->username) : sprintf($this->t->t('thread/offline'), $c->username) ?>" data-placement="above" rel="twipsy" />
 		<ul class="media-grid avatar">
@@ -17,6 +18,9 @@ foreach ($this->comments as $c):
 				<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $c->uid . '.' . $c->avatar ?>" />
 			</a></li>
 		</ul>
+		<?php else: ?>
+		<?php echo $this->t->t('thread/anonymous') ?>
+		<?php endif; ?>
 	</div>
 	<div class="span11 commentcontent">
 		<?php if (count($c->mediaset) > 0): ?>

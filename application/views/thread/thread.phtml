@@ -90,6 +90,7 @@ $user = $this->user;
 		<div class="span14 comments">
 			<div class="row comment commentfirst">
 				<div class="span3 commentinfo">
+					<?php if($this->thread->uid): ?>
 					<a href="<?php echo $this->baseUrl() . 'user/' . $this->thread->uid ?>/" onclick="return loadpage(this)" class="username" style="<?php echo $this->thread->namestyle ?>"><?php echo $this->thread->username ?></a>
 					<img class="userstatus" src="<?php echo $this->baseUrl() . '/images/' . ($this->thread->online == 1 ? 'online' : 'offline') . '.png' ?>" data-placement="above" rel="twipsy" title="<?php echo $this->thread->online == 1 ? sprintf($this->t->t('thread/online'), $this->thread->username) : sprintf($this->t->t('thread/offline'), $this->thread->username) ?>" />
 					<ul class="media-grid avatar">
@@ -97,6 +98,9 @@ $user = $this->user;
 							<img src="<?php echo $this->baseUrl() . $this->getConfig()->paths->avatars . '/' . $this->thread->uid . '.' . $this->thread->avatar ?>" />
 						</a></li>
 					</ul>
+					<?php else: ?>
+					<?php echo $this->t->t('thread/anonymous') ?>
+					<?php endif; ?>
 				</div>
 				<div class="span11 commentcontent">
 					<p><?php echo Printspecial::wrap(nl2br(htmlentities($this->thread->content, ENT_QUOTES)), $this->baseUrl()) ?>
