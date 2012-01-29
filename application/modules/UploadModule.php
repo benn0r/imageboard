@@ -311,7 +311,7 @@ class UploadModule extends Module
 					echo json_encode($return); return;
 				}
 				
-				if ($this->getConfig()->upload->captcha && !isset($_SESSION['user']) && !isset($_SESSION['proved_as_a_human'])) {
+				if (!$r->quickupload && $this->getConfig()->upload->captcha && !isset($_SESSION['user']) && !isset($_SESSION['proved_as_a_human'])) {
 					$resp = recaptcha_check_answer($this->getConfig()->captcha->privatekey,
 							$r->getServer('REMOTE_ADDR'),
 							$r->recaptcha_challenge_field,
@@ -381,7 +381,7 @@ class UploadModule extends Module
 				}
 				
 				$limit = $this->getConfig()->upload->medialimit;
-				if (!$_SESSION['user'] && count($_SESSION['media']) >= $limit->anon) {
+				if (!isset($_SESSION['user']) && count($_SESSION['media']) >= $limit->anon) {
 					echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/maxmediaanon') . '\');</script>';
 					return;
 				}
