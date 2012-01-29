@@ -21,8 +21,12 @@ class View
 		$this->_config = $c;
 	}
 	
-	public function render($module, $action) {
-		require $module . '/' . $action . '.phtml';
+	public function render($module, $action = null) {
+		if (!$action) {
+			require $module;
+		} else {
+			require $module . '/' . $action . '.phtml';
+		}
 	}
 	
 	public function baseUrl() {

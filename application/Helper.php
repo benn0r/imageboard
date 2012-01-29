@@ -68,6 +68,8 @@ class Helper extends Application_Helper
 				return 'Report';
 			case 'affiliate':
 				return 'Affiliate';
+			case 'rules':
+				return 'Rules';
 			default:
 				return 'Index';
 				
