@@ -781,6 +781,56 @@ h4 {
 	color: #000;
 }
 
+.quickupload {
+	text-align: center;
+	border: 1px solid #c9c9c9;
+	background: #e7e7e7;
+	margin: 2px;
+	height: 279px;
+	
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	overflow: hidden;
+}
+.quickupload .file {
+	width: 135px;
+	position: absolute;
+	top: 160px;
+	left: 25px;
+	
+	filter: alpha(opacity=1);
+	-moz-opacity: 0.01;
+	opacity: 0.01;
+	
+	height: 40px;
+}
+.quickupload .btn {
+	width: 135px;
+	position: absolute;
+	top: 160px;
+	left: 25px;
+}
+.quickupload img {
+	margin: 30px 0px 0px 0px;
+}
+.quickupload a {
+	position: absolute;
+	bottom: 10px;
+	left: 0px; right: 0px;
+	text-align: center;
+	background: transparent;
+	border: none;
+	font-size: 11px;
+}
+.quickupload a:hover {
+	border: none;
+	
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;
