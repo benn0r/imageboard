@@ -61,7 +61,6 @@ class UploadModule extends Module
 				new Media_Share_Plugin_Youtube(),
 				new Media_Share_Plugin_Image(),
 				new Media_Share_Plugin_Vimeo(),
-				new Media_Share_Plugin_Link(),
 		);
 	
 		foreach ($services as $service) {
@@ -99,8 +98,8 @@ class UploadModule extends Module
 	
 			return true;
 		}
-	
-		// Schade
+		
+		echo '<script type="text/javascript">parent.adderror(\'' . $this->getLanguage()->t('upload/invalidshare') . '\');</script>';
 		return false;
 	}
 	
