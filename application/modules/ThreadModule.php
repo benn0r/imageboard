@@ -126,7 +126,7 @@ class ThreadModule extends Module
 			
 			// Kommentare zählen, brauchen wir für den Link unten an den Kommentaren
 			// Wenn es keine Kommentare mehr gibt wollen wir den Link nicht sehen
-			$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false, 5 * $_GET['load'], 5);
+			$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false, 5 * $_GET['load'] + 5, 5);
 			$total = $posts->countChilds($pid, $user['grade'] >= 8 ? true : false);
 			$view->total = $total;
 			$view->active = 5 * ($_GET['load']) + 5;
@@ -148,6 +148,7 @@ class ThreadModule extends Module
 					$media->type = $row->type;
 					$media->extid = $row->extid;
 					$media->pid = $row->pid;
+					$media->default = $row->default;
 					
 					$media->thumbnail = $thumb->getThumbnail($media, 90, 90);
 					
