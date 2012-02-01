@@ -2,4 +2,10 @@
 	<h3><?php echo $this->t->t('rules/title') ?></h3>
 </div>
 
+<?php if($this->error): ?>
+<div class="alert-message block-message error">
+	<p><?php echo $this->error ?></p>
+</div>
+<?php else: ?>
 <?php $this->render($this->rules) ?>
+<?php endif; ?>

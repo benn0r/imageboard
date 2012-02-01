@@ -28,11 +28,16 @@ class RulesModule extends Module
 {
 	
 	public function run(array $args) {
-		$file = 'application/config/rules_de.phtml';
+		$file = '';
 		
-		if (isset($_SESSION['user']) && $_SESSION['user']['language']) {
-			if (!file_exists($file = 'application/config/rules_' . $_SESSION['user']['language'] . '.phtml')) {
-				$file = 'application/config/rules_de.phtml';
+		if (isset($_SESSION['user']) && isset($_SESSION['user']['language'])) {
+			$file = 'application/config/rules_' . $_SESSION['user']['language'] . '.phtml';
+		}
+		
+		if (!file_exists($file)) {
+			$file = $this->getConfig()->rules->defaultfile;
+			if (!file_exists($file)) {
+				$this->view()->error = 'File <code>' . $file . '</code> does not exists!';
 			}
 		}
 		
