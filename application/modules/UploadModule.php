@@ -86,13 +86,12 @@ class UploadModule extends Module
 			$media->image = $newimage;
 	
 			$view = $this->view();
+	
+			$thumb = Module::init('Thumb', $this);
+			$media->thumbnail = $thumb->getThumbnail($media, 124, 93);
 			
 			$view->key = array_push($_SESSION['media'], serialize($media)) - 1;
 			$view->media = $media;
-	
-			// Laden des Thumb Module
-			$thumb = Module::init('Thumb', $this);
-			$media->thumbnail = $thumb->getThumbnail($media, 124, 93);
 	
 			$this->render('upload', 'share');
 	
