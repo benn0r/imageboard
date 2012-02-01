@@ -126,17 +126,17 @@
 						} else {
 							$link = $_SERVER['PHP_SELF'];
 						}
-						echo '<li class="prev"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="First Page">&laquo First Page</a></li>';
+						echo '<li class="prev"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'">&laquo First Page</a></li>';
 					} else {
-						echo '<li class="prev"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="First Page">&laquo First Page</a></li>';
+						echo '<li class="prev"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'">&laquo First Page</a></li>';
 					}
 				}
-				echo '<li class="previous"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",($c['current']-1),$c['link']).'" title="Previous Page">&laquo Previous</a></li>';
+				echo '<li class="previous"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",($c['current']-1),$c['link']).'">&laquo</a></li>';
 			} else {
 				if($c['jump']) {
 					//echo '<li class="previous-off"><span class="off">&laquo First Page</span></li>';
 				}
-				echo '<li class="prev disabled"><a href="" onclick="return false;" title="Previous Page">&laquo Previous</a></li>';
+				echo '<li class="prev disabled"><a href="" onclick="return false;">&laquo</a></li>';
 			}
 			
 			if($c['pages'] > 10) {
@@ -160,7 +160,7 @@
 			for($i=$x;$i<$max;$i++) {
 				
 				if($c['current'] == $i) {
-					echo '<li class="active"><span><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="Page '.$i.'">'.$i.'</a></span></li>';	
+					echo '<li class="active"><span><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'">'.$i.'</a></span></li>';	
 				} else {
 					if($c['root'] && $i==1) {
 						if($c['rootaddress']) {
@@ -168,9 +168,9 @@
 						} else {
 							$link = $_SERVER['PHP_SELF'];
 						}
-						echo '<li><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'" title="Page '.$i.'">'.$i.'</a></li>';	
+						echo '<li><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",1,$c['link']).'">'.$i.'</a></li>';	
 					} else {
-						echo '<li><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",$i,$c['link']).'" title="Page '.$i.'">'.$i.'</a></li>';	
+						echo '<li><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",$i,$c['link']).'">'.$i.'</a></li>';	
 					}
 				}
 				
@@ -178,13 +178,13 @@
 			
 			if($c['current'] < $c['pages']) {
 				
-				echo '<li class="next"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",($c['current']+1),$c['link']).'" title="Next Page">Next &raquo;</a></li>';
+				echo '<li class="next"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",($c['current']+1),$c['link']).'">&raquo;</a></li>';
 				if($c['jump']) {
-					echo '<li class="next"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",$c['pages'],$c['link']).'" title="Last Page">Last Page &raquo;</a></li>';
+					echo '<li class="next"><a onclick="return loadpage(this);" href="'.str_replace("\$\$\$",$c['pages'],$c['link']).'">&raquo;</a></li>';
 				}
 			} else {
 				
-				echo '<li class="next disabled"><a href="" onclick="return false;" title="Next Page">Next &raquo;</a></li>';
+				echo '<li class="next disabled"><a href="" onclick="return false;">&raquo;</a></li>';
 				if($c['jump']) {
 					//echo '<li class="next-off"><span class="off">Last Page </span></li>';
 				}
