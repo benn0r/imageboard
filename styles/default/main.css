@@ -326,6 +326,7 @@ textarea {
 	top: 100px;
 	left: 320px;
 	right: 10px;
+	padding-bottom: 100px;
 }
 
 .boardimage {
@@ -593,7 +594,7 @@ body {
 
 .pagination-bottom {
 	position: absolute;
-	bottom: -70px;
+	bottom: 30px;
 }
 .pagination-top {
 	position: absolute;
@@ -693,6 +694,12 @@ body {
 }
 .sb-extended {
 	padding-bottom: 300px;
+}
+.sb-extended #imageboard {
+	padding-bottom: 360px;
+}
+.sb-extended #imageboard .pagination-bottom {
+	bottom: 300px;
 }
 
 .birthday {
