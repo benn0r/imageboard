@@ -124,10 +124,10 @@ $user = $this->user;
 			} else {
 				?>
 				<div class="commentbutton">
-					<button class="btn success" onclick="$('.commentform').fadeIn('fast'); $(this).parent().hide(); return false;"><?php echo $this->t->t('thread/writenew') ?></button>
+					<button class="btn success" onclick="return show_comment_form()"><?php echo $this->t->t('thread/writenew') ?></button>
 				</div>
 				
-				<div class="commentform hide">
+				<div class="commentform hide" id="commentform">
 				<?php echo $this->render('upload', 'form'); ?>
 				</div>
 				<?php
@@ -166,6 +166,19 @@ $user = $this->user;
 	</div>
 </div>
 <script type="text/javascript">
+function show_comment_form() {
+	$('.commentform').fadeIn('fast');
+	$(this).parent().hide();
+	
+	setTimeout(function() {
+		$('html, body').animate({
+		    scrollTop: $('#commentform').offset().top
+		}, 200);
+	}, 100);
+
+	return false;
+}
+			
 $('.rating button').click(function() {
 	$('.rating button').removeClass('active');
 
