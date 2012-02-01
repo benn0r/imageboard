@@ -774,6 +774,10 @@ body {
 	box-shadow: none;
 }
 
+blockquote {
+	border-left: 5px solid #ccc;
+}
+
 /* icons */
 .icon {
 	padding-left: 26px;

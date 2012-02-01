@@ -7,6 +7,10 @@ foreach ($this->comments as $c):
 	
 		$size = getimagesize($image);
 	}
+	
+	if ($c->grade < 8) {
+		$c->content = htmlentities($c->content, ENT_QUOTES);
+	}
 ?>
 <div class="row comment" id="post<?php echo $c->pid ?>">
 	<div class="span3 commentinfo">
@@ -31,7 +35,7 @@ foreach ($this->comments as $c):
 		</ul>
 		<?php endif; ?>
 		
-		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . Printspecial::wrap(nl2br(htmlentities($c->content, ENT_QUOTES)), $this->baseUrl()) ?>
+		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . Printspecial::wrap(nl2br($c->content), $this->baseUrl()) ?>
 		<?php if($c->content) echo '<br />' ?><small><nobr><?php echo Printdate::get(strtotime($c->updatetime), $this->t) ?></nobr></small></p>
 	</div>
 </div>

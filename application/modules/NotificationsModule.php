@@ -126,7 +126,7 @@ class NotificationsModule extends Module
 			}
 			
 			if (isset($post)) {
-				$nobj->content = Printspecial::wrap(strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content, $this->view()->baseUrl());
+				$nobj->content = Printspecial::wrap(htmlspecialchars(strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content, ENT_QUOTES), $this->view()->baseUrl());
 			} else {
 				$nobj->content = '';
 			}
