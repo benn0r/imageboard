@@ -200,13 +200,15 @@ class NotificationsModule extends Module
 		preg_match_all('/\@\[(.*?)\:(.*?)\]/', $post->content, $matches);
 		
 		foreach ($matches[1] as $uid) {
-			$table->insert(array(
-					'uid' => $uid,
-					'status' => 1,
-					'pid' => $post->pid,
-					'thread' => $thread->pid,
-					'text' => sprintf($t->t('notification/tagged'), $u . 'user/' . $post->uid, $post->username, $u . 'thread/' . $thread->pid . '/?goto=' . $post->pid),
-			));
+			if ($uid != $post->uid) {
+				$table->insert(array(
+						'uid' => $uid,
+						'status' => 1,
+						'pid' => $post->pid,
+						'thread' => $thread->pid,
+						'text' => sprintf($t->t('notification/tagged'), $u . 'user/' . $post->uid, $post->username, $u . 'thread/' . $thread->pid . '/?goto=' . $post->pid),
+				));
+			}
 		}
 
 		foreach ($comments as $comment) {
