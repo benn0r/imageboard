@@ -35,7 +35,7 @@ class Posts extends Model {
 		$rowset = $this->_db->select('
 			SELECT a.pid FROM board_posts AS a
 			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid' : '') . '
-			WHERE a.pid > ' . (int)$pid . ' AND a.ppid IS NULL
+			WHERE a.pid > ' . (int)$pid . ' AND a.ppid IS NULL AND a.status = 1
 			' . ($tag ? ' AND d.tid = ' . $tag : '') . '
 			ORDER BY a.pid ASC
 			LIMIT 0,1
@@ -52,7 +52,7 @@ class Posts extends Model {
 		$rowset = $this->_db->select('
 			SELECT a.pid FROM board_posts AS a
 			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid' : '') . '
-			WHERE a.pid < ' . (int)$pid . ' AND a.ppid IS NULL
+			WHERE a.pid < ' . (int)$pid . ' AND a.ppid IS NULL AND a.status = 1
 			' . ($tag ? ' AND d.tid = ' . $tag : '') . '
 			ORDER BY a.pid DESC
 			LIMIT 0,1
