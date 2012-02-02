@@ -24,8 +24,8 @@ function addmedia(html) {
 	});
 }
 
-<?php if($this->live): ?>
-setTimeout(function() {
+<?php if($this->live == true): ?>
+var live = setTimeout(function() {
 	loadlink(document.location.href);
 }, 20000);
 <?php endif; ?>

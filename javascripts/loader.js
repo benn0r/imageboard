@@ -15,6 +15,10 @@ function loadpage(link) {
  * @returns false
  */
 function loadlink(uri) {
+	if (live) {
+		clearTimeout(live);
+	}
+	
 	History.pushState({rand: Math.random()}, $(document).attr('title'), uri);
 	return false;
 }
