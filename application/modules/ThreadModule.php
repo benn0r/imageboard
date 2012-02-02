@@ -126,10 +126,10 @@ class ThreadModule extends Module
 			
 			// Kommentare zählen, brauchen wir für den Link unten an den Kommentaren
 			// Wenn es keine Kommentare mehr gibt wollen wir den Link nicht sehen
-			$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false, 5 * $_GET['load'] + 5, 5);
+			$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false, $_GET['load'] - 1, 5);
 			$total = $posts->countChilds($pid, $user['grade'] >= 8 ? true : false);
 			$view->total = $total;
-			$view->active = 5 * ($_GET['load']) + 5;
+			$view->active = $_GET['load'] + 5;
 			
 			$arr = array();
 			while(($c = $comments->fetch_object()) != null) {
@@ -158,6 +158,8 @@ class ThreadModule extends Module
 				
 				$arr[] = $c;
 			}
+			
+			$view->commentscount = $_GET['load'];
 			$view->comments = $arr;
 			
 			$this->render('thread', 'comments');
@@ -174,7 +176,6 @@ class ThreadModule extends Module
 		// Wenn es keine Kommentare mehr gibt wollen wir den Link nicht sehen
 		$total = $posts->countChilds($pid, $user['grade'] >= 8 ? true : false);
 		$view->total = $total;
-		$view->active = 5 * (isset($_GET['load'])) + 5;
 		
 		$comments = $posts->findChilds($pid, $user['grade'] >= 8 ? true : false, 0, 10,
 				(isset($_GET['goto']) ? $_GET['goto'] : null));
@@ -207,6 +208,8 @@ class ThreadModule extends Module
 			$arr[] = $c;
 		}
 		
+		$view->active = count($arr);
+		$view->commentscount = 0; // start
 		$view->comments = $arr;
 		
 		if (!isset($_SESSION['user_visits']) || !is_array($_SESSION['user_visits'])) {

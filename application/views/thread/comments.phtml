@@ -1,5 +1,8 @@
 <?php
+$comments = $this->commentscount;
 foreach ($this->comments as $c):
+	$comments++;
+
 	if (isset($c->media)) {
 		$image = $this->getConfig()->paths->uploads  . '/' . 
 			date('Ymd', strtotime($c->updatetime)) . '/' . 
@@ -47,6 +50,7 @@ foreach ($this->comments as $c):
 <?php endif; ?>
 
 <script type="text/javascript">
+var page = <?php echo $comments ?>;
 $('.alert-message').alert();
 $('*[rel=twipsy]').twipsy();
 </script>
