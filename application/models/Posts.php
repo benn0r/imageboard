@@ -130,7 +130,7 @@ class Posts extends Model {
 			LEFT JOIN board_users AS c ON a.uid = c.uid
 			WHERE a.status = 1 AND b.status = 1
 			GROUP BY b.mid
-			ORDER BY (SELECT d.pid FROM board_posts AS d WHERE d.ppid = a.pid ORDER BY d.pid DESC LIMIT 0,1) DESC
+			ORDER BY (SELECT d.pid FROM board_posts AS d WHERE d.ppid = a.pid OR d.pid = a.pid ORDER BY d.pid DESC LIMIT 0,1) DESC
 			LIMIT 0, ' . $to . '
 		');
 	}

@@ -15,7 +15,7 @@ function loadpage(link) {
  * @returns false
  */
 function loadlink(uri) {
-	if (live) {
+	if (typeof(window["live"]) != "undefined") {
 		clearTimeout(live);
 	}
 	
