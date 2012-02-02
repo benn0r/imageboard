@@ -23,6 +23,12 @@ function addmedia(html) {
 		}
 	});
 }
+
+<?php if($this->live): ?>
+setTimeout(function() {
+	loadlink(document.location.href);
+}, 20000);
+<?php endif; ?>
 </script>
 
 <div id="modalerror" class="modal hide fade">
@@ -39,6 +45,7 @@ function addmedia(html) {
 <?php endif; ?>
 		
 <div id="imageboard">
+	<?php if(!$this->live): ?>
 	<div class="pagination pagination-top">
 		<?php echo $this->navigation->normaloutput() ?>
 	</div>
@@ -53,6 +60,7 @@ function addmedia(html) {
 			?>
 		</select>
 	</div>
+	<?php endif; ?>
 	
 	<?php if (count($this->posts) == 0): ?>
 	<div class="alert-message block-message">
@@ -60,7 +68,7 @@ function addmedia(html) {
 	</div>
 	<?php endif; ?>
 	
-	<?php if (((isset($_SESSION['user']) && $this->getConfig()->upload->quickupload == 1) || ($this->getConfig()->upload->anonquickupload == 1)) && $this->page == 1): ?>
+	<?php if (((isset($_SESSION['user']) && $this->getConfig()->upload->quickupload == 1) || ($this->getConfig()->upload->anonquickupload == 1)) && $this->page == 1 && !$this->live): ?>
 	<div class="boardimage" id="0" style="width: 189px; height: 285px; top: 0px; left: 0px;">
 		<div class="quickupload">
 			<iframe name="quickupload-iframe" class="upload-iframe"></iframe>
@@ -78,9 +86,11 @@ function addmedia(html) {
 
 	<?php echo $this->render('board', 'imageboard') ?>
 	
+	<?php if(!$this->live): ?>
 	<div class="pagination pagination-bottom">
 		<?php echo $this->navigation->normaloutput() ?>
 	</div>
+	<?php endif; ?>
 </div>
 <script type="text/javascript">
 	loadboard();

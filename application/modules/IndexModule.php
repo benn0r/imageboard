@@ -36,8 +36,13 @@ class IndexModule extends Module
 		$postsTable = new Posts();
 		$user = $this->getUser();
 		$affiliate = new Affiliate_Privatamateure();
+		$view = $this->view();
 		
 		$r = $this->getRequest();
+		
+		if ($args[0] == 'live') {
+			$view->live = true;
+		}
 		
 		if (intval($args[0]) > 0) {
 			$page = intval($args[0]);
@@ -51,10 +56,14 @@ class IndexModule extends Module
 			$_SESSION['filter'] = (int)$r->filter;
 		}
 		
-		// lets load all posts for this page (if user is admin lets load the deleted posts too)
-		$posts = $postsTable->fetch(($page - 1) * $perpage, $perpage, 
-				$user['grade'] >= 8 ? true : false, isset($_SESSION['filter']) ? $_SESSION['filter'] : 0);
-		
+		if ($view->live) {
+			$posts = $postsTable->fetchLive($perpage);
+		} else {
+			// lets load all posts for this page (if user is admin lets load the deleted posts too)
+			$posts = $postsTable->fetch(($page - 1) * $perpage, $perpage, 
+					$user['grade'] >= 8 ? true : false, isset($_SESSION['filter']) ? $_SESSION['filter'] : 0);
+		}
+			
 		// load affiliate images
 		$ads = $affiliate->fetchAll();
 		
@@ -142,7 +151,7 @@ class IndexModule extends Module
 		
 		$pager = new cwpagination();
 		$pager->newpagination();
-		$pager->setlink($this->view()->baseUrl() . "$$$");
+		$pager->setlink($view->baseUrl() . "$$$");
 		$pager->setamount($perpage);
 		$pager->setcontent($postsTable->countAll($user['grade'] >= 8 ? true : false, 
 				isset($_SESSION['filter']) ? $_SESSION['filter'] : 0));
@@ -150,16 +159,16 @@ class IndexModule extends Module
 		$pager->setroot(true);
 		$pager->setpage($page);
 		$pager->setstyle("class","pagination3");
-		$this->view()->navigation = $pager;
+		$view->navigation = $pager;
 		
-		$this->view()->posts = $threads;
-		$this->view()->page = $page;
+		$view->posts = $threads;
+		$view->page = $page;
 		
 		$endtime = microtime(true);
-		$this->view()->time = $endtime - $starttime;
+		$view->time = $endtime - $starttime;
 		
 		$tags = new Tags();
-		$this->view()->tags = $tags->fetchCategories();
+		$view->tags = $tags->fetchCategories();
 		
 		if (isset($_GET['board'])) {
 			$this->render('board', 'imageboard');

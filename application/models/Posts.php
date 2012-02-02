@@ -110,16 +110,28 @@ class Posts extends Model {
 	
 	public function fetch($from, $to, $admin = false, $tag = 0) {
 		return $this->_db->select('
+				SELECT a.*,b.*,c.*,a.status AS astatus FROM board_posts AS a
+				LEFT JOIN board_media AS b ON a.pid = b.pid
+				LEFT JOIN board_users AS c ON a.uid = c.uid
+				' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid
+						LEFT JOIN board_posts2tags AS e ON a.ppid = e.pid' : '') . '
+				WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . 'b.status = 1
+				' . ($tag ? ' AND (d.tid = ' . $tag . ' OR e.tid = ' . $tag . ')' : '') . '
+				GROUP BY b.mid
+				ORDER BY a.pinned DESC,a.pid DESC
+				LIMIT ' . $from . ', ' . $to . '
+				');
+	}
+	
+	public function fetchLive($to) {
+		return $this->_db->select('
 			SELECT a.*,b.*,c.*,a.status AS astatus FROM board_posts AS a
 			LEFT JOIN board_media AS b ON a.pid = b.pid
 			LEFT JOIN board_users AS c ON a.uid = c.uid
-			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid 
-					LEFT JOIN board_posts2tags AS e ON a.ppid = e.pid' : '') . '
-			WHERE ' . ($admin == true ? '' : 'a.status = 1 AND ') . 'b.status = 1
-			' . ($tag ? ' AND (d.tid = ' . $tag . ' OR e.tid = ' . $tag . ')' : '') . '
+			WHERE a.status = 1 AND b.status = 1
 			GROUP BY b.mid
-			ORDER BY a.pinned DESC,a.pid DESC
-			LIMIT ' . $from . ', ' . $to . '
+			ORDER BY (SELECT d.pid FROM board_posts AS d WHERE d.ppid = a.pid ORDER BY d.pid DESC LIMIT 0,1) DESC
+			LIMIT 0, ' . $to . '
 		');
 	}
 	

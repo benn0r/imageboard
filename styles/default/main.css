@@ -804,6 +804,9 @@ blockquote {
 .icon-register:hover {	background: url(../../images/registerhover.png) no-repeat 10px center; font-weight: bold; }
 .icon-password {		background: url(../../images/register.png) no-repeat 10px center; }
 .icon-password:hover {	background: url(../../images/registerhover.png) no-repeat 10px center; }
+.icon-live {			background: url(../../images/refresh.png) no-repeat 10px center; }
+.icon-live:hover {		background: url(../../images/refreshhover.png) no-repeat 10px center; }
+
 
 
 
