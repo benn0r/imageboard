@@ -132,6 +132,7 @@ class RegisterModule extends Module
 						
 					'grade' => $this->getConfig()->register->defaultgrade,
 					'sid' => $this->getConfig()->register->defaultstyle,
+					'language' => $this->getConfig()->register->defaultlanguage,
 					'status' => 1,
 					'avatar' => $filetype,
 				));

@@ -27,6 +27,8 @@
 class SettingsModule extends Module
 {
 	
+	public $languages = array('de', 'en');
+	
 	public function run(array $args) {		
 		// init
 		$user = $this->getUser();
@@ -122,7 +124,7 @@ class SettingsModule extends Module
 				$view->design = $users->find($user['uid']);
 				break;
 			case 'language':
-				if ($r->isPost()) {
+				if ($r->isPost() && in_array($r->language, $this->languages)) {
 					$users->update(array(
 							'language' => $r->language,
 					), 'uid = ' . $user['uid']);

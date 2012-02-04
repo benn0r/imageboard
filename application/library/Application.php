@@ -42,7 +42,13 @@ class Application
 		
 		Model::setDefaultDb($this->_db);
 		
-		$this->_lang = new Language('de', $config->language->names->de, $config->language->files->de);
+		if (isset($_SESSION['user'])) {
+			$langname = $_SESSION['user']['language'];
+		} else {
+			$langname = $this->_config->register->defaultlanguage;
+		}
+		
+		$this->_lang = new Language($langname, $config->language->names->$langname, $config->language->files->$langname);
 		
 		$url = $this->_request->getServer('REQUEST_URI');
 		if ($this->_config->urlrewrite->base != '/') {
