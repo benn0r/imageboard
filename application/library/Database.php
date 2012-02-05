@@ -44,6 +44,7 @@ class Database
 		
 		$this->_mysqli = $mysqli;
 		
+		$this->_mysqli->query('SET NAMES "utf8"');
 		//$this->_mysqli->query('SET NAMES "utf8" COLLATE "utf8_general_ci"');
 		//$this->_mysqli->query('SET CHARACTER SET "UTF8"');
 	}

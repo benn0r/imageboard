@@ -36,7 +36,7 @@ class UserComments extends Model {
 			'ownerid' => $ownerid,
 			'uid' => $uid,
 			'private' => isset($data['private']) ? 1 : 0,
-			'text' => utf8_decode($data['text']),
+			'text' => $data['text'],
 		));
 		
 		return $this->_db->lastInsertId();

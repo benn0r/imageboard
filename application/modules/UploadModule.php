@@ -177,7 +177,7 @@ class UploadModule extends Module
 		
 		// insert entity in posts
 		$posts->insert(array(
-				'content' => utf8_decode($r->content),
+				'content' => $r->content,
 						
 				// NULL if anonymous
 				'uid' => $user ? $user['uid'] : new Database_Expression('NULL'),
