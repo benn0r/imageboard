@@ -152,7 +152,7 @@ class ImportModule extends Module
 						'inserttime' => $p->updatetime,
 						'filename' => $m->type == 1 ? $m->media_1 : '',
 						'extid' => $m->type == 2 ? $m->media_1 : '',
-						'type' => $m->type,
+						'type' => $m->type == 2 ? 4 : $m->type,
 					));
 				} catch (Exception $ex) {
 					echo 'mid:' . $m->mid;
