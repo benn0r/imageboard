@@ -686,6 +686,10 @@ body {
 	height: 270px;
 }
 .shoutbox .close {
+	display: none;
+}
+.sb-extended .shoutbox .close {
+	display: block;
 	margin: 9px 9px 0px 0px;
 }
 
