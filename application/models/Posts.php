@@ -34,8 +34,9 @@ class Posts extends Model {
 	public function next($pid, $tag = 0) {
 		$rowset = $this->_db->select('
 			SELECT a.pid FROM board_posts AS a
+			LEFT JOIN board_media AS c ON a.pid = c.pid
 			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid' : '') . '
-			WHERE a.pid > ' . (int)$pid . ' AND a.ppid IS NULL AND a.status = 1
+			WHERE a.pid > ' . (int)$pid . ' AND a.ppid IS NULL AND a.status = 1 AND c.mid IS NOT NULL
 			' . ($tag ? ' AND d.tid = ' . $tag : '') . '
 			ORDER BY a.pid ASC
 			LIMIT 0,1
@@ -51,8 +52,9 @@ class Posts extends Model {
 	public function prev($pid, $tag = 0) {
 		$rowset = $this->_db->select('
 			SELECT a.pid FROM board_posts AS a
+			LEFT JOIN board_media AS c ON a.pid = c.pid
 			' . ($tag ? 'LEFT JOIN board_posts2tags AS d ON a.pid = d.pid' : '') . '
-			WHERE a.pid < ' . (int)$pid . ' AND a.ppid IS NULL AND a.status = 1
+			WHERE a.pid < ' . (int)$pid . ' AND a.ppid IS NULL AND a.status = 1 AND c.mid IS NOT NULL
 			' . ($tag ? ' AND d.tid = ' . $tag : '') . '
 			ORDER BY a.pid DESC
 			LIMIT 0,1
