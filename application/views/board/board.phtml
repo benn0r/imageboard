@@ -68,7 +68,7 @@ var live = setTimeout(function() {
 	</div>
 	<?php endif; ?>
 	
-	<?php if (((isset($_SESSION['user']) && $this->getConfig()->upload->quickupload == 1) || ($this->getConfig()->upload->anonquickupload == 1)) && $this->page == 1 && !$this->live): ?>
+	<?php if (((isset($_SESSION['user']) && $this->getConfig()->upload->quickupload == 1) || ($this->getConfig()->upload->anonquickupload == 1)) && $this->page == 1 && !$this->live && count($this->posts)): ?>
 	<div class="boardimage" id="0" style="width: 189px; height: 285px; top: 0px; left: 0px;">
 		<div class="quickupload">
 			<iframe name="quickupload-iframe" class="upload-iframe"></iframe>
