@@ -297,7 +297,7 @@ textarea {
 .rating .bar {
 	margin-top: 4px;
 	height: 5px;
-	width: 148px;
+	width: 100%;
 }
 .rating .bar div {
 	height: 5px;
