@@ -21,6 +21,10 @@ class Media_Share_Plugin_Vimeo implements Media_Share_Plugin
 	public function name() {
 		return 'Video';
 	}
+	
+	public function isVideo() {
+		return true;
+	}
 
 	public function load($url) {
 		$id = null;

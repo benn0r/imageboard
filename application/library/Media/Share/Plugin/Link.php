@@ -17,6 +17,10 @@ class Media_Share_Plugin_Link implements Media_Share_Plugin
 	public function name() {
 		return 'Link';
 	}
+	
+	public function isVideo() {
+		return false;
+	}
 
 	public function load($url) {
 	

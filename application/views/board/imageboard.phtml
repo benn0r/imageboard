@@ -28,6 +28,10 @@
 		<div class="image-small"
 			style="width: <?php echo $post->width - 4 ?>px; height: <?php echo $post->height - 4 ?>px;
 				background: url(<?php echo $this->baseUrl() . $post->thumbnail ?>)">
+				
+			<?php if($post->type == 3 || $post->type == 4): ?>
+			<div class="video"></div>
+			<?php endif; ?>
 			
 			<?php if(isset($post->pinned) && $post->pinned == 1): ?>
 			<div class="pinned"></div>
@@ -48,6 +52,10 @@
 			<?php else: ?>
 			<img src="<?php echo $this->baseUrl() . 'images/avatar.png' ?>" class="panel-avatar" />
 			<span class="panel-username"><?php echo $this->t->t('thread/anonymous') ?><br />
+			<?php endif; ?>
+			
+			<?php if($post->type == 3 || $post->type == 4): ?>
+			<div class="video"></div>
 			<?php endif; ?>
 			
 			<span class="panel-datetime"><?php echo Printdate::get(strtotime($post->updatetime), $this->t) ?></span></span>

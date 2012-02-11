@@ -37,6 +37,10 @@ class Media_Share_Plugin_Youtube implements Media_Share_Plugin
 	public function name() {
 		return 'Video';
 	}
+	
+	public function isVideo() {
+		return true;
+	}
 
 	/**
 	 * Liest alle relevanten Informationen eines Youtube Videos ein

@@ -21,6 +21,8 @@ interface Media_Share_Plugin
 	
 	public function name();
 	
+	public function isVideo();
+	
 	public function id();
 
 }

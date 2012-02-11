@@ -405,7 +405,7 @@ textarea {
 .boardimage .panel .panel-datetime {
 	font-weight: normal;
 }
-.boardimage a .image-play {
+.boardimage a .video {
 	width: 50px;
 	height: 50px;
 	background: url(../../images/play.png);
@@ -415,11 +415,8 @@ textarea {
 	top: 50%;
 	margin-top: -25px;
 }
-.boardimage a:hover .image-play {
-	background: url(../../images/playhover.png);
-}
-.boardimage a.active .image-play {
-	/*margin-top: 2px;*/
+.boardimage a.activelarge .video {
+	margin-top: -43px;
 }
 .boardimage-deleted .image-small, .thread-image-deleted img, .comment-deleted {
 	opacity: .3;

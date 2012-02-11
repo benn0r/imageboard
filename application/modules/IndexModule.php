@@ -138,6 +138,8 @@ class IndexModule extends Module
 			$media->birthday = $post->birthday;
 			$media->pinned = $post->pinned;
 			
+			$media->type = $post->type;
+			
 			// load thumbnail
 			$media->thumbnail = $thumb->getThumbnail($media, $width - 4, $height - 4);
 			
