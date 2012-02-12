@@ -27,29 +27,33 @@ class Media_Share_Plugin_Image implements Media_Share_Plugin
 	}
 
 	public function load($url) {
-		$img = false;
+// 		$img = false;
 
-		// Hier wird das erste mal Anhand der URL geprüft 
-		// ob es ein Bild sein könnte
-		foreach ($this->_patterns as $pattern) {
-			$matches = array();
-			preg_match($pattern, $url, $matches);
-			if (count($matches) > 0) {
-				$img = true;
-			}
-		}
+// 		// Hier wird das erste mal Anhand der URL geprüft 
+// 		// ob es ein Bild sein könnte
+// 		foreach ($this->_patterns as $pattern) {
+// 			$matches = array();
+// 			preg_match($pattern, $url, $matches);
+// 			if (count($matches) > 0) {
+// 				$img = true;
+// 			}
+// 		}
 		
-		if (!$img) {
-			// Url ist kein Bild
-			return false;
-		}
+// 		if (!$img) {
+// 			// Url ist kein Bild
+// 			return false;
+// 		}
 		
 		// Hier erfolgt der zweite Check, dabei fragen wir den
 		// Server direkt nach dem Bild und werten den HTTP Header,
 		// insbesondere natürlich, den Content-Type aus.
+		echo $url;
 		$headers = get_headers($url);
+		
+		print_r($headers);
+		
 		foreach ($headers as $key => $header) {
-			if (strstr($header, 'Content-Type')) {
+			if (strstr($header, 'Content-Type:')) {
 				$header = str_replace('Content-Type:', '', $header);
 				switch (trim($header)) {
 					case 'image/jpeg':

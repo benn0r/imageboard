@@ -59,8 +59,8 @@ class UploadModule extends Module
 	public function share($url) {
 		$services = array(
 				new Media_Share_Plugin_Youtube(),
-				new Media_Share_Plugin_Image(),
 				new Media_Share_Plugin_Vimeo(),
+				new Media_Share_Plugin_Image(),
 		);
 	
 		foreach ($services as $service) {
