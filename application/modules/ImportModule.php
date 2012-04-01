@@ -30,22 +30,6 @@ set_time_limit(5000);
 class ImportModule extends Module
 {
 	
-	public function is_utf8($str) {
-		$strlen = strlen($str);
-		for($i=0; $i<$strlen; $i++){
-			$ord = ord($str[$i]);
-			if($ord < 0x80) continue; // 0bbbbbbb
-			elseif(($ord&0xE0)===0xC0 && $ord>0xC1) $n = 1; // 110bbbbb (exkl C0-C1)
-			elseif(($ord&0xF0)===0xE0) $n = 2; // 1110bbbb
-			elseif(($ord&0xF8)===0xF0 && $ord<0xF5) $n = 3; // 11110bbb (exkl F5-FF)
-			else return 'nein'; // ungültiges UTF-8-Zeichen
-			for($c=0; $c<$n; $c++) // $n Folgebytes? // 10bbbbbb
-				if(++$i===$strlen || (ord($str[$i])&0xC0)!==0x80)
-				return 'nein'; // ungültiges UTF-8-Zeichen
-		}
-		return 'ja'; // kein ungültiges UTF-8-Zeichen gefunden
-	}
-	
 	
 	public function run(array $args) {
 		$db = $this->getDb();
@@ -58,7 +42,6 @@ class ImportModule extends Module
 // 			$db->insert('board_posts', array('uid' => $users[mt_rand(0, 3)], 'content' => 'test', 'ppid' => 77, 'updatetime' => $date));
 // 		}
 		
-		/*
 		// ALT USERS
 		$users = $dbold->select('
 			SELECT * FROM board_users WHERE uid != 1 AND uid != 2 AND uid != 3
@@ -87,7 +70,6 @@ class ImportModule extends Module
 				copy('../board32/uploads/' . md5('av_' . $u->uid) . '.' . $u->avatar, 'avatars/' . $u->uid . '.' . $u->avatar);
 			}
 		}
-		*/
 		
 		// ALT POSTS
 		$posts = $dbold->select('
@@ -177,8 +159,9 @@ class ImportModule extends Module
 				
 				$folder = 'uploads/' . date('Ymd', strtotime($p->updatetime)) . '/' . $m->mid . '.' . $m->media;
 				
-				if (file_exists('../board_backup/uploads/' . md5('im_' . $m->mid) . '.' . $m->media) && !file_exists($folder)) {
-					copy('../board_backup/uploads/' . md5('im_' . $m->mid) . '.' . $m->media, $folder);
+				if (file_exists('../board_backup/uploads/' . md5('im_' . $m->mid) . '.' . $m->media) && 
+						!file_exists($folder)) {
+					rename('../board_backup/uploads/' . md5('im_' . $m->mid) . '.' . $m->media, $folder);
 				}
 			}
 		}
