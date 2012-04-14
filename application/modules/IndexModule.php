@@ -56,13 +56,13 @@ class IndexModule extends Module
 			$_SESSION['filter'] = (int)$r->filter;
 		}
 		
-		if ($view->live) {
+		/*if ($view->live) {
 			$posts = $postsTable->fetchLive($perpage);
-		} else {
+		} else {*/
 			// lets load all posts for this page (if user is admin lets load the deleted posts too)
 			$posts = $postsTable->fetch(($page - 1) * $perpage, $perpage, 
 					$user['grade'] >= 8 ? true : false, isset($_SESSION['filter']) ? $_SESSION['filter'] : 0);
-		}
+		/*}*/
 			
 		// load affiliate images
 		$ads = $affiliate->fetchAll();
