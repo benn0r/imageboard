@@ -33,7 +33,7 @@ class ImportModule extends Module
 	
 	public function run(array $args) {
 		$db = $this->getDb();
-		$dbold = new Database('mysql07j04.db.internal', 'luukasc_4fag', '4fag@mysql@5400', 'luukasc_4fag');
+		$dbold = new Database('luukasc.mysql.db.internal', 'luukasc_4fag', '4fag@mysql@5400', 'luukasc_4fag');
 		
 //  		$users = array('1125', '1126', '1127', '1128');
 		
