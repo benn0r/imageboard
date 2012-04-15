@@ -96,6 +96,7 @@ class Printspecial
 		}
 		
 		$new = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $new);
+		$new = preg_replace('/\[comic\:(.*?)\]/', '<img src="' . $url . 'images/comics/$1.jpg" style="height:100px">', $new);
 		return preg_replace('/\@\[(.*?)\:(.*?)\]/', '<a href="' . $url . 'user/$1" onclick="return loadpage(this)">$2</a>', $new);
 	}
 
