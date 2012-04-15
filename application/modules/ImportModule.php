@@ -43,7 +43,7 @@ class ImportModule extends Module
 // 		}
 		
 		// ALT USERS
-		$users = $dbold->select('
+		/*$users = $dbold->select('
 			SELECT * FROM board_users
 		');
 		
@@ -156,10 +156,10 @@ class ImportModule extends Module
 					rename('../uploads/' . md5('im_' . $m->mid) . '.' . $m->media, $folder);
 				}
 			}
-		}
+		}*/
 		
 		
-		/*$visits = $dbold->select('
+		$visits = $dbold->select('
 			SELECT * FROM board_postvisits
 		');
 			
@@ -173,7 +173,7 @@ class ImportModule extends Module
 					'http_user_agent' => $visit->http_user_agent,
 				));
 			} catch (Exception $ex) { }
-		}*/
+		}
 		
 		
 		/*$thumb = Module::init('Thumb', $this);
