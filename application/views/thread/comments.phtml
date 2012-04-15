@@ -38,7 +38,7 @@ foreach ($this->comments as $c):
 		</ul>
 		<?php endif; ?>
 		
-		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . Printspecial::wrap(nl2br($c->content), $this->baseUrl()) ?>
+		<p><?php echo ($c->pusername ? '<a href="#post' . $c->replyto . '">@' . $c->pusername . '</a> ' : '') . Printspecial::wrap(nl2br(strip_tags($c->content)), $this->baseUrl()) ?>
 		<?php if($c->content) echo '<br />' ?><small><nobr><?php echo Printdate::get(strtotime($c->updatetime), $this->t) ?></nobr></small></p>
 	</div>
 </div>
