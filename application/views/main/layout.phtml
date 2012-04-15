@@ -351,7 +351,7 @@
 			}
 			
 			if (isset($post)) {
-				$html .= '<p class="span5 pull-left" style="margin-left:10px">' . utf8_encode(Printspecial::wrap(strip_tags(strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content), $this->baseUrl())) . '</p>';
+				$html .= '<p class="span5 pull-left" style="margin-left:10px">' . Printspecial::wrap(strip_tags(strlen($post->content) > 70 ? substr($post->content, 0, 67) . '...' : $post->content), $this->baseUrl()) . '</p>';
 			}
 			
 			$html .= '<div style="clear:both"></div></div>';
