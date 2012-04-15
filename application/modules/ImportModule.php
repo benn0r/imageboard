@@ -33,7 +33,7 @@ class ImportModule extends Module
 	
 	public function run(array $args) {
 		$db = $this->getDb();
-		$dbold = new Database('localhost', 'root', '', 'board32');
+		$dbold = new Database('mysql07j04.db.internal', 'luukasc_4fag', '4fag@mysql@5400', 'luukasc_4fag');
 		
 //  		$users = array('1125', '1126', '1127', '1128');
 		
@@ -44,18 +44,27 @@ class ImportModule extends Module
 		
 		// ALT USERS
 		$users = $dbold->select('
-			SELECT * FROM board_users WHERE uid != 1 AND uid != 2 AND uid != 3
+			SELECT * FROM board_users
 		');
 		
 		// NEU USERS
 		while (($u = $users->fetch_object()) != null) {
+			if (file_exists('../uploads/' . md5('av_' . $u->uid) . '.' . $u->avatar)) {
+				copy('../uploads/' . md5('av_' . $u->uid) . '.' . $u->avatar, 
+					'uploads/avatars/' . $u->uid . '.' . $u->avatar);
+			} else {
+				$u->avatar = 'png';
+				copy('images/avatar.png', 
+					'uploads/avatars/' . $u->uid . '.' . $u->avatar);
+			}
+			
 			$db->insert('board_users', array(
 				'uid' => $u->uid,
 				'grade' => $u->grade,
 				'status' => $u->status,
 				'last_activity' => $u->last_activity,
 				'online' => $u->online,
-				'sid' => $u->sid,
+				'sid' => !$u->sid ? new Database_Expression('NULL') : $u->sid,
 				'username' => $u->username,
 				'email' => $u->email,
 				'birthday' => $u->birthday,
@@ -65,10 +74,6 @@ class ImportModule extends Module
 				'board_perpage' => $u->board_perpage,
 				'remote_addr' => $u->remote_addr,
 			));
-			
-			if (file_exists('../board32/uploads/' . md5('av_' . $u->uid) . '.' . $u->avatar)) {
-				copy('../board32/uploads/' . md5('av_' . $u->uid) . '.' . $u->avatar, 'avatars/' . $u->uid . '.' . $u->avatar);
-			}
 		}
 		
 		// ALT POSTS
@@ -97,23 +102,6 @@ class ImportModule extends Module
 			} catch (Exception $ex) {
 				print_r($ex);
 				echo 'pid:' . $p->pid;
-			}
-			
-			$visits = $dbold->select('
-				SELECT * FROM board_postvisits
-				WHERE pid = ' . $p->pid . '
-			');
-			
-			while (($visit = $visits->fetch_object()) != null) {
-				try {
-					$db->insert('board_postvisits', array(
-						'pid' => $visit->pid,
-						'uid' => $visit->uid == 3 || $visit->uid == 0 ? new Database_Expression('NULL') : $visit->uid,
-						'visittime' => $visit->visittime,
-						'remote_addr' => $visit->remote_addr,
-						'http_user_agent' => $visit->http_user_agent,
-					));
-				} catch (Exception $ex) { }
 			}
 			
 			try {
@@ -145,12 +133,16 @@ class ImportModule extends Module
 					WHERE mid = "' . $m->mid . '"
 				');
 				while (($rating = $ratings->fetch_object()) != null) {
-					$db->insert('board_mediaratings', array(
-						'mid' => $rating->mid,
-						'uid' => $rating->uid,
-						'updatetime' => $rating->updatetime,
-						'rating' => $rating->rating >= 3 ? 1 : 0,
-					));
+					try {
+						$db->insert('board_mediaratings', array(
+							'mid' => $rating->mid,
+							'uid' => $rating->uid,
+							'updatetime' => $rating->updatetime,
+							'rating' => $rating->rating >= 3 ? 1 : 0,
+						));
+					} catch (Exception $ex) {
+						echo 'mediarating:' . $m->mid . '/' . $rating->uid;
+					}
 				}
 				
 				if (!is_dir('uploads/' . date('Ymd', strtotime($p->updatetime)))) {
@@ -159,12 +151,29 @@ class ImportModule extends Module
 				
 				$folder = 'uploads/' . date('Ymd', strtotime($p->updatetime)) . '/' . $m->mid . '.' . $m->media;
 				
-				if (file_exists('../board_backup/uploads/' . md5('im_' . $m->mid) . '.' . $m->media) && 
+				if (file_exists('../uploads/' . md5('im_' . $m->mid) . '.' . $m->media) && 
 						!file_exists($folder)) {
-					rename('../board_backup/uploads/' . md5('im_' . $m->mid) . '.' . $m->media, $folder);
+					rename('../uploads/' . md5('im_' . $m->mid) . '.' . $m->media, $folder);
 				}
 			}
 		}
+		
+		
+		/*$visits = $dbold->select('
+			SELECT * FROM board_postvisits
+		');
+			
+		while (($visit = $visits->fetch_object()) != null) {
+			try {
+				$db->insert('board_postvisits', array(
+					'pid' => $visit->pid,
+					'uid' => $visit->uid == 3 || $visit->uid == 0 ? new Database_Expression('NULL') : $visit->uid,
+					'visittime' => $visit->visittime,
+					'remote_addr' => $visit->remote_addr,
+					'http_user_agent' => $visit->http_user_agent,
+				));
+			} catch (Exception $ex) { }
+		}*/
 		
 		
 		/*$thumb = Module::init('Thumb', $this);
