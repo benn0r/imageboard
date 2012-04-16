@@ -238,7 +238,8 @@
 	});
 
 	$(document).keypress(function(event) {
-		if (event.which == 112) {
+		// event.ctrlKey && 
+		if (event.which == 17 || (event.ctrlKey && event.which == 113)) {
 			if (!$('#html').hasClass('body-panic')) {
 				$('#html').addClass('body-panic');
 				$('.panic').html('<iframe src="http://en.wikipedia.org/wiki/Special:Random"></iframe>');
