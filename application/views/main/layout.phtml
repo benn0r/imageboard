@@ -16,7 +16,7 @@
 
 ?>
 <!DOCTYPE html>
-<html>
+<html id="html">
 <head>
 	<title><?php echo $this->getConfig()->contact->websitetitle ?></title>
 	
@@ -237,6 +237,18 @@
 		});
 	});
 
+	$(document).keypress(function(event) {
+		if (event.which == 112) {
+			if (!$('#html').hasClass('body-panic')) {
+				$('#html').addClass('body-panic');
+				$('.panic').html('<iframe src="http://en.wikipedia.org/wiki/Special:Random"></iframe>');
+			} else {
+				$('#html').removeClass('body-panic');
+				$('.panic').html('');
+			}
+		}
+	});
+
 	$(window).resize(function() {
 		resize();
 	});
@@ -261,6 +273,10 @@
 	<?php endif; ?>
 </head>
 <body>
+	<div class="panic">
+		
+	</div>
+
 	<div class="header">
 		<h5 class="logo"><a href="<?php echo $this->baseUrl() ?>" onclick="return loadpage(this)"></a></h5>
 				

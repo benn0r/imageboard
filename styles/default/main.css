@@ -1,3 +1,25 @@
+.panic {
+	display: none;
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	background: #fff;
+	z-index: 40;
+}
+.panic iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+.body-panic {
+	overflow: hidden;
+}
+.body-panic .panic {
+	display: block;
+}
+
 .nav li a {
 	margin: 10px 10px 0px 0px;
 }
