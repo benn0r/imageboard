@@ -183,7 +183,7 @@ class NotificationsModule extends Module
 		
 		$informed = array();
 		
-		if ($post->uid != $thread->uid) {
+		if ($thread->uid != null && $post->uid != $thread->uid) {
 			// thread owner
 			$table->insert(array(
 					'uid' => $thread->uid,
@@ -208,11 +208,12 @@ class NotificationsModule extends Module
 						'thread' => $thread->pid,
 						'text' => sprintf($t->t('notification/tagged'), $u . 'user/' . $post->uid, $post->username, $u . 'thread/' . $thread->pid . '/?goto=' . $post->pid),
 				));
+				$informed[] = $uid;
 			}
 		}
 
 		foreach ($comments as $comment) {
-			if (!in_array($comment->uid, $informed) && $post->uid != $comment->uid) {
+			if ($comment->uid != null && !in_array($comment->uid, $informed) && $post->uid != $comment->uid) {
 				if ($thread->uid == $post->uid) {
 					$text = sprintf($t->t('notification/histhread'),
 							$u . 'user/' . $post->uid,
