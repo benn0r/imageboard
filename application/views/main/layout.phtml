@@ -243,9 +243,11 @@
 			if (!$('#html').hasClass('body-panic')) {
 				$('#html').addClass('body-panic');
 				$('.panic').html('<iframe src="http://en.wikipedia.org/wiki/Special:Random"></iframe>');
+				$('.panic').show();
 			} else {
 				$('#html').removeClass('body-panic');
 				$('.panic').html('');
+				$('.panic').hide();
 			}
 		}
 	});
