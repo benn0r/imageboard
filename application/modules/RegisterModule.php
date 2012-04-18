@@ -37,15 +37,6 @@ class RegisterModule extends Module
 		$mail->Subject = $t->t('password/subject');				
 		$mail->MsgHTML(sprintf($t->t('password/email'), $username, $password, $c->websitename));
 		
-		// test!!
-		$mail->IsSMTP(true);
-		$mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl'; // gmail needs that
-		$mail->Host = 'smtp.gmail.com';
-		$mail->Username = '';
-		$mail->Password = '';
-		$mail->Port = 465;
-		
 		$mail->Send();
 	}
 	
